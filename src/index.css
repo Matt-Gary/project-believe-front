@@ -1,0 +1,168 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .button {
+    @apply flex items-center justify-center gap-2 w-fit min-w-[160px] px-8 py-4 text-white font-medium bg-accent rounded-lg transition-all relative z-10 cursor-pointer;
+  }
+  .button:hover {
+    @apply bg-accent-variant;
+  }
+  .button-ghost {
+    @apply flex items-center justify-center gap-2 w-fit min-w-[160px] px-8 py-4 text-white font-medium bg-transparent ring-1 ring-white ring-opacity-20 rounded-lg transition-all relative z-10 cursor-pointer;
+  }
+  .button-ghost:hover {
+    @apply bg-accent-variant ring-accent-variant;
+  }
+  .card-glass {
+    @apply bg-white bg-opacity-5 border border-white border-opacity-20;
+  }
+}
+
+:root {
+  color-scheme: dark;
+  scroll-behavior: smooth;
+}
+
+*,
+*::before,
+*::after {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Inter", sans-serif;
+  font-size: 1rem;
+}
+
+li {
+  list-style-type: none;
+}
+
+a,
+a:visited,
+a:active {
+  text-decoration: none;
+}
+
+span {
+  /* display: block; */
+}
+
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+
+input, textarea {
+  background: 0 0;
+  border-radius: 0;
+  padding: 0;
+  font-family: inherit;
+  color: inherit;
+}
+
+option {
+  font-weight: normal;
+  display: block;
+  min-height: 1.2em;
+  padding: 0px 2px 1px;
+  white-space: nowrap;
+  border-radius: 0;
+}
+
+select:focus,
+input:focus {
+  outline: 0;
+}
+
+textarea:focus,
+textarea:focus-visible {
+  outline: 0;
+}
+
+button {
+  outline: none;
+  border: none;
+  font: inherit;
+}
+
+.wrapper {
+  width: min(100% - 64px, 1440px);
+  margin-inline: auto;
+}
+
+/* .button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: fit-content;
+  padding: 16px 32px;
+  color: white;
+  font-weight: 500;
+  background-color: #00b4d8;
+  border-radius: 999px;
+  transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+  position: relative;
+  text-decoration: none;
+  z-index: 1;
+}
+
+.button:hover {
+  cursor: pointer;
+  color: white;
+  background-color: #00738a;
+} */
+
+/* .button-ghost {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: fit-content;
+  padding: 15px 31px;
+  color: white;
+  font-weight: 500;
+  background-color: transparent;
+  border: 1px solid #00b4d8;
+  border-radius: 999px;
+  transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+  position: relative;
+  text-decoration: none;
+  z-index: 1;
+}
+
+.button-ghost:hover {
+  cursor: pointer;
+  color: white;
+  background-color: #00738a;
+  border: 1px solid #00738a;
+} */
+
+.link {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: color 150ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.link:hover {
+  color: #00b4d8;
+}
+
+.input {
+  color: black;
+  background: white;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.5rem;
+}
+
+input.input-error {
+  border: 1px solid #ef4444;
+}
