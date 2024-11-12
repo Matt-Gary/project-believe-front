@@ -4,6 +4,8 @@ import { Link } from "react-router-dom";
 import LoginImage from "../assets/login-page-image.webp";
 import LogoSmall from "../assets/logo-sm.png";
 import { MdArrowForward } from "react-icons/md";
+import api from "../api"; // Import the loginUser function
+
 
 const LoginPage = () => {
   const {
@@ -12,9 +14,16 @@ const LoginPage = () => {
     formState: { errors },
   } = useForm();
 
-  const onSubmit = (data) => {
-    console.log(data);
-  };
+  const onSubmit = async (data) => {
+    try {
+        // Adjust data structure to match backend expectations
+        const payload = { email: data.user, password: data.password };
+        const response = await api.post('/auth/login', payload);
+        console.log("Login successful:", response.data);
+    } catch (error) {
+        console.error("Login error:", error.response ? error.response.data : error.message);
+    }
+};
 
   return (
     <main>
