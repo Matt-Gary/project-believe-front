@@ -1,9 +1,11 @@
 import React from "react";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import api from "../api"; // Import Axios instance
 
 const PasswordRecoveryPage = () => {
   const navigate = useNavigate();
+  const { token } = useParams(); // Get the token from the URL
 
   const {
     register,
@@ -12,9 +14,21 @@ const PasswordRecoveryPage = () => {
     formState: { errors },
   } = useForm();
 
-  const onSubmit = (data) => {
-    console.log(data);
-    navigate("/login");
+  const onSubmit = async (data) => {
+    // Ensure the password and token are sent to the backend
+    try {
+      const payload = {
+        token: token,
+        password: data.password,
+      };
+      const response = await api.post("/auth/reset-password", payload);
+      console.log("Password reset successful:", response.data);
+      alert("Senha redefinida com sucesso! Faça login novamente.");
+      navigate("/login"); // Redirect to login page
+    } catch (error) {
+      console.error("Password reset error:", error.response ? error.response.data : error.message);
+      alert("Erro ao redefinir senha. Tente novamente.");
+    }
   };
 
   const password = watch("password");
@@ -31,7 +45,7 @@ const PasswordRecoveryPage = () => {
               anterior.
             </p>
           </div>
-          <div className="w-full flex flex-col items-center gap-4">
+          <form onSubmit={handleSubmit(onSubmit)} className="w-full flex flex-col items-center gap-4">
             <div className="w-full flex flex-col">
               <label htmlFor="recoveryPassword" className="mb-2">
                 Nova Senha
@@ -90,13 +104,10 @@ const PasswordRecoveryPage = () => {
                 </span>
               )}
             </div>
-            <button
-              onClick={() => handleSubmit(onSubmit)()}
-              className="button w-full mt-4"
-            >
+            <button type="submit" className="button w-full mt-4">
               Enviar
             </button>
-          </div>
+          </form>
         </div>
       </section>
     </main>

@@ -2,6 +2,7 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import { MdOutlineArrowBack } from "react-icons/md";
+import api from "../api"; // Import Axios instance
 
 const ForgotPasswordPage = () => {
   const {
@@ -10,8 +11,16 @@ const ForgotPasswordPage = () => {
     formState: { errors },
   } = useForm();
 
-  const onSubmit = (data) => {
-    console.log(data);
+  const onSubmit = async (data) => {
+    try {
+      // Make a POST request to the /forgot-password endpoint
+      const response = await api.post("/auth/forgot-password", { email: data.email });
+      console.log("Forgot password response:", response.data);
+      alert("Password reset link sent to your email!");
+    } catch (error) {
+      console.error("Forgot password error:", error.response ? error.response.data : error.message);
+      alert("Error in sending password reset link. Please try again.");
+    }
   };
 
   return (
@@ -32,15 +41,15 @@ const ForgotPasswordPage = () => {
                 E-mail
               </label>
               <input
-                type="text"
+                type="email"
                 id="forgotPasswordEmail"
                 placeholder="exemplo@email.com"
                 className={`card-glass p-4 rounded-lg focus:border focus:border-accent ${
-                  errors?.user ? "input-error" : ""
+                  errors?.email ? "input-error" : ""
                 }`}
-                {...register("user", { required: true })}
+                {...register("email", { required: "Este campo é obrigatório." })}
               />
-              {errors?.user?.type == "required" && (
+              {errors?.email?.type == "required" && (
                 <span className="text-sm text-red-500 pt-3">
                   Este campo é obrigatório.
                 </span>
