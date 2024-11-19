@@ -5,7 +5,7 @@ import "./index.css";
 import App from "./App.jsx";
 import HomePage from "./pages/HomePage.jsx";
 import LoginPage from "./pages/LoginPage.jsx";
-import SignUpPage from "./pages/SignUpPage"
+import SignUpPage from "./pages/SignUpPage";
 import ErrorPage from "./pages/ErrorPage.jsx";
 import ForgotPasswordPage from "./pages/ForgotPasswordPage.jsx";
 import PasswordRecoveryPage from "./pages/PasswordRecoveryPage.jsx";
@@ -58,5 +58,5 @@ const router = createBrowserRouter([
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <RouterProvider router={router} />
-  </React.StrictMode>
+  </React.StrictMode>,
 );

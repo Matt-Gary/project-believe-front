@@ -8,10 +8,10 @@ const HomePage = () => {
   return (
     <>
       <main>
-        <section className="flex justify-center items-center">
-          <div className="wrapper flex items-center gap-32 pt-48 pb-32">
+        <section className="flex items-center justify-center">
+          <div className="wrapper flex items-center gap-32 pb-32 pt-48">
             <div className="flex-1">
-              <h1 className="text-6xl font-bold uppercase mb-8">
+              <h1 className="mb-8 text-6xl font-bold uppercase">
                 O primeiro box de calistenia do Ceará
               </h1>
               <p className="mb-8">
@@ -35,33 +35,33 @@ const HomePage = () => {
           </div>
         </section>
         <section className="wrapper">
-          <h2 className="text-4xl uppercase mb-16">
+          <h2 className="mb-16 text-4xl uppercase">
             Believe Club de Benefícios
           </h2>
-          <div className="grid grid-cols-4 gap-8 mb-8">
-            <div className="flex flex-col gap-4 card-glass p-8 rounded-2xl">
-              <span className="w-fit aspect-square flex items-center justify-center bg-neutral-900 p-2 rounded-md mb-4">
+          <div className="mb-8 grid grid-cols-4 gap-8">
+            <div className="card-glass flex flex-col gap-4 rounded-2xl p-8">
+              <span className="mb-4 flex aspect-square w-fit items-center justify-center rounded-md bg-neutral-900 p-2">
                 Logomarca
               </span>
               <h3 className="text-2xl font-normal">Lorem ipsum</h3>
               <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit.</p>
             </div>
-            <div className="flex flex-col gap-4 card-glass border-opacity-20 p-8 rounded-2xl">
-              <span className="w-fit aspect-square flex items-center justify-center bg-neutral-900 p-2 rounded-md mb-4">
+            <div className="card-glass flex flex-col gap-4 rounded-2xl border-opacity-20 p-8">
+              <span className="mb-4 flex aspect-square w-fit items-center justify-center rounded-md bg-neutral-900 p-2">
                 Logomarca
               </span>
               <h3 className="text-2xl font-normal">Lorem ipsum</h3>
               <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit.</p>
             </div>
-            <div className="flex flex-col gap-4 card-glass border-opacity-20 p-8 rounded-2xl">
-              <span className="w-fit aspect-square flex items-center justify-center bg-neutral-900 p-2 rounded-md mb-4">
+            <div className="card-glass flex flex-col gap-4 rounded-2xl border-opacity-20 p-8">
+              <span className="mb-4 flex aspect-square w-fit items-center justify-center rounded-md bg-neutral-900 p-2">
                 Logomarca
               </span>
               <h3 className="text-2xl font-normal">Lorem ipsum</h3>
               <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit.</p>
             </div>
-            <div className="flex flex-col gap-4 card-glass border-opacity-20 p-8 rounded-2xl">
-              <span className="w-fit aspect-square flex items-center justify-center bg-neutral-900 p-2 rounded-md mb-4">
+            <div className="card-glass flex flex-col gap-4 rounded-2xl border-opacity-20 p-8">
+              <span className="mb-4 flex aspect-square w-fit items-center justify-center rounded-md bg-neutral-900 p-2">
                 Logomarca
               </span>
               <h3 className="text-2xl font-normal">Lorem ipsum</h3>
@@ -82,8 +82,8 @@ const HomePage = () => {
               </p>
               <div className="grid grid-cols-2 gap-8">
                 <div>
-                  <h3 className="flex items-center gap-3 text-xl font-medium mb-4">
-                    <span className="w-3 h-3 rounded-full bg-accent"></span>
+                  <h3 className="mb-4 flex items-center gap-3 text-xl font-medium">
+                    <span className="h-3 w-3 rounded-full bg-accent"></span>
                     Comunidade Inspiradora
                   </h3>
                   <p>
@@ -93,8 +93,8 @@ const HomePage = () => {
                   </p>
                 </div>
                 <div>
-                  <h3 className="flex items-center gap-3 text-xl font-medium mb-4">
-                    <span className="w-3 h-3 rounded-full bg-accent"></span>
+                  <h3 className="mb-4 flex items-center gap-3 text-xl font-medium">
+                    <span className="h-3 w-3 rounded-full bg-accent"></span>
                     Comunidade Inspiradora
                   </h3>
                   <p>
@@ -115,7 +115,7 @@ const HomePage = () => {
             <img
               src={AboutImage}
               alt=""
-              className="w-full max-h-[30rem] rounded-2xl"
+              className="max-h-[30rem] w-full rounded-2xl"
             />
           </div>
         </section>
@@ -126,7 +126,7 @@ const HomePage = () => {
             velit ex, dignissimos corporis quisquam fugit necessitatibus totam.
           </p>
           <div className="grid grid-cols-3 gap-8">
-            <div className="flex flex-col gap-4 card-glass border-opacity-20 p-8 rounded-2xl">
+            <div className="card-glass flex flex-col gap-4 rounded-2xl border-opacity-20 p-8">
               <div className="flex items-center gap-1">
                 <MdOutlineStar />
                 <MdOutlineStar />
@@ -141,7 +141,7 @@ const HomePage = () => {
                 perspiciatis commodi cumque aperiam in. Quos labore maxime ipsa?
               </p>
               <div className="flex items-center gap-4">
-                <div className="w-fit bg-neutral-700 p-4 rounded-md">
+                <div className="w-fit rounded-md bg-neutral-700 p-4">
                   <MdPerson />
                 </div>
                 <div className="flex flex-col gap-1">
@@ -150,7 +150,7 @@ const HomePage = () => {
                 </div>
               </div>
             </div>
-            <div className="flex flex-col gap-4 card-glass border-opacity-20 p-8 rounded-2xl">
+            <div className="card-glass flex flex-col gap-4 rounded-2xl border-opacity-20 p-8">
               <div className="flex items-center gap-1">
                 <MdOutlineStar />
                 <MdOutlineStar />
@@ -165,7 +165,7 @@ const HomePage = () => {
                 perspiciatis commodi cumque aperiam in. Quos labore maxime ipsa?
               </p>
               <div className="flex items-center gap-4">
-                <div className="w-fit bg-neutral-700 p-4 rounded-md">
+                <div className="w-fit rounded-md bg-neutral-700 p-4">
                   <MdPerson />
                 </div>
                 <div className="flex flex-col gap-1">
@@ -174,7 +174,7 @@ const HomePage = () => {
                 </div>
               </div>
             </div>
-            <div className="flex flex-col gap-4 card-glass border-opacity-20 p-8 rounded-2xl">
+            <div className="card-glass flex flex-col gap-4 rounded-2xl border-opacity-20 p-8">
               <div className="flex items-center gap-1">
                 <MdOutlineStar />
                 <MdOutlineStar />
@@ -189,7 +189,7 @@ const HomePage = () => {
                 perspiciatis commodi cumque aperiam in. Quos labore maxime ipsa?
               </p>
               <div className="flex items-center gap-4">
-                <div className="w-fit bg-neutral-700 p-4 rounded-md">
+                <div className="w-fit rounded-md bg-neutral-700 p-4">
                   <MdPerson />
                 </div>
                 <div className="flex flex-col gap-1">
@@ -202,10 +202,10 @@ const HomePage = () => {
         </section>
         <section className="wrapper grid grid-cols-2 items-center gap-16 pt-48">
           <div className="grid grid-cols-2 grid-rows-2 gap-4">
-            <div className="flex flex-col gap-4 h-[160px] card-glass border-opacity-20 p-8 rounded-2xl"></div>
-            <div className="flex flex-col gap-4 card-glass border-opacity-20 p-8 rounded-2xl"></div>
-            <div className="flex flex-col gap-4 card-glass border-opacity-20 p-8 rounded-2xl"></div>
-            <div className="flex flex-col gap-4 card-glass border-opacity-20 p-8 rounded-2xl"></div>
+            <div className="card-glass flex h-[160px] flex-col gap-4 rounded-2xl border-opacity-20 p-8"></div>
+            <div className="card-glass flex flex-col gap-4 rounded-2xl border-opacity-20 p-8"></div>
+            <div className="card-glass flex flex-col gap-4 rounded-2xl border-opacity-20 p-8"></div>
+            <div className="card-glass flex flex-col gap-4 rounded-2xl border-opacity-20 p-8"></div>
           </div>
           <div className="flex flex-col gap-8">
             <h2 className="text-6xl font-bold uppercase">
@@ -221,7 +221,7 @@ const HomePage = () => {
         </section>
         <section className="wrapper flex items-center justify-between gap-16 py-32">
           <div>
-            <h2 className="text-6xl font-bold uppercase mb-8">
+            <h2 className="mb-8 text-6xl font-bold uppercase">
               Comece agora sua jornada
             </h2>
             <p className="max-w-[60ch]">
@@ -230,7 +230,7 @@ const HomePage = () => {
               cupiditate quam alias blanditiis.
             </p>
           </div>
-          <Link to="/contato" className="button shrink-0 text-2xl px-12 py-6">
+          <Link to="/contato" className="button shrink-0 px-12 py-6 text-2xl">
             Entrar em Contato
           </Link>
         </section>

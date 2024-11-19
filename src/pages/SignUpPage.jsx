@@ -29,119 +29,149 @@ const SignUpPage = () => {
       console.log("Registration successful:", response.data);
       alert("User registered successfully!");
     } catch (error) {
-      console.error("Registration error:", error.response ? error.response.data : error.message);
+      console.error(
+        "Registration error:",
+        error.response ? error.response.data : error.message,
+      );
       alert("Registration failed. Please try again.");
     }
   };
 
   return (
     <main>
-      <section className="min-h-screen flex justify-center items-center pt-32 pb-32">
-        <div className="wrapper grid grid-cols-2 card-glass rounded-[2rem] overflow-hidden">
+      <section className="flex min-h-screen items-center justify-center pb-32 pt-32">
+        <div className="wrapper card-glass grid grid-cols-2 overflow-hidden rounded-[2rem]">
           <div className="relative overflow-hidden">
-            <img src={SignUpImage} alt="" className="absolute w-full h-full" />
+            <img src={SignUpImage} alt="" className="absolute h-full w-full" />
           </div>
           <div className="p-24">
-            <div className="flex items-center gap-8 mb-16">
+            <div className="mb-16 flex items-center gap-8">
               <img src={LogoSmall} alt="" />
               <h1 className="text-4xl font-bold">Cadastro</h1>
             </div>
-            <div className="flex flex-col gap-4 mb-8">
+            <div className="mb-8 flex flex-col gap-4">
               {/* Username field */}
               <div className="flex flex-col">
-                <label htmlFor="signUpName" className="flex mb-2">
+                <label htmlFor="signUpName" className="mb-2 flex">
                   Nome<span className="text-accent">*</span>
                 </label>
                 <input
                   type="text"
                   id="signUpName"
                   placeholder="Nome"
-                  className={`card-glass p-4 rounded-lg focus:border focus:border-accent ${errors?.name ? "input-error" : ""}`}
+                  className={`card-glass rounded-lg p-4 focus:border focus:border-accent ${errors?.name ? "input-error" : ""}`}
                   {...register("name", { required: true })}
                 />
-                {errors?.name && <span className="text-sm text-red-500 pt-3">Este campo é obrigatório.</span>}
+                {errors?.name && (
+                  <span className="pt-3 text-sm text-red-500">
+                    Este campo é obrigatório.
+                  </span>
+                )}
               </div>
 
               {/* Matrícula field */}
               <div className="flex flex-col">
-                <label htmlFor="signUpId" className="flex mb-2">
+                <label htmlFor="signUpId" className="mb-2 flex">
                   Matrícula<span className="text-accent">*</span>
                 </label>
                 <input
                   type="text"
                   id="signUpId"
                   placeholder="Matrícula"
-                  className={`card-glass p-4 rounded-lg focus:border focus:border-accent ${errors?.matricula ? "input-error" : ""}`}
+                  className={`card-glass rounded-lg p-4 focus:border focus:border-accent ${errors?.matricula ? "input-error" : ""}`}
                   {...register("matricula", { required: true })}
                 />
-                {errors?.matricula && <span className="text-sm text-red-500 pt-3">Este campo é obrigatório.</span>}
+                {errors?.matricula && (
+                  <span className="pt-3 text-sm text-red-500">
+                    Este campo é obrigatório.
+                  </span>
+                )}
               </div>
 
               {/* Phone Number field */}
               <div className="flex flex-col">
-                <label htmlFor="signUpPhone" className="flex mb-2">
+                <label htmlFor="signUpPhone" className="mb-2 flex">
                   Número do Telefone<span className="text-accent">*</span>
                 </label>
                 <input
                   type="text"
                   id="signUpPhone"
                   placeholder="Número do Telefone"
-                  className={`card-glass p-4 rounded-lg focus:border focus:border-accent ${errors?.phone ? "input-error" : ""}`}
+                  className={`card-glass rounded-lg p-4 focus:border focus:border-accent ${errors?.phone ? "input-error" : ""}`}
                   {...register("phone", { required: true })}
                 />
-                {errors?.phone && <span className="text-sm text-red-500 pt-3">Este campo é obrigatório.</span>}
+                {errors?.phone && (
+                  <span className="pt-3 text-sm text-red-500">
+                    Este campo é obrigatório.
+                  </span>
+                )}
               </div>
 
               {/* Email field */}
               <div className="flex flex-col">
-                <label htmlFor="signUpEmail" className="flex mb-2">
+                <label htmlFor="signUpEmail" className="mb-2 flex">
                   E-mail<span className="text-accent">*</span>
                 </label>
                 <input
                   type="email"
                   id="signUpEmail"
                   placeholder="exemplo@email.com"
-                  className={`card-glass p-4 rounded-lg focus:border focus:border-accent ${errors?.email ? "input-error" : ""}`}
+                  className={`card-glass rounded-lg p-4 focus:border focus:border-accent ${errors?.email ? "input-error" : ""}`}
                   {...register("email", { required: true })}
                 />
-                {errors?.email && <span className="text-sm text-red-500 pt-3">Este campo é obrigatório.</span>}
+                {errors?.email && (
+                  <span className="pt-3 text-sm text-red-500">
+                    Este campo é obrigatório.
+                  </span>
+                )}
               </div>
 
               {/* Password field */}
               <div className="flex flex-col">
-                <label htmlFor="signUpPassword" className="flex mb-2">
+                <label htmlFor="signUpPassword" className="mb-2 flex">
                   Senha<span className="text-accent">*</span>
                 </label>
                 <input
                   type="password"
                   id="signUpPassword"
                   placeholder="Senha"
-                  className={`card-glass p-4 rounded-lg focus:border focus:border-accent ${errors?.password ? "input-error" : ""}`}
+                  className={`card-glass rounded-lg p-4 focus:border focus:border-accent ${errors?.password ? "input-error" : ""}`}
                   {...register("password", { required: true, minLength: 8 })}
                 />
                 {errors?.password && errors.password.type === "minLength" && (
-                  <span className="text-sm text-red-500 pt-3">A senha deve conter no mínimo 8 caracteres.</span>
+                  <span className="pt-3 text-sm text-red-500">
+                    A senha deve conter no mínimo 8 caracteres.
+                  </span>
                 )}
               </div>
 
               {/* Confirm Password field */}
               <div className="flex flex-col">
-                <label htmlFor="signUpConfirmPassword" className="flex mb-2">
+                <label htmlFor="signUpConfirmPassword" className="mb-2 flex">
                   Confirmar Senha<span className="text-accent">*</span>
                 </label>
                 <input
                   type="password"
                   id="signUpConfirmPassword"
                   placeholder="Confirmar Senha"
-                  className={`card-glass p-4 rounded-lg focus:border focus:border-accent ${errors?.confirmPassword ? "input-error" : ""}`}
-                  {...register("confirmPassword", { required: true, minLength: 8 })}
+                  className={`card-glass rounded-lg p-4 focus:border focus:border-accent ${errors?.confirmPassword ? "input-error" : ""}`}
+                  {...register("confirmPassword", {
+                    required: true,
+                    minLength: 8,
+                  })}
                 />
-                {errors?.confirmPassword && errors.confirmPassword.type === "minLength" && (
-                  <span className="text-sm text-red-500 pt-3">A senha deve conter no mínimo 8 caracteres.</span>
-                )}
+                {errors?.confirmPassword &&
+                  errors.confirmPassword.type === "minLength" && (
+                    <span className="pt-3 text-sm text-red-500">
+                      A senha deve conter no mínimo 8 caracteres.
+                    </span>
+                  )}
               </div>
 
-              <button onClick={() => handleSubmit(onSubmit)()} className="button w-full mt-4">
+              <button
+                onClick={() => handleSubmit(onSubmit)()}
+                className="button mt-4 w-full"
+              >
                 Cadastrar
               </button>
             </div>

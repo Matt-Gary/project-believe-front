@@ -6,7 +6,6 @@ import LogoSmall from "../assets/logo-sm.png";
 import { MdArrowForward } from "react-icons/md";
 import api from "../api"; // Import the loginUser function
 
-
 const LoginPage = () => {
   const {
     register,
@@ -16,32 +15,31 @@ const LoginPage = () => {
 
   const onSubmit = async (data) => {
     try {
-        // Adjust data structure to match backend expectations
-        const payload = { email: data.user, password: data.password };
-        const response = await api.post('/auth/login', payload);
-        console.log("Login successful:", response.data);
+      // Adjust data structure to match backend expectations
+      const payload = { email: data.user, password: data.password };
+      const response = await api.post("/auth/login", payload);
+      console.log("Login successful:", response.data);
     } catch (error) {
-        console.error("Login error:", error.response ? error.response.data : error.message);
+      console.error(
+        "Login error:",
+        error.response ? error.response.data : error.message,
+      );
     }
-};
+  };
 
   return (
     <main>
-      <section className="min-h-screen flex justify-center items-center pt-32 pb-32">
-        <div className="wrapper grid grid-cols-2 card-glass rounded-[2rem] overflow-hidden">
+      <section className="flex min-h-screen items-center justify-center pb-32 pt-32">
+        <div className="wrapper card-glass grid grid-cols-2 overflow-hidden rounded-[2rem]">
           <div className="relative overflow-hidden">
-            <img
-              src={LoginImage}
-              alt=""
-              className="absolute bottom-0"
-            />
+            <img src={LoginImage} alt="" className="absolute bottom-0" />
           </div>
           <div className="max-w-[700px] p-24">
-            <div className="flex items-center gap-8 mb-16">
+            <div className="mb-16 flex items-center gap-8">
               <img src={LogoSmall} alt="" />
               <h1 className="text-4xl font-bold">Entrar</h1>
             </div>
-            <div className="flex flex-col gap-4 mb-8">
+            <div className="mb-8 flex flex-col gap-4">
               <div className="flex flex-col">
                 <label htmlFor="loginId" className="mb-2">
                   Usuário
@@ -50,13 +48,13 @@ const LoginPage = () => {
                   type="text"
                   id="loginId"
                   placeholder="E-mail ou Matrícula"
-                  className={`card-glass p-4 rounded-lg focus:border focus:border-accent ${
+                  className={`card-glass rounded-lg p-4 focus:border focus:border-accent ${
                     errors?.user ? "input-error" : ""
                   }`}
                   {...register("user", { required: true })}
                 />
                 {errors?.user?.type == "required" && (
-                  <span className="text-sm text-red-500 pt-3">
+                  <span className="pt-3 text-sm text-red-500">
                     Este campo é obrigatório.
                   </span>
                 )}
@@ -69,18 +67,18 @@ const LoginPage = () => {
                   type="password"
                   id="loginPassword"
                   placeholder="Senha"
-                  className={`card-glass p-4 rounded-lg focus:border focus:border-accent ${
+                  className={`card-glass rounded-lg p-4 focus:border focus:border-accent ${
                     errors?.password ? "input-error" : ""
                   }`}
                   {...register("password", { required: true, minLength: 8 })}
                 />
                 {errors?.password?.type == "minLength" && (
-                  <span className="text-sm text-red-500 pt-3">
+                  <span className="pt-3 text-sm text-red-500">
                     A senha deve conter no mínimo 8 caracteres.
                   </span>
                 )}
                 {errors?.password?.type == "required" && (
-                  <span className="text-sm text-red-500 pt-3">
+                  <span className="pt-3 text-sm text-red-500">
                     Este campo é obrigatório.
                   </span>
                 )}

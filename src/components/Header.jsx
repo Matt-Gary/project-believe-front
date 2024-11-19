@@ -18,8 +18,8 @@ const Header = () => {
     location.pathname === "/login" || location.pathname === "/cadastro";
 
   return (
-    <header className="fixed z-50 w-full bg-[#1e1e1e] border-b border-b-white border-opacity-20 items-center justify-center flex">
-      <nav className="wrapper flex justify-between items-center py-3">
+    <header className="fixed z-50 flex w-full items-center justify-center border-b border-b-white border-opacity-20 bg-[#1e1e1e]">
+      <nav className="wrapper flex items-center justify-between py-3">
         <Link to="/">
           <img src={Logo} alt="" className="h-12" />
         </Link>
@@ -27,7 +27,7 @@ const Header = () => {
           <li>
             <Link
               to="/"
-              className={`font-medium px-4 py-3 rounded-lg hover:bg-accent-variant transition-colors ${
+              className={`rounded-lg px-4 py-3 font-medium transition-colors hover:bg-accent-variant ${
                 homePage() ? "!bg-accent" : ""
               }`}
             >
@@ -37,7 +37,7 @@ const Header = () => {
           <li>
             <Link
               to="/sobre"
-              className={`font-medium px-4 py-3 rounded-lg hover:bg-accent-variant transition-colors ${
+              className={`rounded-lg px-4 py-3 font-medium transition-colors hover:bg-accent-variant ${
                 aboutPage() ? "!bg-accent" : ""
               }`}
             >
@@ -47,7 +47,7 @@ const Header = () => {
           <li>
             <Link
               to="/galeria"
-              className={`font-medium px-4 py-3 rounded-lg hover:bg-accent-variant transition-colors ${
+              className={`rounded-lg px-4 py-3 font-medium transition-colors hover:bg-accent-variant ${
                 galleryPage() ? "!bg-accent" : ""
               }`}
             >
@@ -57,7 +57,7 @@ const Header = () => {
           <li>
             <Link
               to="/calendario"
-              className={`font-medium px-4 py-3 rounded-lg hover:bg-accent-variant transition-colors ${
+              className={`rounded-lg px-4 py-3 font-medium transition-colors hover:bg-accent-variant ${
                 calendarPage() ? "!bg-accent" : ""
               }`}
             >
@@ -67,7 +67,7 @@ const Header = () => {
           <li>
             <Link
               to="/tutoriais"
-              className={`font-medium px-4 py-3 rounded-lg hover:bg-accent-variant transition-colors ${
+              className={`rounded-lg px-4 py-3 font-medium transition-colors hover:bg-accent-variant ${
                 tutorialsPage() ? "!bg-accent" : ""
               }`}
             >

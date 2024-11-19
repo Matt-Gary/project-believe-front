@@ -4,19 +4,19 @@
 
 @layer components {
   .button {
-    @apply flex items-center justify-center gap-2 w-fit min-w-[160px] px-8 py-4 text-white font-medium bg-accent rounded-lg transition-all relative z-10 cursor-pointer;
+    @apply relative z-10 flex w-fit min-w-[160px] cursor-pointer items-center justify-center gap-2 rounded-lg bg-accent px-8 py-4 font-medium text-white transition-all;
   }
   .button:hover {
     @apply bg-accent-variant;
   }
   .button-ghost {
-    @apply flex items-center justify-center gap-2 w-fit min-w-[160px] px-8 py-4 text-white font-medium bg-transparent ring-1 ring-white ring-opacity-20 rounded-lg transition-all relative z-10 cursor-pointer;
+    @apply relative z-10 flex w-fit min-w-[160px] cursor-pointer items-center justify-center gap-2 rounded-lg bg-transparent px-8 py-4 font-medium text-white ring-1 ring-white ring-opacity-20 transition-all;
   }
   .button-ghost:hover {
     @apply bg-accent-variant ring-accent-variant;
   }
   .card-glass {
-    @apply bg-white bg-opacity-5 border border-white border-opacity-20;
+    @apply border border-white border-opacity-20 bg-white bg-opacity-5;
   }
 }
 
@@ -59,7 +59,8 @@ img {
   object-fit: cover;
 }
 
-input, textarea {
+input,
+textarea {
   background: 0 0;
   border-radius: 0;
   padding: 0;
