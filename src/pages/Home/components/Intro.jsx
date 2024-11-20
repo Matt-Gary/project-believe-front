@@ -4,17 +4,17 @@ import HeroImage from "../../../assets/home-page-image-1.webp";
 export function Intro() {
   return (
     <section className="flex items-center justify-center">
-      <div className="wrapper flex items-center gap-32 py-24">
+      <div className="wrapper grid grid-cols-1 gap-16 py-16 md:gap-32 md:py-24 lg:grid-cols-2">
         <div className="flex-1">
-          <h1 className="mb-8 text-6xl font-bold uppercase">
+          <h1 className="lg mb-8 text-center text-3xl font-bold uppercase md:text-6xl lg:text-start">
             O primeiro box de calistenia do Ceará
           </h1>
-          <p className="mb-8 max-w-xl">
+          <p className="mx-auto mb-8 max-w-xl lg:mx-0">
             Na Believe, acreditamos que a verdadeira força vem de dentro.
             Junte-se a nós e descubra como a calistenia pode mudar sua vida,
             melhorando seu condicionamento físico, flexibilidade e confiança.
           </p>
-          <div className="flex items-center gap-4">
+          <div className="flex flex-wrap items-center justify-center gap-4 lg:justify-start">
             <Link to="/contato" className="button">
               Entrar em Contato
             </Link>
@@ -23,7 +23,7 @@ export function Intro() {
             </a>
           </div>
         </div>
-        <div className="flex-1">
+        <div>
           <img src={HeroImage} alt="" className="rounded-2xl" />
         </div>
       </div>

@@ -4,7 +4,7 @@
 
 @layer components {
   .button {
-    @apply relative z-10 flex w-fit min-w-[160px] cursor-pointer items-center justify-center gap-2 rounded-lg bg-accent px-8 py-4 font-medium text-white transition-all;
+    @apply relative z-10 flex w-fit min-w-[160px] cursor-pointer items-center justify-center gap-2 rounded-lg bg-accent px-5 py-4 font-medium text-white transition-all md:px-8;
   }
   .button:hover {
     @apply bg-accent-variant;
