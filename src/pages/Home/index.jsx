@@ -1,7 +1,12 @@
 import { Link } from "react-router-dom";
 import HeroImage from "../../assets/home-page-image-1.webp";
 import AboutImage from "../../assets/recovery-page-image.webp";
-import { MdOutlineStar, MdPerson } from "react-icons/md";
+import { CardBenefits } from "./components/CardBenefit";
+import { CardTestimonials } from "./components/CardTestimonial";
+import { CardProduct } from "./components/CardProduct";
+import { dataBenefits } from "./utils/data-benefits";
+import { dataTestimonials } from "./utils/data-testimonials";
+import { dataProduct } from "./utils/data-product";
 
 export function HomePage() {
   return (
@@ -33,42 +38,26 @@ export function HomePage() {
             </div>
           </div>
         </section>
+
         <section className="wrapper">
           <h2 className="mb-16 text-4xl uppercase">
             Believe Club de Benefícios
           </h2>
+
           <div className="mb-8 grid grid-cols-4 gap-8">
-            <div className="card-glass flex flex-col gap-4 rounded-2xl p-8">
-              <span className="mb-4 flex aspect-square w-fit items-center justify-center rounded-md bg-neutral-900 p-2">
-                Logomarca
-              </span>
-              <h3 className="text-2xl font-normal">Lorem ipsum</h3>
-              <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit.</p>
-            </div>
-            <div className="card-glass flex flex-col gap-4 rounded-2xl border-opacity-20 p-8">
-              <span className="mb-4 flex aspect-square w-fit items-center justify-center rounded-md bg-neutral-900 p-2">
-                Logomarca
-              </span>
-              <h3 className="text-2xl font-normal">Lorem ipsum</h3>
-              <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit.</p>
-            </div>
-            <div className="card-glass flex flex-col gap-4 rounded-2xl border-opacity-20 p-8">
-              <span className="mb-4 flex aspect-square w-fit items-center justify-center rounded-md bg-neutral-900 p-2">
-                Logomarca
-              </span>
-              <h3 className="text-2xl font-normal">Lorem ipsum</h3>
-              <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit.</p>
-            </div>
-            <div className="card-glass flex flex-col gap-4 rounded-2xl border-opacity-20 p-8">
-              <span className="mb-4 flex aspect-square w-fit items-center justify-center rounded-md bg-neutral-900 p-2">
-                Logomarca
-              </span>
-              <h3 className="text-2xl font-normal">Lorem ipsum</h3>
-              <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit.</p>
-            </div>
+            {dataBenefits.map((benefit) => (
+              <CardBenefits
+                key={benefit.title}
+                logo={benefit.logo}
+                title={benefit.title}
+                description={benefit.description}
+              />
+            ))}
           </div>
+
           <button className="button">Ver Todos</button>
         </section>
+
         <section className="wrapper pt-48" id="homePageAboutSection">
           <div className="grid grid-cols-2 items-center gap-16">
             <div className="flex flex-col gap-8">
@@ -118,6 +107,7 @@ export function HomePage() {
             />
           </div>
         </section>
+
         <section className="wrapper flex flex-col gap-8 pt-48">
           <h2 className="text-6xl font-bold uppercase">Depoimentos</h2>
           <p className="max-w-[60ch]">
@@ -125,86 +115,24 @@ export function HomePage() {
             velit ex, dignissimos corporis quisquam fugit necessitatibus totam.
           </p>
           <div className="grid grid-cols-3 gap-8">
-            <div className="card-glass flex flex-col gap-4 rounded-2xl border-opacity-20 p-8">
-              <div className="flex items-center gap-1">
-                <MdOutlineStar />
-                <MdOutlineStar />
-                <MdOutlineStar />
-                <MdOutlineStar />
-                <MdOutlineStar />
-              </div>
-              <p>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                Suscipit assumenda iure veritatis consequatur excepturi, odit
-                voluptas quaerat expedita illum, voluptatibus doloribus
-                perspiciatis commodi cumque aperiam in. Quos labore maxime ipsa?
-              </p>
-              <div className="flex items-center gap-4">
-                <div className="w-fit rounded-md bg-neutral-700 p-4">
-                  <MdPerson />
-                </div>
-                <div className="flex flex-col gap-1">
-                  <span>Nome do(a) Aluno(a)</span>
-                  <span className="text-neutral-400">Aluno</span>
-                </div>
-              </div>
-            </div>
-            <div className="card-glass flex flex-col gap-4 rounded-2xl border-opacity-20 p-8">
-              <div className="flex items-center gap-1">
-                <MdOutlineStar />
-                <MdOutlineStar />
-                <MdOutlineStar />
-                <MdOutlineStar />
-                <MdOutlineStar />
-              </div>
-              <p>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                Suscipit assumenda iure veritatis consequatur excepturi, odit
-                voluptas quaerat expedita illum, voluptatibus doloribus
-                perspiciatis commodi cumque aperiam in. Quos labore maxime ipsa?
-              </p>
-              <div className="flex items-center gap-4">
-                <div className="w-fit rounded-md bg-neutral-700 p-4">
-                  <MdPerson />
-                </div>
-                <div className="flex flex-col gap-1">
-                  <span>Nome do(a) Aluno(a)</span>
-                  <span className="text-neutral-400">Aluno</span>
-                </div>
-              </div>
-            </div>
-            <div className="card-glass flex flex-col gap-4 rounded-2xl border-opacity-20 p-8">
-              <div className="flex items-center gap-1">
-                <MdOutlineStar />
-                <MdOutlineStar />
-                <MdOutlineStar />
-                <MdOutlineStar />
-                <MdOutlineStar />
-              </div>
-              <p>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                Suscipit assumenda iure veritatis consequatur excepturi, odit
-                voluptas quaerat expedita illum, voluptatibus doloribus
-                perspiciatis commodi cumque aperiam in. Quos labore maxime ipsa?
-              </p>
-              <div className="flex items-center gap-4">
-                <div className="w-fit rounded-md bg-neutral-700 p-4">
-                  <MdPerson />
-                </div>
-                <div className="flex flex-col gap-1">
-                  <span>Nome do(a) Aluno(a)</span>
-                  <span className="text-neutral-400">Aluno</span>
-                </div>
-              </div>
-            </div>
+            {dataTestimonials.map((testimonial) => (
+              <CardTestimonials
+                description={testimonial.description}
+                student={testimonial.student}
+              />
+            ))}
           </div>
         </section>
+
         <section className="wrapper grid grid-cols-2 items-center gap-16 pt-48">
           <div className="grid grid-cols-2 grid-rows-2 gap-4">
-            <div className="card-glass flex h-[160px] flex-col gap-4 rounded-2xl border-opacity-20 p-8"></div>
-            <div className="card-glass flex flex-col gap-4 rounded-2xl border-opacity-20 p-8"></div>
-            <div className="card-glass flex flex-col gap-4 rounded-2xl border-opacity-20 p-8"></div>
-            <div className="card-glass flex flex-col gap-4 rounded-2xl border-opacity-20 p-8"></div>
+            {dataProduct.map((product) => (
+              <CardProduct
+                key={product.src}
+                src={product.src}
+                type={product.type}
+              />
+            ))}
           </div>
           <div className="flex flex-col gap-8">
             <h2 className="text-6xl font-bold uppercase">
