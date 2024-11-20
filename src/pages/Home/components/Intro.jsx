@@ -9,7 +9,7 @@ export function Intro() {
           <h1 className="lg mb-8 text-center text-3xl font-bold uppercase md:text-6xl lg:text-start">
             O primeiro box de calistenia do Ceará
           </h1>
-          <p className="mx-auto mb-8 max-w-xl lg:mx-0">
+          <p className="mx-auto mb-8 max-w-xl md:text-center lg:mx-0 lg:text-start">
             Na Believe, acreditamos que a verdadeira força vem de dentro.
             Junte-se a nós e descubra como a calistenia pode mudar sua vida,
             melhorando seu condicionamento físico, flexibilidade e confiança.
