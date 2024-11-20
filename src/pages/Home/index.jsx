@@ -1,10 +1,9 @@
-import React from "react";
 import { Link } from "react-router-dom";
-import HeroImage from "../assets/home-page-image-1.webp";
-import AboutImage from "../assets/recovery-page-image.webp";
+import HeroImage from "../../assets/home-page-image-1.webp";
+import AboutImage from "../../assets/recovery-page-image.webp";
 import { MdOutlineStar, MdPerson } from "react-icons/md";
 
-const HomePage = () => {
+export function HomePage() {
   return (
     <>
       <main>
@@ -237,6 +236,4 @@ const HomePage = () => {
       </main>
     </>
   );
-};
-
-export default HomePage;
+}

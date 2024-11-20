@@ -1,9 +1,8 @@
-import React from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
-import api from "../api"; // Import Axios instance
+import api from "../../api"; // Import Axios instance
 
-const PasswordRecoveryPage = () => {
+export function PasswordRecoveryPage() {
   const navigate = useNavigate();
   const { token } = useParams(); // Get the token from the URL
 
@@ -118,6 +117,4 @@ const PasswordRecoveryPage = () => {
       </section>
     </main>
   );
-};
-
-export default PasswordRecoveryPage;
+}

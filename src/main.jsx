@@ -1,17 +1,17 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import "./index.css";
 import App from "./App.jsx";
-import HomePage from "./pages/HomePage.jsx";
-import LoginPage from "./pages/LoginPage.jsx";
-import SignUpPage from "./pages/SignUpPage";
-import ErrorPage from "./pages/ErrorPage.jsx";
-import ForgotPasswordPage from "./pages/ForgotPasswordPage.jsx";
-import PasswordRecoveryPage from "./pages/PasswordRecoveryPage.jsx";
-import AdminPage from "./pages/AdminPage.jsx";
-import AboutPage from "./pages/AboutPage.jsx";
-import ContactPage from "./pages/ContactPage.jsx";
+import { HomePage } from "./pages/Home/index.jsx";
+import "./index.css";
+import { AboutPage } from "./pages/About/index.jsx";
+import { SignUpPage } from "./pages/Login/SignUpPage";
+import { LoginPage } from "./pages/Login/LoginPage.jsx";
+import { ForgotPasswordPage } from "./pages/Login/ForgotPasswordPage.jsx";
+import { PasswordRecoveryPage } from "./pages/Login/PasswordRecoveryPage.jsx";
+import { AdminPage } from "./pages/AdminPage.jsx";
+import { ErrorPage } from "./pages/ErrorPage.jsx";
+import { ContactPage } from "./pages/Contact/index.jsx";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 const router = createBrowserRouter([
   {

@@ -1,7 +1,3 @@
-import React from "react";
-
-const AdminPage = () => {
+export function AdminPage() {
   return <div>AdminPage</div>;
-};
-
-export default AdminPage;
+}

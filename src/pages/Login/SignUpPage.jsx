@@ -1,11 +1,10 @@
-import React from "react";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
-import SignUpImage from "../assets/signup-page-image.webp";
-import LogoSmall from "../assets/logo-sm.png";
-import api from "../api"; // Import the Axios instance
+import SignUpImage from "../../assets/signup-page-image.webp";
+import LogoSmall from "../../assets/logo-sm.png";
+import api from "../../api"; // Import the Axios instance
 
-const SignUpPage = () => {
+export function SignUpPage() {
   const {
     register,
     handleSubmit,
@@ -184,6 +183,4 @@ const SignUpPage = () => {
       </section>
     </main>
   );
-};
-
-export default SignUpPage;
+}

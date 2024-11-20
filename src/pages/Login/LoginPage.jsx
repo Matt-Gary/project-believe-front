@@ -1,12 +1,11 @@
-import React from "react";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
-import LoginImage from "../assets/login-page-image.webp";
-import LogoSmall from "../assets/logo-sm.png";
+import LoginImage from "../../assets/login-page-image.webp";
+import LogoSmall from "../../assets/logo-sm.png";
 import { MdArrowForward } from "react-icons/md";
-import api from "../api"; // Import the loginUser function
+import api from "../../api"; // Import the loginUser function
 
-const LoginPage = () => {
+export function LoginPage() {
   const {
     register,
     handleSubmit,
@@ -103,6 +102,4 @@ const LoginPage = () => {
       </section>
     </main>
   );
-};
-
-export default LoginPage;
+}

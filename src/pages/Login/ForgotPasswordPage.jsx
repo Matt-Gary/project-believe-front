@@ -1,10 +1,9 @@
-import React from "react";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import { MdOutlineArrowBack } from "react-icons/md";
-import api from "../api"; // Import Axios instance
+import api from "../../api"; // Import Axios instance
 
-const ForgotPasswordPage = () => {
+export function ForgotPasswordPage() {
   const {
     register,
     handleSubmit,
@@ -77,6 +76,4 @@ const ForgotPasswordPage = () => {
       </section>
     </main>
   );
-};
-
-export default ForgotPasswordPage;
+}

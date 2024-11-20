@@ -1,18 +1,17 @@
-import React from "react";
 import { Link } from "react-router-dom";
-import Image1 from "../assets/about-page-image-1.webp";
-import Image2 from "../assets/about-page-image-2.webp";
+import Image1 from "../../assets/about-page-image-1.webp";
+import Image2 from "../../assets/about-page-image-2.webp";
 
-const AboutPage = () => {
+export function AboutPage() {
   return (
     <>
       <main>
         <section className="flex items-center justify-center">
           <div className="wrapper flex flex-col items-center justify-center pb-32 pt-48">
             <h1 className="mb-8 max-w-[23ch] text-center text-6xl font-bold uppercase">
-              <span className="italic text-accent">"</span>Focando no
+              <span className="italic text-accent">{'"'}</span>Focando no
               impossível, porque lá a concorrência é menor.
-              <span className="italic text-accent">"</span>
+              <span className="italic text-accent">{'"'}</span>
             </h1>
             <p className="mb-8 text-2xl italic">– Walt Disney</p>
           </div>
@@ -200,6 +199,4 @@ const AboutPage = () => {
       </main>
     </>
   );
-};
-
-export default AboutPage;
+}
