@@ -1,10 +1,9 @@
-import React from "react";
 import { Link } from "react-router-dom";
-import Logo from "../assets/logo-full.png";
-import FooterImage from "../assets/footer-image.png";
+import Logo from "../../assets/logo-full.png";
+import FooterImage from "../../assets/footer-image.png";
 import { MdOutlineArrowOutward } from "react-icons/md";
 
-const Footer = () => {
+export function Footer() {
   return (
     <footer className="border-t border-t-white border-opacity-20 bg-white bg-opacity-5">
       <div className="wrapper flex gap-8 pb-24 pt-16">
@@ -93,6 +92,4 @@ const Footer = () => {
       />
     </footer>
   );
-};
-
-export default Footer;
+}

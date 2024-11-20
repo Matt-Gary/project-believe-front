@@ -1,15 +1,10 @@
-import Header from "./components/Header";
-import Footer from "./components/Footer";
-import { Outlet } from "react-router-dom";
+import { BrowserRouter } from "react-router-dom";
+import { Router } from "./Router.";
 
-const App = () => {
+export function App() {
   return (
-    <>
-      <Header />
-      <Outlet />
-      <Footer />
-    </>
+    <BrowserRouter>
+      <Router />
+    </BrowserRouter>
   );
-};
-
-export default App;
+}

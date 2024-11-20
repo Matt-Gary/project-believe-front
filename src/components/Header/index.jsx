@@ -1,8 +1,8 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-import Logo from "../assets/logo-full.png";
+import Logo from "../../assets/logo-full.png";
 
-const Header = () => {
+export function Header() {
   const location = useLocation();
 
   useEffect(() => {
@@ -14,11 +14,9 @@ const Header = () => {
   const galleryPage = () => location.pathname === "/galeria";
   const calendarPage = () => location.pathname === "/calendario";
   const tutorialsPage = () => location.pathname === "/tutoriais";
-  const loginPage = () =>
-    location.pathname === "/login" || location.pathname === "/cadastro";
 
   return (
-    <header className="fixed z-50 flex w-full items-center justify-center border-b border-b-white border-opacity-20 bg-[#1e1e1e]">
+    <header className="sticky top-0 z-50 flex w-full items-center justify-center border-b border-b-white border-opacity-20 bg-[#1e1e1e]">
       <nav className="wrapper flex items-center justify-between py-3">
         <Link to="/">
           <img src={Logo} alt="" className="h-12" />
@@ -92,6 +90,4 @@ const Header = () => {
       </nav>
     </header>
   );
-};
-
-export default Header;
+}
