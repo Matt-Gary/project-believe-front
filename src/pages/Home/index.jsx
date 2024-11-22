@@ -1,40 +1,20 @@
 import { Link } from "react-router-dom";
 import AboutImage from "../../assets/recovery-page-image.webp";
-import { CardBenefits } from "./components/ui/CardBenefit";
 import { CardTestimonials } from "./components/ui/CardTestimonial";
 import { CardProduct } from "./components/ui/CardProduct";
 
-import { dataBenefits } from "./utils/data-benefits";
 import { dataTestimonials } from "./utils/data-testimonials";
 import { dataProduct } from "./utils/data-product";
 import { Intro } from "./components/Intro";
+import { Benefits } from "./components/Benefits";
 
 export function HomePage() {
   return (
     <>
       <main>
         <Intro />
-
-        <section className="wrapper">
-          <h2 className="mb-16 text-4xl uppercase">
-            Believe Club de Benefícios
-          </h2>
-
-          <div className="mb-8 grid grid-cols-4 gap-8">
-            {dataBenefits.map((benefit) => (
-              <CardBenefits
-                key={benefit.title}
-                logo={benefit.logo}
-                title={benefit.title}
-                description={benefit.description}
-              />
-            ))}
-          </div>
-
-          <button className="button">Ver Todos</button>
-        </section>
-
-        <section className="wrapper pt-48" id="homePageAboutSection">
+        <Benefits />
+        <section className="wrapper pt-16 lg:pt-32" id="homePageAboutSection">
           <div className="grid grid-cols-2 items-center gap-16">
             <div className="flex flex-col gap-8">
               <h2 className="text-6xl font-bold uppercase">Quem somos</h2>
