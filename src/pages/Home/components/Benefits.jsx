@@ -18,7 +18,9 @@ export function Benefits() {
         ))}
       </div>
 
-      <button className="button">Ver Todos</button>
+      <div className="flex justify-center sm:justify-start">
+        <button className="button">Ver Todos</button>
+      </div>
     </section>
   );
 }
