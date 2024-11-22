@@ -1,12 +1,10 @@
 import { Link } from "react-router-dom";
-import { CardTestimonials } from "./components/ui/CardTestimonial";
 import { CardProduct } from "./components/ui/CardProduct";
-
-import { dataTestimonials } from "./utils/data-testimonials";
 import { dataProduct } from "./utils/data-product";
 import { Intro } from "./components/Intro";
 import { Benefits } from "./components/Benefits";
 import { WhoWeAre } from "./components/WhoWeAre";
+import { Testimonials } from "./components/Testimonials";
 
 export function HomePage() {
   return (
@@ -15,21 +13,7 @@ export function HomePage() {
         <Intro />
         <Benefits />
         <WhoWeAre />
-        <section className="wrapper flex flex-col gap-8 pt-48">
-          <h2 className="text-6xl font-bold uppercase">Depoimentos</h2>
-          <p className="max-w-[60ch]">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Laborum
-            velit ex, dignissimos corporis quisquam fugit necessitatibus totam.
-          </p>
-          <div className="grid grid-cols-3 gap-8">
-            {dataTestimonials.map((testimonial) => (
-              <CardTestimonials
-                description={testimonial.description}
-                student={testimonial.student}
-              />
-            ))}
-          </div>
-        </section>
+        <Testimonials />
 
         <section className="wrapper grid grid-cols-2 items-center gap-16 pt-48">
           <div className="grid grid-cols-2 grid-rows-2 gap-4">
