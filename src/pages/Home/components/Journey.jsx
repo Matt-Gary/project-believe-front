@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 export function Journey() {
   return (
-    <section className="wrapper flex flex-col items-center justify-between gap-16 py-32 lg:flex-row">
+    <section className="wrapper flex flex-col items-center justify-between gap-16 py-16 lg:flex-row lg:py-32">
       <div className="flex flex-col items-center lg:items-start">
         <h2 className="mb-8 text-center text-3xl font-bold uppercase sm:text-start lg:text-6xl">
           Comece agora sua jornada
