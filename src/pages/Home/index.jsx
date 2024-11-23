@@ -6,6 +6,7 @@ import { Benefits } from "./components/Benefits";
 import { WhoWeAre } from "./components/WhoWeAre";
 import { Testimonials } from "./components/Testimonials";
 import { Products } from "./components/Products";
+import { Journey } from "./components/Journey";
 
 export function HomePage() {
   return (
@@ -16,21 +17,7 @@ export function HomePage() {
         <WhoWeAre />
         <Testimonials />
         <Products />
-        <section className="wrapper flex items-center justify-between gap-16 py-32">
-          <div>
-            <h2 className="mb-8 text-6xl font-bold uppercase">
-              Comece agora sua jornada
-            </h2>
-            <p className="max-w-[60ch]">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Cum,
-              repudiandae dolor aperiam molestias adipisci exercitationem,
-              cupiditate quam alias blanditiis.
-            </p>
-          </div>
-          <Link to="/contato" className="button shrink-0 px-12 py-6 text-2xl">
-            Entrar em Contato
-          </Link>
-        </section>
+        <Journey />
       </main>
     </>
   );
