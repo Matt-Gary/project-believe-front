@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
-import Image2 from "../../assets/about-page-image-2.webp";
 import { About } from "./components/About";
+import { Comunity } from "./components/Comunity";
 
 export function AboutPage() {
   return (
@@ -17,33 +17,8 @@ export function AboutPage() {
           </div>
         </section>
         <About />
+        <Comunity />
 
-        <section className="wrapper pt-48">
-          <div className="grid grid-cols-2 items-center gap-16">
-            <img
-              src={Image2}
-              alt=""
-              className="max-h-[30rem] w-full rounded-2xl"
-            />
-            <div className="flex flex-col gap-8">
-              <h2 className="text-6xl font-bold uppercase">
-                Comunidade inspiradora
-              </h2>
-              <p className="text-lg">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Unde,
-                eos earum ab obcaecati sint maxime deserunt explicabo deleniti
-                pariatur sed iure atque nobis quia autem velit ipsa esse,
-                consectetur sequi?
-              </p>
-              <p className="text-lg">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Unde,
-                eos earum ab obcaecati sint maxime deserunt explicabo deleniti
-                pariatur sed iure atque nobis quia autem velit ipsa esse,
-                consectetur sequi?
-              </p>
-            </div>
-          </div>
-        </section>
         <section className="wrapper flex flex-col gap-8 pt-48">
           <h2 className="text-6xl font-bold uppercase">Para todos os níveis</h2>
           <p className="max-w-[60ch]">
