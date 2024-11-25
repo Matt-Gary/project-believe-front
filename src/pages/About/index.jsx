@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { About } from "./components/About";
 import { Comunity } from "./components/Comunity";
 import { AllLevels } from "./components/AllLevels";
+import { Team } from "./components/Team";
 
 export function AboutPage() {
   return (
@@ -20,68 +21,8 @@ export function AboutPage() {
         <About />
         <Comunity />
         <AllLevels />
+        <Team />
 
-        <section className="wrapper pt-48">
-          <h2 className="mb-16 text-6xl font-bold uppercase">Nossa equipe</h2>
-          <div className="mb-8 grid grid-cols-4 gap-8">
-            <div className="card-glass flex flex-col gap-4 rounded-2xl p-8">
-              <span className="mb-4 flex aspect-square w-full items-center justify-center rounded-md bg-neutral-900 p-2">
-                Foto
-              </span>
-              <h3 className="text-xl font-normal">Nome do Treinador</h3>
-              <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit.</p>
-            </div>
-            <div className="card-glass flex flex-col gap-4 rounded-2xl p-8">
-              <span className="mb-4 flex aspect-square w-full items-center justify-center rounded-md bg-neutral-900 p-2">
-                Foto
-              </span>
-              <h3 className="text-xl font-normal">Nome do Treinador</h3>
-              <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit.</p>
-            </div>
-            <div className="card-glass flex flex-col gap-4 rounded-2xl p-8">
-              <span className="mb-4 flex aspect-square w-full items-center justify-center rounded-md bg-neutral-900 p-2">
-                Foto
-              </span>
-              <h3 className="text-xl font-normal">Nome do Treinador</h3>
-              <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit.</p>
-            </div>
-            <div className="card-glass flex flex-col gap-4 rounded-2xl p-8">
-              <span className="mb-4 flex aspect-square w-full items-center justify-center rounded-md bg-neutral-900 p-2">
-                Foto
-              </span>
-              <h3 className="text-xl font-normal">Nome do Treinador</h3>
-              <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit.</p>
-            </div>
-            <div className="card-glass flex flex-col gap-4 rounded-2xl p-8">
-              <span className="mb-4 flex aspect-square w-full items-center justify-center rounded-md bg-neutral-900 p-2">
-                Foto
-              </span>
-              <h3 className="text-xl font-normal">Nome do Treinador</h3>
-              <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit.</p>
-            </div>
-            <div className="card-glass flex flex-col gap-4 rounded-2xl p-8">
-              <span className="mb-4 flex aspect-square w-full items-center justify-center rounded-md bg-neutral-900 p-2">
-                Foto
-              </span>
-              <h3 className="text-xl font-normal">Nome do Treinador</h3>
-              <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit.</p>
-            </div>
-            <div className="card-glass flex flex-col gap-4 rounded-2xl p-8">
-              <span className="mb-4 flex aspect-square w-full items-center justify-center rounded-md bg-neutral-900 p-2">
-                Foto
-              </span>
-              <h3 className="text-xl font-normal">Nome do Treinador</h3>
-              <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit.</p>
-            </div>
-            <div className="card-glass flex flex-col gap-4 rounded-2xl p-8">
-              <span className="mb-4 flex aspect-square w-full items-center justify-center rounded-md bg-neutral-900 p-2">
-                Foto
-              </span>
-              <h3 className="text-xl font-normal">Nome do Treinador</h3>
-              <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit.</p>
-            </div>
-          </div>
-        </section>
         <section className="wrapper flex items-center justify-between gap-16 py-32">
           <div>
             <h2 className="mb-8 text-6xl font-bold uppercase">
