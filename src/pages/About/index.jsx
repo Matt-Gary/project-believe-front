@@ -1,13 +1,14 @@
 import { Link } from "react-router-dom";
 import { About } from "./components/About";
 import { Comunity } from "./components/Comunity";
+import { AllLevels } from "./components/AllLevels";
 
 export function AboutPage() {
   return (
     <>
       <main>
         <section className="flex items-center justify-center">
-          <div className="wrapper flex flex-col items-center justify-center py-32 lg:pb-32 lg:pt-48">
+          <div className="wrapper flex flex-col items-center justify-center py-44 lg:pb-32 lg:pt-48">
             <h1 className="mb-8 max-w-[23ch] text-center text-3xl font-bold uppercase sm:text-6xl">
               <span className="italic text-accent">{'"'}</span>Focando no
               impossível, porque lá a concorrência é menor.
@@ -18,61 +19,8 @@ export function AboutPage() {
         </section>
         <About />
         <Comunity />
+        <AllLevels />
 
-        <section className="wrapper flex flex-col gap-8 pt-48">
-          <h2 className="text-6xl font-bold uppercase">Para todos os níveis</h2>
-          <p className="max-w-[60ch]">
-            Não importa se você é iniciante ou experiente, nossos programas são
-            adaptados para todos os níveis de habilidade.
-          </p>
-          <div className="grid grid-cols-3 gap-8">
-            <div className="card-glass flex flex-col gap-2 rounded-2xl border-opacity-20 p-8">
-              <h3 className="mb-4 text-2xl">Iniciante</h3>
-              <div className="flex items-center gap-3">
-                <span className="aspect-square h-3 w-3 rounded-full bg-accent"></span>
-                <p>Lorem ipsum dolor sit amet elit</p>
-              </div>
-              <div className="flex items-center gap-3">
-                <span className="aspect-square h-3 w-3 rounded-full bg-accent"></span>
-                <p>Lorem ipsum dolor sit amet</p>
-              </div>
-              <div className="flex items-center gap-3">
-                <span className="aspect-square h-3 w-3 rounded-full bg-accent"></span>
-                <p>Lorem ipsum dolor sit amet consectetur</p>
-              </div>
-            </div>
-            <div className="card-glass flex flex-col gap-2 rounded-2xl border-opacity-20 p-8">
-              <h3 className="mb-4 text-2xl">Intermediário</h3>
-              <div className="flex items-center gap-3">
-                <span className="aspect-square h-3 w-3 rounded-full bg-accent"></span>
-                <p>Lorem ipsum dolor sit amet consectetur</p>
-              </div>
-              <div className="flex items-center gap-3">
-                <span className="aspect-square h-3 w-3 rounded-full bg-accent"></span>
-                <p>Lorem ipsum dolor sit amet elit</p>
-              </div>
-              <div className="flex items-center gap-3">
-                <span className="aspect-square h-3 w-3 rounded-full bg-accent"></span>
-                <p>Lorem ipsum dolor sit amet</p>
-              </div>
-            </div>
-            <div className="card-glass flex flex-col gap-2 rounded-2xl border-opacity-20 p-8">
-              <h3 className="mb-4 text-2xl">Avançado</h3>
-              <div className="flex items-center gap-3">
-                <span className="aspect-square h-3 w-3 rounded-full bg-accent"></span>
-                <p>Lorem ipsum dolor sit amet consectetur</p>
-              </div>
-              <div className="flex items-center gap-3">
-                <span className="aspect-square h-3 w-3 rounded-full bg-accent"></span>
-                <p>Lorem ipsum dolor sit amet</p>
-              </div>
-              <div className="flex items-center gap-3">
-                <span className="aspect-square h-3 w-3 rounded-full bg-accent"></span>
-                <p>Lorem ipsum dolor sit amet elit</p>
-              </div>
-            </div>
-          </div>
-        </section>
         <section className="wrapper pt-48">
           <h2 className="mb-16 text-6xl font-bold uppercase">Nossa equipe</h2>
           <div className="mb-8 grid grid-cols-4 gap-8">
