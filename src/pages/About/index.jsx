@@ -1,14 +1,14 @@
 import { Link } from "react-router-dom";
-import Image1 from "../../assets/about-page-image-1.webp";
 import Image2 from "../../assets/about-page-image-2.webp";
+import { About } from "./components/About";
 
 export function AboutPage() {
   return (
     <>
       <main>
         <section className="flex items-center justify-center">
-          <div className="wrapper flex flex-col items-center justify-center pb-32 pt-48">
-            <h1 className="mb-8 max-w-[23ch] text-center text-6xl font-bold uppercase">
+          <div className="wrapper flex flex-col items-center justify-center py-32 lg:pb-32 lg:pt-48">
+            <h1 className="mb-8 max-w-[23ch] text-center text-3xl font-bold uppercase sm:text-6xl">
               <span className="italic text-accent">{'"'}</span>Focando no
               impossível, porque lá a concorrência é menor.
               <span className="italic text-accent">{'"'}</span>
@@ -16,30 +16,8 @@ export function AboutPage() {
             <p className="mb-8 text-2xl italic">– Walt Disney</p>
           </div>
         </section>
-        <section className="wrapper">
-          <div className="grid grid-cols-2 items-center gap-16">
-            <div className="flex flex-col gap-8">
-              <h2 className="text-6xl font-bold uppercase">Quem somos</h2>
-              <p className="text-lg">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Unde,
-                eos earum ab obcaecati sint maxime deserunt explicabo deleniti
-                pariatur sed iure atque nobis quia autem velit ipsa esse,
-                consectetur sequi?
-              </p>
-              <p className="text-lg">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Unde,
-                eos earum ab obcaecati sint maxime deserunt explicabo deleniti
-                pariatur sed iure atque nobis quia autem velit ipsa esse,
-                consectetur sequi?
-              </p>
-            </div>
-            <img
-              src={Image1}
-              alt=""
-              className="max-h-[30rem] w-full rounded-2xl"
-            />
-          </div>
-        </section>
+        <About />
+
         <section className="wrapper pt-48">
           <div className="grid grid-cols-2 items-center gap-16">
             <img
