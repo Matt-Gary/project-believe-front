@@ -15,18 +15,16 @@ export function Router() {
     <Routes>
       <Route path="/" element={<DefaultLayout />}>
         <Route index element={<HomePage />} />
-        <Route path="cadastro" element={<SignUpPage />} />
-        <Route path="login" element={<LoginPage />} />
-        <Route path="esqueci_minha_senha" element={<ForgotPasswordPage />} />
-        <Route
-          path="reset-password/:token"
-          element={<PasswordRecoveryPage />}
-        />
         <Route path="admin" element={<AdminPage />} />
         <Route path="sobre" element={<AboutPage />} />
         <Route path="contato" element={<ContactPage />} />
         <Route path="*" element={<ErrorPage />} />
       </Route>
+
+      <Route path="cadastro" element={<SignUpPage />} />
+      <Route path="login" element={<LoginPage />} />
+      <Route path="esqueci_minha_senha" element={<ForgotPasswordPage />} />
+      <Route path="reset-password/:token" element={<PasswordRecoveryPage />} />
     </Routes>
   );
 }
