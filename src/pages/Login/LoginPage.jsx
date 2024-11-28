@@ -42,8 +42,12 @@ export function LoginPage() {
           onSubmit={handleSubmit(onSubmit)}
           className="flex flex-col space-y-4 p-5"
         >
-          <Link to="/">
-            <img className="mx-auto" src={LogoSmall} alt="" />
+          <Link
+            className="flex flex-col items-center justify-start gap-6 md:flex-row"
+            to="/"
+          >
+            <img src={LogoSmall} alt="" />
+            <h1 className="text-3xl font-bold">Entrar</h1>
           </Link>
 
           <Input
