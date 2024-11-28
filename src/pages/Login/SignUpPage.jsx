@@ -3,11 +3,13 @@ import { Link } from "react-router-dom";
 import SignUpImage from "../../assets/signup-page-image.webp";
 import LogoSmall from "../../assets/logo-sm.png";
 import api from "../../api"; // Import the Axios instance
+import { Input } from "./ui/Input";
 
 export function SignUpPage() {
   const {
     register,
     handleSubmit,
+    watch,
     formState: { errors },
   } = useForm();
 
@@ -37,150 +39,150 @@ export function SignUpPage() {
   };
 
   return (
-    <main>
-      <section className="flex min-h-screen items-center justify-center pb-32 pt-32">
-        <div className="wrapper card-glass grid grid-cols-2 overflow-hidden rounded-[2rem]">
-          <div className="relative overflow-hidden">
-            <img src={SignUpImage} alt="" className="absolute h-full w-full" />
-          </div>
-          <div className="p-24">
-            <div className="mb-16 flex items-center gap-8">
+    <main className="flex min-h-screen items-center">
+      <div className="card-glass mx-auto grid min-h-screen w-full grid-cols-1 sm:overflow-hidden md:grid-cols-2 lg:h-auto lg:min-h-max lg:max-w-[800px] lg:rounded-[2rem]">
+        <div className="hidden md:block">
+          <img
+            className="object-cover sm:h-full lg:rounded-bl-[2rem] lg:rounded-tl-[2rem]"
+            src={SignUpImage}
+            alt="hero"
+          />
+        </div>
+
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="flex flex-col gap-3 p-5 sm:grid sm:grid-cols-2"
+        >
+          <div className="flex flex-col items-center justify-start gap-3.5 sm:flex-row">
+            <Link to="/">
               <img src={LogoSmall} alt="" />
-              <h1 className="text-4xl font-bold">Cadastro</h1>
-            </div>
-            <div className="mb-8 flex flex-col gap-4">
-              {/* Username field */}
-              <div className="flex flex-col">
-                <label htmlFor="signUpName" className="mb-2 flex">
-                  Nome<span className="text-accent">*</span>
-                </label>
-                <input
-                  type="text"
-                  id="signUpName"
-                  placeholder="Nome"
-                  className={`card-glass rounded-lg p-4 focus:border focus:border-accent ${errors?.name ? "input-error" : ""}`}
-                  {...register("name", { required: true })}
-                />
-                {errors?.name && (
-                  <span className="pt-3 text-sm text-red-500">
-                    Este campo é obrigatório.
-                  </span>
-                )}
-              </div>
+            </Link>
+            <h1 className="text-2xl font-bold">Cadastrar</h1>
+          </div>
 
-              {/* Matrícula field */}
-              <div className="flex flex-col">
-                <label htmlFor="signUpId" className="mb-2 flex">
-                  Matrícula<span className="text-accent">*</span>
-                </label>
-                <input
-                  type="text"
-                  id="signUpId"
-                  placeholder="Matrícula"
-                  className={`card-glass rounded-lg p-4 focus:border focus:border-accent ${errors?.matricula ? "input-error" : ""}`}
-                  {...register("matricula", { required: true })}
-                />
-                {errors?.matricula && (
-                  <span className="pt-3 text-sm text-red-500">
-                    Este campo é obrigatório.
-                  </span>
-                )}
-              </div>
+          <div />
 
-              {/* Phone Number field */}
-              <div className="flex flex-col">
-                <label htmlFor="signUpPhone" className="mb-2 flex">
-                  Número do Telefone<span className="text-accent">*</span>
-                </label>
-                <input
-                  type="text"
-                  id="signUpPhone"
-                  placeholder="Número do Telefone"
-                  className={`card-glass rounded-lg p-4 focus:border focus:border-accent ${errors?.phone ? "input-error" : ""}`}
-                  {...register("phone", { required: true })}
-                />
-                {errors?.phone && (
-                  <span className="pt-3 text-sm text-red-500">
-                    Este campo é obrigatório.
-                  </span>
-                )}
-              </div>
+          <div>
+            <Input
+              id="Nome"
+              mandatory
+              placeholder="Nome"
+              type="text"
+              {...register("name", { required: true })}
+              aria-invalid={errors.name ? "true" : "false"}
+              className={errors.name ? "input-error p-3" : "p-3"}
+            />
+            {errors.name && (
+              <span className="text-start text-xs text-red-500">
+                Este campo é obrigatório.
+              </span>
+            )}
+          </div>
 
-              {/* Email field */}
-              <div className="flex flex-col">
-                <label htmlFor="signUpEmail" className="mb-2 flex">
-                  E-mail<span className="text-accent">*</span>
-                </label>
-                <input
-                  type="email"
-                  id="signUpEmail"
-                  placeholder="exemplo@email.com"
-                  className={`card-glass rounded-lg p-4 focus:border focus:border-accent ${errors?.email ? "input-error" : ""}`}
-                  {...register("email", { required: true })}
-                />
-                {errors?.email && (
-                  <span className="pt-3 text-sm text-red-500">
-                    Este campo é obrigatório.
-                  </span>
-                )}
-              </div>
+          <div>
+            <Input
+              id="Matrícula"
+              mandatory
+              placeholder="Matrícula"
+              type="number"
+              {...register("matricula", { required: true })}
+              aria-invalid={errors.matricula ? "true" : "false"}
+              className={errors.matricula ? "input-error p-3" : "p-3"}
+            />
+            {errors.matricula && (
+              <span className="text-start text-xs text-red-500">
+                Este campo é obrigatório.
+              </span>
+            )}
+          </div>
 
-              {/* Password field */}
-              <div className="flex flex-col">
-                <label htmlFor="signUpPassword" className="mb-2 flex">
-                  Senha<span className="text-accent">*</span>
-                </label>
-                <input
-                  type="password"
-                  id="signUpPassword"
-                  placeholder="Senha"
-                  className={`card-glass rounded-lg p-4 focus:border focus:border-accent ${errors?.password ? "input-error" : ""}`}
-                  {...register("password", { required: true, minLength: 8 })}
-                />
-                {errors?.password && errors.password.type === "minLength" && (
-                  <span className="pt-3 text-sm text-red-500">
-                    A senha deve conter no mínimo 8 caracteres.
-                  </span>
-                )}
-              </div>
+          <div>
+            <Input
+              id="Número de Telefone"
+              mandatory
+              placeholder="00000000000"
+              type="number"
+              {...register("phone", { required: true })}
+              aria-invalid={errors.phone ? "true" : "false"}
+              className={errors.phone ? "input-error p-3" : "p-3"}
+            />
 
-              {/* Confirm Password field */}
-              <div className="flex flex-col">
-                <label htmlFor="signUpConfirmPassword" className="mb-2 flex">
-                  Confirmar Senha<span className="text-accent">*</span>
-                </label>
-                <input
-                  type="password"
-                  id="signUpConfirmPassword"
-                  placeholder="Confirmar Senha"
-                  className={`card-glass rounded-lg p-4 focus:border focus:border-accent ${errors?.confirmPassword ? "input-error" : ""}`}
-                  {...register("confirmPassword", {
-                    required: true,
-                    minLength: 8,
-                  })}
-                />
-                {errors?.confirmPassword &&
-                  errors.confirmPassword.type === "minLength" && (
-                    <span className="pt-3 text-sm text-red-500">
-                      A senha deve conter no mínimo 8 caracteres.
-                    </span>
-                  )}
-              </div>
+            {errors.phone && (
+              <span className="text-start text-xs text-red-500">
+                Este campo é obrigatório.
+              </span>
+            )}
+          </div>
 
-              <button
-                onClick={() => handleSubmit(onSubmit)()}
-                className="button mt-4 w-full"
-              >
-                Cadastrar
-              </button>
-            </div>
-            <div className="mb-4">Já possui cadastro?</div>
-            <Link to="/login" className="button-ghost w-full">
+          <div>
+            <Input
+              id="E-mail"
+              mandatory
+              placeholder="email@email.com"
+              type="email"
+              {...register("email", { required: true })}
+              aria-invalid={errors.email ? "true" : "false"}
+              className={errors.email ? "input-error p-3" : "p-3"}
+            />
+
+            {errors.email && (
+              <span className="text-start text-xs text-red-500">
+                Este campo é obrigatório.
+              </span>
+            )}
+          </div>
+          <div>
+            <Input
+              id="Senha"
+              mandatory
+              placeholder="Senha"
+              type="password"
+              {...register("password", { required: true })}
+              aria-invalid={errors.password ? "true" : "false"}
+              className={errors.password ? "input-error p-3" : "p-3"}
+            />
+
+            {errors.password && (
+              <span className="text-start text-xs text-red-500">
+                Este campo é obrigatório.
+              </span>
+            )}
+          </div>
+
+          <div>
+            <Input
+              id="Confimar Senha"
+              mandatory
+              placeholder="Confime Senha"
+              type="password"
+              {...register("confirmPassword", {
+                required: true,
+                validate: (value) =>
+                  value === watch("password") || "As senhas não coincidem",
+              })}
+              aria-invalid={errors.confirmPassword ? "true" : "false"}
+              className={errors.confirmPassword ? "input-error p-3" : "p-3"}
+            />
+            {errors.confirmPassword && (
+              <span className="text-start text-xs text-red-500">
+                {errors.confirmPassword.message}
+              </span>
+            )}
+          </div>
+
+          <div className="col-span-2">
+            <button type="submit" className="button mt-2 w-full">
+              Cadastrar
+            </button>
+            <div className="my-2">Já possui cadastro?</div>
+            <Link to="/login" className="button-ghost mt-4 w-full">
               Entrar
             </Link>
           </div>
-        </div>
-      </section>
+        </form>
+      </div>
     </main>
   );
 }
+
+// realzizar validacao de email se existe no bd e realizar correcao ao enviar os dados pro backend

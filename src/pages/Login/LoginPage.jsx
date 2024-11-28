@@ -29,10 +29,10 @@ export function LoginPage() {
 
   return (
     <main className="flex min-h-screen items-center">
-      <div className="card-glass mx-auto grid h-screen w-full grid-cols-1 overflow-hidden md:grid-cols-2 lg:h-auto lg:max-w-[800px] lg:rounded-[2rem]">
-        <div className="hidden md:block">
+      <div className="card-glass mx-auto grid h-screen w-full grid-cols-1 overflow-hidden sm:grid-cols-2 lg:h-auto lg:max-w-[800px] lg:rounded-[2rem]">
+        <div className="hidden sm:block">
           <img
-            className="object-cover md:h-full lg:rounded-bl-[2rem] lg:rounded-tl-[2rem]"
+            className="object-cover sm:h-full lg:rounded-bl-[2rem] lg:rounded-tl-[2rem]"
             src={LoginImage}
             alt="hero"
           />
@@ -42,13 +42,12 @@ export function LoginPage() {
           onSubmit={handleSubmit(onSubmit)}
           className="flex flex-col space-y-4 p-5"
         >
-          <Link
-            className="flex flex-col items-center justify-start gap-6 md:flex-row"
-            to="/"
-          >
-            <img src={LogoSmall} alt="" />
+          <div className="flex flex-col items-center justify-start gap-6 sm:flex-row">
+            <Link to="/">
+              <img src={LogoSmall} alt="" />
+            </Link>
             <h1 className="text-3xl font-bold">Entrar</h1>
-          </Link>
+          </div>
 
           <Input
             id="Usuário"
@@ -56,6 +55,7 @@ export function LoginPage() {
             type="text"
             {...register("user", { required: true })}
             aria-invalid={errors.user ? "true" : "false"}
+            className={errors.user ? "input-error" : ""}
           />
           {errors.user && (
             <span className="text-start text-sm text-red-500">
@@ -69,6 +69,7 @@ export function LoginPage() {
             type="password"
             {...register("password", { required: true })}
             aria-invalid={errors.password ? "true" : "false"}
+            className={errors.password ? "input-error" : ""}
           />
           {errors.password && (
             <span className="text-start text-sm text-red-500">
