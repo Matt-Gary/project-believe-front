@@ -4,6 +4,7 @@ import SignUpImage from "../../assets/signup-page-image.webp";
 import LogoSmall from "../../assets/logo-sm.png";
 import api from "../../api"; // Import the Axios instance
 import { Input } from "./ui/Input";
+import { toast } from "sonner";
 
 export function SignUpPage() {
   const {
@@ -27,14 +28,9 @@ export function SignUpPage() {
     try {
       // Send registration data to backend
       const response = await api.post("/auth/register", payload);
-      console.log("Registration successful:", response.data);
-      alert("User registered successfully!");
+      toast.success("Você foi cadastrado com sucesso!");
     } catch (error) {
-      console.error(
-        "Registration error:",
-        error.response ? error.response.data : error.message,
-      );
-      alert("Registration failed. Please try again.");
+      toast.error(error.response.data?.error);
     }
   };
 
@@ -72,11 +68,6 @@ export function SignUpPage() {
               aria-invalid={errors.name ? "true" : "false"}
               className={errors.name ? "input-error p-3" : "p-3"}
             />
-            {errors.name && (
-              <span className="text-start text-xs text-red-500">
-                Este campo é obrigatório.
-              </span>
-            )}
           </div>
 
           <div>
@@ -89,11 +80,6 @@ export function SignUpPage() {
               aria-invalid={errors.matricula ? "true" : "false"}
               className={errors.matricula ? "input-error p-3" : "p-3"}
             />
-            {errors.matricula && (
-              <span className="text-start text-xs text-red-500">
-                Este campo é obrigatório.
-              </span>
-            )}
           </div>
 
           <div>
@@ -106,12 +92,6 @@ export function SignUpPage() {
               aria-invalid={errors.phone ? "true" : "false"}
               className={errors.phone ? "input-error p-3" : "p-3"}
             />
-
-            {errors.phone && (
-              <span className="text-start text-xs text-red-500">
-                Este campo é obrigatório.
-              </span>
-            )}
           </div>
 
           <div>
@@ -124,12 +104,6 @@ export function SignUpPage() {
               aria-invalid={errors.email ? "true" : "false"}
               className={errors.email ? "input-error p-3" : "p-3"}
             />
-
-            {errors.email && (
-              <span className="text-start text-xs text-red-500">
-                Este campo é obrigatório.
-              </span>
-            )}
           </div>
           <div>
             <Input
@@ -141,12 +115,6 @@ export function SignUpPage() {
               aria-invalid={errors.password ? "true" : "false"}
               className={errors.password ? "input-error p-3" : "p-3"}
             />
-
-            {errors.password && (
-              <span className="text-start text-xs text-red-500">
-                Este campo é obrigatório.
-              </span>
-            )}
           </div>
 
           <div>

@@ -5,6 +5,7 @@ import LogoSmall from "../../assets/logo-sm.png";
 import { MdArrowForward } from "react-icons/md";
 import api from "../../api"; // Import the loginUser function
 import { Input } from "./ui/Input";
+import { toast } from "sonner";
 
 export function LoginPage() {
   const {
@@ -18,12 +19,9 @@ export function LoginPage() {
       // Adjust data structure to match backend expectations
       const payload = { email: data.user, password: data.password };
       const response = await api.post("/auth/login", payload);
-      console.log("Login successful:", response.data);
+      toast.success("Login efetuado com sucesso!");
     } catch (error) {
-      console.error(
-        "Login error:",
-        error.response ? error.response.data : error.message,
-      );
+      toast.error(error.response.data?.error || "Usuário ou senha inválidos");
     }
   };
 
@@ -57,11 +55,6 @@ export function LoginPage() {
             aria-invalid={errors.user ? "true" : "false"}
             className={errors.user ? "input-error" : ""}
           />
-          {errors.user && (
-            <span className="text-start text-sm text-red-500">
-              Este campo é obrigatório.
-            </span>
-          )}
 
           <Input
             id="Senha"
@@ -71,11 +64,6 @@ export function LoginPage() {
             aria-invalid={errors.password ? "true" : "false"}
             className={errors.password ? "input-error" : ""}
           />
-          {errors.password && (
-            <span className="text-start text-sm text-red-500">
-              Este campo é obrigatório.
-            </span>
-          )}
 
           <Link to="/esqueci_minha_senha" className="link w-fit">
             Esqueci minha senha
