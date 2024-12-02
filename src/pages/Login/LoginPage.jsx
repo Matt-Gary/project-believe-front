@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import LoginImage from "../../assets/login-page-image.webp";
 import LogoSmall from "../../assets/logo-sm.png";
 import { MdArrowForward } from "react-icons/md";
@@ -8,6 +8,7 @@ import { Input } from "./ui/Input";
 import { toast } from "sonner";
 
 export function LoginPage() {
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -20,8 +21,11 @@ export function LoginPage() {
       const payload = { email: data.user, password: data.password };
       const response = await api.post("/auth/login", payload);
       toast.success("Login efetuado com sucesso!");
+      navigate("/");
+      console.log(response);
     } catch (error) {
       toast.error(error.response.data?.error || "Usuário ou senha inválidos");
+      console.log(error);
     }
   };
 

@@ -30,7 +30,9 @@ export function SignUpPage() {
       const response = await api.post("/auth/register", payload);
       toast.success("Você foi cadastrado com sucesso!");
     } catch (error) {
-      toast.error(error.response.data?.error);
+      const errorMessage =
+        error.response.data?.error.message || "Não foi possível cadastrar";
+      toast.error(errorMessage);
     }
   };
 
@@ -152,5 +154,3 @@ export function SignUpPage() {
     </main>
   );
 }
-
-// realzizar validacao de email se existe no bd e realizar correcao ao enviar os dados pro backend

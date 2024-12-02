@@ -9,22 +9,28 @@ import { ForgotPasswordPage } from "./pages/Login/ForgotPasswordPage";
 import { PasswordRecoveryPage } from "./pages/Login/PasswordRecoveryPage";
 import { AdminPage } from "./pages/AdminPage";
 import { DefaultLayout } from "./layouts/DefaultLayout";
+import { UserContextProvider } from "./contexts/UserContext";
 
 export function Router() {
   return (
-    <Routes>
-      <Route path="/" element={<DefaultLayout />}>
-        <Route index element={<HomePage />} />
-        <Route path="admin" element={<AdminPage />} />
-        <Route path="sobre" element={<AboutPage />} />
-        <Route path="contato" element={<ContactPage />} />
-        <Route path="*" element={<ErrorPage />} />
-      </Route>
+    <UserContextProvider>
+      <Routes>
+        <Route path="/" element={<DefaultLayout />}>
+          <Route index element={<HomePage />} />
+          <Route path="admin" element={<AdminPage />} />
+          <Route path="sobre" element={<AboutPage />} />
+          <Route path="contato" element={<ContactPage />} />
+          <Route path="*" element={<ErrorPage />} />
+        </Route>
 
-      <Route path="cadastro" element={<SignUpPage />} />
-      <Route path="login" element={<LoginPage />} />
-      <Route path="esqueci_minha_senha" element={<ForgotPasswordPage />} />
-      <Route path="reset-password/:token" element={<PasswordRecoveryPage />} />
-    </Routes>
+        <Route path="cadastro" element={<SignUpPage />} />
+        <Route path="login" element={<LoginPage />} />
+        <Route path="esqueci_minha_senha" element={<ForgotPasswordPage />} />
+        <Route
+          path="reset-password/:token"
+          element={<PasswordRecoveryPage />}
+        />
+      </Routes>
+    </UserContextProvider>
   );
 }
