@@ -32,9 +32,11 @@
   margin: 0;
   box-sizing: border-box;
 }
-
+.active {
+  background-color: #00b4d8;
+}
 body {
-  font-family: "Inter", sans-serif;
+  font-family: 'Inter', sans-serif;
   font-size: 1rem;
 }
 
@@ -120,13 +122,13 @@ input.input-error {
   border: 1px solid #ef4444;
 }
 
-input[type="number"]::-webkit-outer-spin-button,
-input[type="number"]::-webkit-inner-spin-button {
+input[type='number']::-webkit-outer-spin-button,
+input[type='number']::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
 
 /* Para Firefox */
-input[type="number"] {
+input[type='number'] {
   -moz-appearance: textfield;
 }

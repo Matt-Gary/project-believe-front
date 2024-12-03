@@ -1,17 +1,17 @@
-import { set, useForm } from "react-hook-form";
-import { Link, useNavigate } from "react-router-dom";
-import LoginImage from "../../assets/login-page-image.webp";
-import LogoSmall from "../../assets/logo-sm.png";
-import { MdArrowForward } from "react-icons/md";
-import api from "../../api"; // Import the loginUser function
-import { Input } from "./ui/Input";
-import { toast } from "sonner";
-import { useContext } from "react";
-import { AuthContext } from "@/contexts/AuthContext";
+import { set, useForm } from 'react-hook-form';
+import { Link, useNavigate } from 'react-router-dom';
+import LoginImage from '../../assets/login-page-image.webp';
+import LogoSmall from '../../assets/logo-sm.png';
+import { MdArrowForward } from 'react-icons/md';
+import api from '../../api'; // Import the loginUser function
+import { Input } from './ui/Input';
+import { toast } from 'sonner';
+import { useContext } from 'react';
+import { AuthContext } from '@/contexts/AuthContext';
 
 export function LoginPage() {
   const { authenticated, setAuthenticated } = useContext(AuthContext);
-  console.log(authenticated);
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -25,39 +25,39 @@ export function LoginPage() {
       email: data.email,
       password: data.password,
       matricula: data.matricula,
-      role: "USER",
+      role: 'USER',
       phoneNumber: data.phone,
     };
 
     try {
       // Ajustar a estrutura dos dados para corresponder às expectativas do backend
       const payload = { email: data.user, password: data.password };
-      const response = await api.post("/auth/login", payload);
+      const response = await api.post('/auth/login', payload);
 
       if (response.data.token) {
-        localStorage.setItem("authToken", response.data.token);
+        localStorage.setItem('authToken', response.data.token);
         setAuthenticated(true);
 
         const promise = () =>
           new Promise((resolve) =>
-            setTimeout(() => resolve({ name: "Sonner" }), 1000),
+            setTimeout(() => resolve({ name: 'Sonner' }), 1000),
           );
 
         toast.promise(promise, {
-          loading: "Carregando...",
-          success: () => "Login efetuado com sucesso!",
+          loading: 'Carregando...',
+          success: () => 'Login efetuado com sucesso!',
         });
       } else {
-        throw new Error("Token não encontrado na resposta");
+        throw new Error('Token não encontrado na resposta');
       }
     } catch (error) {
       const promise = () =>
         new Promise((_, reject) => setTimeout(() => reject(error), 1000));
 
       toast.promise(promise, {
-        loading: "Carregando...",
+        loading: 'Carregando...',
         error: (err) =>
-          err.response?.data?.error || "Usuário ou senha inválidos",
+          err.response?.data?.error || 'Usuário ou senha inválidos',
       });
     }
   };
@@ -88,18 +88,18 @@ export function LoginPage() {
             id="Usuário"
             placeholder="E-mail ou Matrícula"
             type="text"
-            {...register("user", { required: true })}
-            aria-invalid={errors.user ? "true" : "false"}
-            className={errors.user ? "input-error" : ""}
+            {...register('user', { required: true })}
+            aria-invalid={errors.user ? 'true' : 'false'}
+            className={errors.user ? 'input-error' : ''}
           />
 
           <Input
             id="Senha"
             placeholder="Senha"
             type="password"
-            {...register("password", { required: true })}
-            aria-invalid={errors.password ? "true" : "false"}
-            className={errors.password ? "input-error" : ""}
+            {...register('password', { required: true })}
+            aria-invalid={errors.password ? 'true' : 'false'}
+            className={errors.password ? 'input-error' : ''}
           />
 
           <Link to="/esqueci_minha_senha" className="link w-fit">
