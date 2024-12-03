@@ -20,12 +20,29 @@ export function LoginPage() {
       // Adjust data structure to match backend expectations
       const payload = { email: data.user, password: data.password };
       const response = await api.post("/auth/login", payload);
-      toast.success("Login efetuado com sucesso!");
-      navigate("/");
-      console.log(response);
+
+      const promise = () =>
+        new Promise((resolve) =>
+          setTimeout(() => resolve({ name: "Sonner" }), 1000),
+        );
+
+      toast.promise(promise, {
+        loading: "Carregando...",
+        success: (data) => {
+          navigate("/");
+          return "Login efetuado com sucesso!";
+        },
+      });
     } catch (error) {
-      toast.error(error.response.data?.error || "Usuário ou senha inválidos");
-      console.log(error);
+      const promise = () =>
+        new Promise((_, reject) => setTimeout(() => reject(error), 1000));
+
+      toast.promise(promise, {
+        loading: "Carregando...",
+        error: (err) => {
+          return err.response?.data?.error || "Usuário ou senha inválidos";
+        },
+      });
     }
   };
 

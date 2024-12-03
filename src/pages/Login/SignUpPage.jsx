@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import SignUpImage from "../../assets/signup-page-image.webp";
 import LogoSmall from "../../assets/logo-sm.png";
 import api from "../../api"; // Import the Axios instance
@@ -7,6 +7,7 @@ import { Input } from "./ui/Input";
 import { toast } from "sonner";
 
 export function SignUpPage() {
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -15,25 +16,37 @@ export function SignUpPage() {
   } = useForm();
 
   const onSubmit = async (data) => {
-    // Map form data to backend expectations
+    // Mapear os dados do formulário para o formato esperado pelo backend
     const payload = {
       username: data.name,
       email: data.email,
       password: data.password,
       matricula: data.matricula,
-      role: "USER", // Or any role as per your system's role setup
+      role: "USER", // Ou qualquer outro papel conforme a configuração do seu sistema
       phoneNumber: data.phone,
     };
 
-    try {
-      // Send registration data to backend
-      const response = await api.post("/auth/register", payload);
-      toast.success("Você foi cadastrado com sucesso!");
-    } catch (error) {
-      const errorMessage =
-        error.response.data?.error.message || "Não foi possível cadastrar";
-      toast.error(errorMessage);
-    }
+    const promise = () =>
+      new Promise((resolve, reject) => {
+        setTimeout(async () => {
+          try {
+            // Enviar dados de registro para o backend
+            const response = await api.post("/auth/register", payload);
+            resolve(response);
+          } catch (error) {
+            reject(error);
+          }
+        }, 1000);
+      });
+
+    toast.promise(promise(), {
+      loading: "Carregando...",
+      success: () => {
+        navigate("/");
+        return "Cadastro efetuado com sucesso!";
+      },
+      error: (error) => error.response.data?.error || "Erro ao cadastrar.",
+    });
   };
 
   return (
