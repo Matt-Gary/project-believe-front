@@ -7,7 +7,6 @@ import { Input } from "./ui/Input";
 import { toast } from "sonner";
 
 export function SignUpPage() {
-  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -22,7 +21,7 @@ export function SignUpPage() {
       email: data.email,
       password: data.password,
       matricula: data.matricula,
-      role: "USER", // Ou qualquer outro papel conforme a configuração do seu sistema
+      role: "USER",
       phoneNumber: data.phone,
     };
 
@@ -33,6 +32,8 @@ export function SignUpPage() {
             // Enviar dados de registro para o backend
             const response = await api.post("/auth/register", payload);
             resolve(response);
+            localStorage.setItem("authToken", response.data.token);
+            setAuthenticated(true);
           } catch (error) {
             reject(error);
           }
@@ -41,10 +42,7 @@ export function SignUpPage() {
 
     toast.promise(promise(), {
       loading: "Carregando...",
-      success: () => {
-        navigate("/");
-        return "Cadastro efetuado com sucesso!";
-      },
+      success: () => "Cadastro efetuado com sucesso!",
       error: (error) => error.response.data?.error || "Erro ao cadastrar.",
     });
   };

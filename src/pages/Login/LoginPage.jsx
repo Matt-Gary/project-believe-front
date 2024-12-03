@@ -1,4 +1,4 @@
-import { useForm } from "react-hook-form";
+import { set, useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import LoginImage from "../../assets/login-page-image.webp";
 import LogoSmall from "../../assets/logo-sm.png";
@@ -6,42 +6,58 @@ import { MdArrowForward } from "react-icons/md";
 import api from "../../api"; // Import the loginUser function
 import { Input } from "./ui/Input";
 import { toast } from "sonner";
+import { useContext } from "react";
+import { AuthContext } from "@/contexts/AuthContext";
 
 export function LoginPage() {
-  const navigate = useNavigate();
+  const { authenticated, setAuthenticated } = useContext(AuthContext);
+  console.log(authenticated);
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
 
-  const onSubmit = async (data) => {
+  const onSubmitLogin = async (data) => {
+    // Mapear os dados do formulário para o formato esperado pelo backend
+    const payload = {
+      username: data.name,
+      email: data.email,
+      password: data.password,
+      matricula: data.matricula,
+      role: "USER",
+      phoneNumber: data.phone,
+    };
+
     try {
-      // Adjust data structure to match backend expectations
+      // Ajustar a estrutura dos dados para corresponder às expectativas do backend
       const payload = { email: data.user, password: data.password };
       const response = await api.post("/auth/login", payload);
 
-      const promise = () =>
-        new Promise((resolve) =>
-          setTimeout(() => resolve({ name: "Sonner" }), 1000),
-        );
+      if (response.data.token) {
+        localStorage.setItem("authToken", response.data.token);
+        setAuthenticated(true);
 
-      toast.promise(promise, {
-        loading: "Carregando...",
-        success: (data) => {
-          navigate("/");
-          return "Login efetuado com sucesso!";
-        },
-      });
+        const promise = () =>
+          new Promise((resolve) =>
+            setTimeout(() => resolve({ name: "Sonner" }), 1000),
+          );
+
+        toast.promise(promise, {
+          loading: "Carregando...",
+          success: () => "Login efetuado com sucesso!",
+        });
+      } else {
+        throw new Error("Token não encontrado na resposta");
+      }
     } catch (error) {
       const promise = () =>
         new Promise((_, reject) => setTimeout(() => reject(error), 1000));
 
       toast.promise(promise, {
         loading: "Carregando...",
-        error: (err) => {
-          return err.response?.data?.error || "Usuário ou senha inválidos";
-        },
+        error: (err) =>
+          err.response?.data?.error || "Usuário ou senha inválidos",
       });
     }
   };
@@ -58,7 +74,7 @@ export function LoginPage() {
         </div>
 
         <form
-          onSubmit={handleSubmit(onSubmit)}
+          onSubmit={handleSubmit(onSubmitLogin)}
           className="flex flex-col space-y-4 p-5"
         >
           <div className="flex flex-col items-center justify-start gap-6 sm:flex-row">
