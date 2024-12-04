@@ -1,5 +1,5 @@
-import { set, useForm } from 'react-hook-form';
-import { Link, useNavigate } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
+import { Link } from 'react-router-dom';
 import LoginImage from '../../assets/login-page-image.webp';
 import LogoSmall from '../../assets/logo-sm.png';
 import { MdArrowForward } from 'react-icons/md';
@@ -9,10 +9,10 @@ import { toast } from 'sonner';
 import { useContext } from 'react';
 import { AuthContext } from '@/contexts/AuthContext';
 import Cookies from 'js-cookie';
+import { jwtDecode } from 'jwt-decode';
 
 export function LoginPage() {
-  const { authenticated, setAuthenticated } = useContext(AuthContext);
-  const navigate = useNavigate();
+  const { setAuthenticated, setUserData } = useContext(AuthContext);
   const {
     register,
     handleSubmit,
@@ -20,22 +20,13 @@ export function LoginPage() {
   } = useForm();
 
   const onSubmitLogin = async (data) => {
-    // Mapear os dados do formulário para o formato esperado pelo backend
-    // const payload = {
-    //   username: data.name,
-    //   email: data.email,
-    //   password: data.password,
-    //   matricula: data.matricula,
-    //   role: 'USER',
-    //   phoneNumber: data.phone,
-    // };
-
     try {
-      // Ajustar a estrutura dos dados para corresponder às expectativas do backend
       const payload = { email: data.user, password: data.password };
       const response = await api.post('/auth/login', payload);
 
       if (response.data.token) {
+        const decodedToken = jwtDecode(response.data.token);
+        setUserData(decodedToken);
         setAuthenticated(true);
 
         const promise = () =>
@@ -47,6 +38,7 @@ export function LoginPage() {
           loading: 'Carregando...',
           success: () => 'Login efetuado com sucesso!',
         });
+
         Cookies.set('accessToken', response.data.token, {
           expires: 7,
           secure: true,
@@ -91,7 +83,7 @@ export function LoginPage() {
 
           <Input
             id="Usuário"
-            placeholder="E-mail ou Matrícula"
+            placeholder="E-mail"
             type="text"
             {...register('user', { required: true })}
             aria-invalid={errors.user ? 'true' : 'false'}

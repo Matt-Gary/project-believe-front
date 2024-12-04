@@ -4,13 +4,14 @@ import Logo from '../../assets/logo-full.png';
 import { MenuMobile } from './menu-mobile';
 import { AuthContext } from '@/contexts/AuthContext';
 import { HeaderAuth } from './header-auth';
+import { MenuMobileAuth } from './header-auth/menu-mobile-auth';
 
 export function Header() {
-  const { authenticated, userData } = useContext(AuthContext);
+  const { authenticated } = useContext(AuthContext);
 
   return (
     <>
-      <MenuMobile />
+      {authenticated ? <MenuMobileAuth /> : <MenuMobile />}
       {authenticated ? (
         <HeaderAuth />
       ) : (

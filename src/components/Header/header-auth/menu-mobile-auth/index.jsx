@@ -1,5 +1,5 @@
 import { Link, NavLink } from 'react-router-dom';
-import Logo from '../../../assets/logo-full.png';
+import Logo from '../../../../assets/logo-full.png';
 import { IoBook, IoCalendar, IoHome, IoMenu } from 'react-icons/io5';
 import {
   Sheet,
@@ -8,10 +8,13 @@ import {
   SheetHeader,
   SheetTrigger,
 } from '@/components/ui/sheet';
-import { FaInfoCircle } from 'react-icons/fa';
+import { FaDumbbell } from 'react-icons/fa';
 import { MdPhotoLibrary } from 'react-icons/md';
+import { useContext } from 'react';
+import { AuthContext } from '@/contexts/AuthContext';
 
-export function MenuMobile() {
+export function MenuMobileAuth() {
+  const { userData } = useContext(AuthContext);
   return (
     <header className="sticky top-0 z-50 flex items-center justify-between border-b border-b-white border-opacity-20 bg-[#1e1e1e] p-6 lg:hidden">
       <Link to="/">
@@ -32,11 +35,11 @@ export function MenuMobile() {
                 Início
               </NavLink>
               <NavLink
-                to="/sobre"
+                to="/area-do-aluno"
                 className={`flex items-center gap-2 rounded-lg px-4 py-3 text-lg font-medium transition-colors hover:bg-accent-variant sm:text-2xl `}
               >
-                <FaInfoCircle />
-                Sobre
+                <FaDumbbell />
+                Área do aluno
               </NavLink>
               <NavLink
                 to="/galeria"
@@ -61,18 +64,8 @@ export function MenuMobile() {
               </NavLink>
 
               <div className="mb-auto mt-4 flex items-center gap-3 sm:text-2xl">
-                <Link
-                  to="/login"
-                  className="button-ghost min-w-fit px-7 py-3 hover:bg-accent-variant hover:text-white"
-                >
-                  Entrar
-                </Link>
-                <Link
-                  to="/contato"
-                  className="button min-w-fit px-7 py-3 hover:bg-accent-variant hover:text-white"
-                >
-                  Contato
-                </Link>
+                <p> {userData.username}</p>
+                <p>{userData.matricula}</p>
               </div>
             </SheetDescription>
           </SheetHeader>

@@ -13,7 +13,6 @@ export function AuthContextProvider({ children }) {
     if (token) {
       try {
         const decodedToken = jwtDecode(token);
-        // Verifique se o token não expirou
         if (decodedToken.exp * 1000 > Date.now()) {
           setAuthenticated(true);
           setUserData(decodedToken);
@@ -28,7 +27,9 @@ export function AuthContextProvider({ children }) {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ authenticated, setAuthenticated, userData }}>
+    <AuthContext.Provider
+      value={{ authenticated, setAuthenticated, userData, setUserData }}
+    >
       {children}
     </AuthContext.Provider>
   );
