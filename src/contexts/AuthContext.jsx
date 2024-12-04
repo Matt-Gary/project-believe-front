@@ -1,5 +1,6 @@
 import { createContext, useState, useEffect } from 'react';
 import { jwtDecode } from 'jwt-decode';
+import Cookies from 'js-cookie';
 
 export const AuthContext = createContext();
 
@@ -8,7 +9,7 @@ export function AuthContextProvider({ children }) {
   const [userData, setUserData] = useState(null);
 
   useEffect(() => {
-    const token = localStorage.getItem('authToken');
+    const token = Cookies.get('accessToken');
     if (token) {
       try {
         const decodedToken = jwtDecode(token);
@@ -17,11 +18,11 @@ export function AuthContextProvider({ children }) {
           setAuthenticated(true);
           setUserData(decodedToken);
         } else {
-          localStorage.removeItem('authToken');
+          Cookies.remove('authToken');
         }
       } catch (error) {
         console.error('Token inválido', error);
-        localStorage.removeItem('authToken');
+        Cookies.remove('authToken');
       }
     }
   }, []);

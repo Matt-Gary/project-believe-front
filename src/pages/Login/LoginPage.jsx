@@ -8,6 +8,7 @@ import { Input } from './ui/Input';
 import { toast } from 'sonner';
 import { useContext } from 'react';
 import { AuthContext } from '@/contexts/AuthContext';
+import Cookies from 'js-cookie';
 
 export function LoginPage() {
   const { authenticated, setAuthenticated } = useContext(AuthContext);
@@ -20,14 +21,14 @@ export function LoginPage() {
 
   const onSubmitLogin = async (data) => {
     // Mapear os dados do formulário para o formato esperado pelo backend
-    const payload = {
-      username: data.name,
-      email: data.email,
-      password: data.password,
-      matricula: data.matricula,
-      role: 'USER',
-      phoneNumber: data.phone,
-    };
+    // const payload = {
+    //   username: data.name,
+    //   email: data.email,
+    //   password: data.password,
+    //   matricula: data.matricula,
+    //   role: 'USER',
+    //   phoneNumber: data.phone,
+    // };
 
     try {
       // Ajustar a estrutura dos dados para corresponder às expectativas do backend
@@ -35,7 +36,6 @@ export function LoginPage() {
       const response = await api.post('/auth/login', payload);
 
       if (response.data.token) {
-        localStorage.setItem('authToken', response.data.token);
         setAuthenticated(true);
 
         const promise = () =>
@@ -46,6 +46,11 @@ export function LoginPage() {
         toast.promise(promise, {
           loading: 'Carregando...',
           success: () => 'Login efetuado com sucesso!',
+        });
+        Cookies.set('accessToken', response.data.token, {
+          expires: 7,
+          secure: true,
+          sameSite: 'Strict',
         });
       } else {
         throw new Error('Token não encontrado na resposta');

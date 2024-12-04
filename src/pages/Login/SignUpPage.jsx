@@ -1,12 +1,13 @@
-import { useForm } from "react-hook-form";
-import { Link, useNavigate } from "react-router-dom";
-import SignUpImage from "../../assets/signup-page-image.webp";
-import LogoSmall from "../../assets/logo-sm.png";
-import api from "../../api"; // Import the Axios instance
-import { Input } from "./ui/Input";
-import { toast } from "sonner";
+import { useForm } from 'react-hook-form';
+import { Link, useNavigate } from 'react-router-dom';
+import SignUpImage from '../../assets/signup-page-image.webp';
+import LogoSmall from '../../assets/logo-sm.png';
+import api from '../../api'; // Import the Axios instance
+import { Input } from './ui/Input';
+import { toast } from 'sonner';
 
 export function SignUpPage() {
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -21,7 +22,7 @@ export function SignUpPage() {
       email: data.email,
       password: data.password,
       matricula: data.matricula,
-      role: "USER",
+      role: 'USER',
       phoneNumber: data.phone,
     };
 
@@ -30,10 +31,8 @@ export function SignUpPage() {
         setTimeout(async () => {
           try {
             // Enviar dados de registro para o backend
-            const response = await api.post("/auth/register", payload);
+            const response = await api.post('/auth/register', payload);
             resolve(response);
-            localStorage.setItem("authToken", response.data.token);
-            setAuthenticated(true);
           } catch (error) {
             reject(error);
           }
@@ -41,9 +40,12 @@ export function SignUpPage() {
       });
 
     toast.promise(promise(), {
-      loading: "Carregando...",
-      success: () => "Cadastro efetuado com sucesso!",
-      error: (error) => error.response.data?.error || "Erro ao cadastrar.",
+      loading: 'Carregando...',
+      success: () => {
+        navigate('/login');
+        return 'Cadastro efetuado com sucesso!';
+      },
+      error: (error) => error.response.data?.error || 'Erro ao cadastrar.',
     });
   };
 
@@ -77,9 +79,9 @@ export function SignUpPage() {
               mandatory
               placeholder="Nome"
               type="text"
-              {...register("name", { required: true })}
-              aria-invalid={errors.name ? "true" : "false"}
-              className={errors.name ? "input-error p-3" : "p-3"}
+              {...register('name', { required: true })}
+              aria-invalid={errors.name ? 'true' : 'false'}
+              className={errors.name ? 'input-error p-3' : 'p-3'}
             />
           </div>
 
@@ -89,9 +91,9 @@ export function SignUpPage() {
               mandatory
               placeholder="Matrícula"
               type="number"
-              {...register("matricula", { required: true })}
-              aria-invalid={errors.matricula ? "true" : "false"}
-              className={errors.matricula ? "input-error p-3" : "p-3"}
+              {...register('matricula', { required: true })}
+              aria-invalid={errors.matricula ? 'true' : 'false'}
+              className={errors.matricula ? 'input-error p-3' : 'p-3'}
             />
           </div>
 
@@ -101,9 +103,9 @@ export function SignUpPage() {
               mandatory
               placeholder="00000000000"
               type="number"
-              {...register("phone", { required: true })}
-              aria-invalid={errors.phone ? "true" : "false"}
-              className={errors.phone ? "input-error p-3" : "p-3"}
+              {...register('phone', { required: true })}
+              aria-invalid={errors.phone ? 'true' : 'false'}
+              className={errors.phone ? 'input-error p-3' : 'p-3'}
             />
           </div>
 
@@ -113,9 +115,9 @@ export function SignUpPage() {
               mandatory
               placeholder="email@email.com"
               type="email"
-              {...register("email", { required: true })}
-              aria-invalid={errors.email ? "true" : "false"}
-              className={errors.email ? "input-error p-3" : "p-3"}
+              {...register('email', { required: true })}
+              aria-invalid={errors.email ? 'true' : 'false'}
+              className={errors.email ? 'input-error p-3' : 'p-3'}
             />
           </div>
           <div>
@@ -124,9 +126,9 @@ export function SignUpPage() {
               mandatory
               placeholder="Senha"
               type="password"
-              {...register("password", { required: true })}
-              aria-invalid={errors.password ? "true" : "false"}
-              className={errors.password ? "input-error p-3" : "p-3"}
+              {...register('password', { required: true })}
+              aria-invalid={errors.password ? 'true' : 'false'}
+              className={errors.password ? 'input-error p-3' : 'p-3'}
             />
           </div>
 
@@ -136,13 +138,13 @@ export function SignUpPage() {
               mandatory
               placeholder="Confime Senha"
               type="password"
-              {...register("confirmPassword", {
+              {...register('confirmPassword', {
                 required: true,
                 validate: (value) =>
-                  value === watch("password") || "As senhas não coincidem",
+                  value === watch('password') || 'As senhas não coincidem',
               })}
-              aria-invalid={errors.confirmPassword ? "true" : "false"}
-              className={errors.confirmPassword ? "input-error p-3" : "p-3"}
+              aria-invalid={errors.confirmPassword ? 'true' : 'false'}
+              className={errors.confirmPassword ? 'input-error p-3' : 'p-3'}
             />
             {errors.confirmPassword && (
               <span className="text-start text-xs text-red-500">
