@@ -8,13 +8,21 @@ import {
   SheetHeader,
   SheetTrigger,
 } from '@/components/ui/sheet';
-import { FaDumbbell } from 'react-icons/fa';
+import { FaDumbbell, FaSignOutAlt } from 'react-icons/fa';
 import { MdPhotoLibrary } from 'react-icons/md';
 import { useContext } from 'react';
 import { AuthContext } from '@/contexts/AuthContext';
+import Cookies from 'js-cookie';
 
 export function MenuMobileAuth() {
   const { userData } = useContext(AuthContext);
+
+  function handleLogout() {
+    navigate('/login');
+    Cookies.remove('accessToken');
+    window.location.reload();
+  }
+
   return (
     <header className="sticky top-0 z-50 flex items-center justify-between border-b border-b-white border-opacity-20 bg-[#1e1e1e] p-6 lg:hidden">
       <Link to="/">
@@ -66,6 +74,9 @@ export function MenuMobileAuth() {
               <div className="mb-auto mt-4 flex items-center gap-3 sm:text-2xl">
                 <p> {userData.username}</p>
                 <p>{userData.matricula}</p>
+                <button className="text-red-600">
+                  <FaSignOutAlt onClick={handleLogout} />
+                </button>
               </div>
             </SheetDescription>
           </SheetHeader>

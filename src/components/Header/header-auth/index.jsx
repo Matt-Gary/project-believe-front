@@ -1,13 +1,23 @@
-import { NavLink, Link } from 'react-router-dom';
+import { NavLink, Link, useNavigate } from 'react-router-dom';
 import Logo from '../../../assets/logo-full.png';
 import { useContext, useEffect } from 'react';
 import { AuthContext } from '@/contexts/AuthContext';
+import { FaSignOutAlt } from 'react-icons/fa';
+import Cookies from 'js-cookie';
 export function HeaderAuth() {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
   const { userData } = useContext(AuthContext);
+
+  const navigate = useNavigate();
+
+  function handleLogout() {
+    navigate('/login');
+    Cookies.remove('accessToken');
+    window.location.reload();
+  }
 
   return (
     <header className="sticky top-0 z-50 hidden items-center justify-center border-b border-b-white border-opacity-20 bg-[#1e1e1e] lg:flex">
@@ -53,6 +63,9 @@ export function HeaderAuth() {
         <div className="flex items-center gap-4">
           <p>{userData?.username}</p>
           <p>{userData?.matricula}</p>
+          <button className="text-red-600">
+            <FaSignOutAlt onClick={handleLogout} />
+          </button>
         </div>
       </nav>
     </header>
