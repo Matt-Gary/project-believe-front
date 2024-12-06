@@ -1,4 +1,4 @@
-import { Link, NavLink } from 'react-router-dom';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
 import Logo from '../../../../assets/logo-full.png';
 import { IoBook, IoCalendar, IoHome, IoMenu } from 'react-icons/io5';
 import {
@@ -15,6 +15,7 @@ import { AuthContext } from '@/contexts/AuthContext';
 import Cookies from 'js-cookie';
 
 export function MenuMobileAuth() {
+  const navigate = useNavigate();
   const { userData } = useContext(AuthContext);
 
   function handleLogout() {
