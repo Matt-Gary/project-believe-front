@@ -1,12 +1,31 @@
 import { createContext, useState, useEffect } from 'react';
 import { jwtDecode } from 'jwt-decode';
 import Cookies from 'js-cookie';
+import api from '@/api';
 
 export const AuthContext = createContext();
 
 export function AuthContextProvider({ children }) {
   const [authenticated, setAuthenticated] = useState(false);
   const [userData, setUserData] = useState(null);
+  const [avatar, setAvatar] = useState(null);
+
+  useEffect(() => {
+    getAvatar();
+  }, []);
+
+  async function getAvatar() {
+    try {
+      const response = await api.get('/auth/profilephoto', {
+        responseType: 'blob',
+      });
+      const imageBlob = response.data;
+      const imageObjectURL = URL.createObjectURL(imageBlob);
+      setAvatar(imageObjectURL);
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
   useEffect(() => {
     const token = Cookies.get('accessToken');
@@ -28,7 +47,7 @@ export function AuthContextProvider({ children }) {
 
   return (
     <AuthContext.Provider
-      value={{ authenticated, setAuthenticated, userData, setUserData }}
+      value={{ authenticated, setAuthenticated, userData, setUserData, avatar }}
     >
       {children}
     </AuthContext.Provider>

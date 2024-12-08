@@ -1,15 +1,20 @@
+// getPhoto virar contexto
+
 import { NavLink, Link, useNavigate } from 'react-router-dom';
 import Logo from '../../../assets/logo-full.png';
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '@/contexts/AuthContext';
 import { FaSignOutAlt } from 'react-icons/fa';
 import Cookies from 'js-cookie';
+import api from '@/api';
+
 export function HeaderAuth() {
+  const [inputValue, setInputValue] = useState(null);
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
-  const { userData } = useContext(AuthContext);
+  const { userData, avatar } = useContext(AuthContext);
 
   const navigate = useNavigate();
 
@@ -17,6 +22,31 @@ export function HeaderAuth() {
     navigate('/login');
     Cookies.remove('accessToken');
     window.location.reload();
+  }
+
+  function handleFileChange(event) {
+    setInputValue(event.target.files[0]);
+  }
+
+  async function handleFileUpload() {
+    if (!inputValue) {
+      console.error('No file selected');
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append('image', inputValue);
+
+    try {
+      const response = await api.post('/auth/update-photo', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      console.log(response);
+    } catch (error) {
+      console.error(error.response.data?.error);
+    }
   }
 
   return (
@@ -63,9 +93,16 @@ export function HeaderAuth() {
         <div className="flex items-center gap-4">
           <p>{userData?.username}</p>
           <p>{userData?.matricula}</p>
+          {avatar ? (
+            <img src={avatar} className="h-12 w-12 rounded-full" />
+          ) : (
+            <div className="animate-plus h-12 w-12 rounded-full"></div>
+          )}
           <button className="text-red-600">
             <FaSignOutAlt onClick={handleLogout} />
           </button>
+          <input type="file" onChange={handleFileChange} />
+          <button onClick={handleFileUpload}>Enviar</button>
         </div>
       </nav>
     </header>
