@@ -13,10 +13,11 @@ import { MdPhotoLibrary } from 'react-icons/md';
 import { useContext } from 'react';
 import { AuthContext } from '@/contexts/AuthContext';
 import Cookies from 'js-cookie';
+import { User } from 'lucide-react';
 
 export function MenuMobileAuth() {
   const navigate = useNavigate();
-  const { userData } = useContext(AuthContext);
+  const { userData, avatar } = useContext(AuthContext);
 
   function handleLogout() {
     navigate('/login');
@@ -72,10 +73,23 @@ export function MenuMobileAuth() {
                 Tutoriais
               </NavLink>
 
-              <div className="mb-auto mt-4 flex items-center gap-3 sm:text-2xl">
-                <p> {userData.username}</p>
-                <p>{userData.matricula}</p>
-                <button className="text-red-600">
+              <div className="mb-auto mt-4 flex flex-col items-center gap-3 text-xl">
+                <p className="font-bold">
+                  Bem vindo,{' '}
+                  <span className="text-accent font-bold">
+                    {userData.username}
+                  </span>
+                </p>
+                {avatar ? (
+                  <img
+                    src={avatar}
+                    className="h-12 w-12 rounded-full cursor-pointer"
+                    alt="Avatar"
+                  />
+                ) : (
+                  <User className="h-12 w-12 rounded-full border border-zinc-300 p-3 animate-pulse" />
+                )}
+                <button className="text-red-600 mt-4">
                   <FaSignOutAlt onClick={handleLogout} />
                 </button>
               </div>

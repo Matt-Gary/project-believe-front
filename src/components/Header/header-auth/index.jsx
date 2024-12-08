@@ -6,10 +6,10 @@ import { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '@/contexts/AuthContext';
 import { FaSignOutAlt } from 'react-icons/fa';
 import Cookies from 'js-cookie';
-import api from '@/api';
+
+import { User } from 'lucide-react';
 
 export function HeaderAuth() {
-  const [inputValue, setInputValue] = useState(null);
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -24,30 +24,31 @@ export function HeaderAuth() {
     window.location.reload();
   }
 
-  function handleFileChange(event) {
-    setInputValue(event.target.files[0]);
-  }
+  // const [inputValue, setInputValue] = useState(null);
+  // function handleFileChange(event) {
+  //   setInputValue(event.target.files[0]);
+  // }
 
-  async function handleFileUpload() {
-    if (!inputValue) {
-      console.error('No file selected');
-      return;
-    }
+  // async function handleFileUpload() {
+  //   if (!inputValue) {
+  //     console.error('No file selected');
+  //     return;
+  //   }
 
-    const formData = new FormData();
-    formData.append('image', inputValue);
+  //   const formData = new FormData();
+  //   formData.append('image', inputValue);
 
-    try {
-      const response = await api.post('/auth/update-photo', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
-      console.log(response);
-    } catch (error) {
-      console.error(error.response.data?.error);
-    }
-  }
+  //   try {
+  //     const response = await api.post('/auth/update-photo', formData, {
+  //       headers: {
+  //         'Content-Type': 'multipart/form-data',
+  //       },
+  //     });
+  //     console.log(response);
+  //   } catch (error) {
+  //     console.error(error.response.data?.error);
+  //   }
+  // }
 
   return (
     <header className="sticky top-0 z-50 hidden items-center justify-center border-b border-b-white border-opacity-20 bg-[#1e1e1e] lg:flex">
@@ -91,18 +92,24 @@ export function HeaderAuth() {
           </li>
         </ul>
         <div className="flex items-center gap-4">
-          <p>{userData?.username}</p>
-          <p>{userData?.matricula}</p>
+          <p className=" font-bold">
+            Bem vindo,{' '}
+            <span className="text-accent font-bold">{userData.username}</span>
+          </p>
           {avatar ? (
-            <img src={avatar} className="h-12 w-12 rounded-full" />
+            <img
+              src={avatar}
+              className="h-12 w-12 rounded-full cursor-pointer"
+              alt="Avatar"
+            />
           ) : (
-            <div className="animate-plus h-12 w-12 rounded-full"></div>
+            <User className="h-12 w-12 rounded-full border border-zinc-300 p-3 animate-pulse" />
           )}
           <button className="text-red-600">
             <FaSignOutAlt onClick={handleLogout} />
           </button>
-          <input type="file" onChange={handleFileChange} />
-          <button onClick={handleFileUpload}>Enviar</button>
+          {/* <input type="file" onChange={handleFileChange} />
+          <button onClick={handleFileUpload}>Enviar</button> */}
         </div>
       </nav>
     </header>
