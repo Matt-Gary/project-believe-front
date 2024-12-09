@@ -1,5 +1,3 @@
-// getPhoto virar contexto
-
 import { NavLink, Link, useNavigate } from 'react-router-dom';
 import Logo from '../../../assets/logo-full.png';
 import { useContext, useEffect, useState } from 'react';

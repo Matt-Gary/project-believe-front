@@ -11,8 +11,10 @@ export function AuthContextProvider({ children }) {
   const [avatar, setAvatar] = useState(null);
 
   useEffect(() => {
-    getAvatar();
-  }, []);
+    if (authenticated) {
+      getAvatar();
+    }
+  }, [authenticated]);
 
   async function getAvatar() {
     try {
@@ -36,11 +38,11 @@ export function AuthContextProvider({ children }) {
           setAuthenticated(true);
           setUserData(decodedToken);
         } else {
-          Cookies.remove('authToken');
+          Cookies.remove('accessToken');
         }
       } catch (error) {
         console.error('Token inválido', error);
-        Cookies.remove('authToken');
+        Cookies.remove('accessToken');
       }
     }
   }, []);
