@@ -4,7 +4,7 @@ import { CardEventsMain } from '../ui/CardEventsMain';
 
 export function EventsCalendar() {
   return (
-    <section className="pt-16 pb-8 wrapper mx-auto flex flex-col justify-center">
+    <section className="py-16  wrapper mx-auto flex flex-col justify-center">
       <h1 className="font-bold text-center  lg:text-start  text-2xl md:text-5xl uppercase">
         Calendário de eventos
       </h1>

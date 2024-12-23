@@ -3,7 +3,7 @@ import { dataBenefits } from '../utils/data-benefits';
 export function Benefits() {
   return (
     <section className="wrapper">
-      <h2 className="mb-16 text-center text-3xl uppercase md:text-start md:text-4xl">
+      <h2 className="mb-16 text-center text-3xl uppercase md:text-start md:text-5xl font-bold">
         Believe Club de Benefícios
       </h2>
 
