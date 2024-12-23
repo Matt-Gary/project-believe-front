@@ -1,5 +1,5 @@
-import { CardTestimonials } from "../components/ui/CardTestimonial";
-import { dataTestimonials } from "../utils/data-testimonials";
+import { CardTestimonials } from '../components/ui/CardTestimonial';
+import { dataTestimonials } from '../utils/data-testimonials';
 export function Testimonials() {
   return (
     <section className="wrapper flex flex-col gap-8 pt-16 lg:pt-32">
@@ -13,6 +13,7 @@ export function Testimonials() {
       <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
         {dataTestimonials.map((testimonial) => (
           <CardTestimonials
+            key={testimonial.id}
             description={testimonial.description}
             student={testimonial.student}
           />

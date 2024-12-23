@@ -1,3 +1,9 @@
+import { EventsCalendar } from './components/events-calendar';
+
 export function StudentAreaPage() {
-  return <div>Area do aluno</div>;
+  return (
+    <main>
+      <EventsCalendar />
+    </main>
+  );
 }

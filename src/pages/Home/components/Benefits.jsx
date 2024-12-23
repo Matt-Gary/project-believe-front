@@ -1,5 +1,5 @@
-import { CardBenefits } from "../components/ui/CardBenefit";
-import { dataBenefits } from "../utils/data-benefits";
+import { CardBenefits } from '../components/ui/CardBenefit';
+import { dataBenefits } from '../utils/data-benefits';
 export function Benefits() {
   return (
     <section className="wrapper">
@@ -10,7 +10,7 @@ export function Benefits() {
       <div className="mb-8 grid grid-cols-1 gap-8 sm:grid-cols-2 xl:grid-cols-4">
         {dataBenefits.map((benefit) => (
           <CardBenefits
-            key={benefit.title}
+            key={benefit.id}
             logo={benefit.logo}
             title={benefit.title}
             description={benefit.description}
