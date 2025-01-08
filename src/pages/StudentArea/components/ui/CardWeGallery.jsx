@@ -6,30 +6,24 @@ import {
   CarouselPrevious,
 } from '@/components/ui/carousel';
 
-export function CardLearnWithUs() {
+export function CardWeGallery() {
   const carouselItems = [
     {
-      title: 'Bandeira Humana',
       src: 'src/assets/about-page-image-1.webp',
     },
     {
-      title: 'Tutorial 2',
       src: 'src/assets/about-page-image-2.webp',
     },
     {
-      title: 'Tutorial 3',
       src: 'src/assets/about-page-image-2.webp',
     },
     {
-      title: 'Tutorial 4',
       src: 'src/assets/about-page-image-1.webp',
     },
     {
-      title: 'Tutorial 5',
       src: 'src/assets/about-page-image-2.webp',
     },
     {
-      title: 'Tutorial 6',
       src: 'src/assets/about-page-image-1.webp',
     },
   ];
@@ -39,7 +33,7 @@ export function CardLearnWithUs() {
       opts={{
         align: 'start',
       }}
-      className="w-full max-w-[900px] mx-auto rounded-md py-16"
+      className="w-full max-w-[900px] mx-auto rounded-md pb-8 pt-16"
     >
       <CarouselContent>
         {carouselItems.map((item, index) => (
@@ -47,15 +41,12 @@ export function CardLearnWithUs() {
             key={index}
             className="md:basis-1/3 lg:basis-1/3 xl:basis-1/3"
           >
-            <div className="p-1 relative">
+            <div className="p-1">
               <img
                 src={item.src}
                 className="rounded-md w-full object-cover"
-                alt={item.title}
+                alt={`Imagem ${index + 1}`}
               />
-              <span className="absolute top-4 left-0 px-6 text-xl font-bold text-white bg-black/50 rounded-r-md">
-                {item.title}
-              </span>
             </div>
           </CarouselItem>
         ))}

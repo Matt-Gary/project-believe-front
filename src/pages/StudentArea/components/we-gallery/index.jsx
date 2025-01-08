@@ -1,15 +1,15 @@
 import { Link } from 'react-router-dom';
-import { CardLearnWithUs } from '../ui/CardLearnWithUs';
+import { CardWeGallery } from '../ui/CardWeGallery';
 
-export function LearnWithUs() {
+export function WeGallery() {
   return (
     <div className="wrapper mx-auto pt-16 flex flex-col">
       <h1 className="font-bold text-center lg:text-start text-2xl md:text-5xl uppercase">
-        Aprenda conosco - Tutoriais
+        Nossa Galeria de imagens
       </h1>
-      <CardLearnWithUs />
-      <Link to="/tutoriais" className="button self-center ">
-        Procure mais
+      <CardWeGallery />
+      <Link to="/galeria" className="button self-center ">
+        Ver galeria completa
       </Link>
     </div>
   );

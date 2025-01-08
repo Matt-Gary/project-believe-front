@@ -172,8 +172,8 @@ const CarouselPrevious = React.forwardRef(
         className={cn(
           'absolute  h-8 w-8 rounded-full',
           orientation === 'horizontal'
-            ? '-left-12 top-1/2 -translate-y-1/2 text-black'
-            : '-top-12 left-1/2 -translate-x-1/2 rotate-90 text-black',
+            ? '-left-12 top-1/2 -translate-y-1/2 text-black hidden lg:flex'
+            : '-top-12 left-1/2 -translate-x-1/2 rotate-90 text-black idden lg:flex',
           className,
         )}
         disabled={!canScrollPrev}
@@ -200,8 +200,8 @@ const CarouselNext = React.forwardRef(
         className={cn(
           'absolute h-8 w-8 rounded-full',
           orientation === 'horizontal'
-            ? '-right-12 top-1/2 -translate-y-1/2 text-black'
-            : '-bottom-12 left-1/2 -translate-x-1/2 rotate-90 text-black',
+            ? '-right-12 top-1/2 -translate-y-1/2 text-black hidden lg:flex'
+            : '-bottom-12 left-1/2 -translate-x-1/2 rotate-90 text-black hidden lg:flex',
           className,
         )}
         disabled={!canScrollNext}
