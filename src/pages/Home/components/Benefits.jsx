@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import { CardBenefits } from '../components/ui/CardBenefit';
 import { dataBenefits } from '../utils/data-benefits';
 export function Benefits() {
@@ -19,7 +20,9 @@ export function Benefits() {
       </div>
 
       <div className="flex justify-center sm:justify-start">
-        <button className="button">Ver Todos</button>
+        <Link to="/clube-beneficios" className="button">
+          Ver Todos
+        </Link>
       </div>
     </section>
   );
