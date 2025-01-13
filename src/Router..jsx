@@ -13,6 +13,7 @@ import { AuthContext } from './contexts/AuthContext';
 import { useContext } from 'react';
 import { StudentAreaPage } from './pages/StudentArea';
 import { ClubeBeneficios } from './pages/ClubeBeneficios';
+import { Calendarios } from './pages/Calendar';
 
 export function Router() {
   const { authenticated } = useContext(AuthContext);
@@ -25,6 +26,7 @@ export function Router() {
         <Route path="contato" element={<ContactPage />} />
         <Route path="*" element={<ErrorPage />} />
         <Route path="clube-beneficios" element={<ClubeBeneficios />} />
+        <Route path="calendarios" element={<Calendarios />} />
 
         <Route
           path="admin"

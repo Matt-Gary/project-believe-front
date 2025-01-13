@@ -74,7 +74,7 @@ export function HeaderAuth() {
           </li>
           <li>
             <NavLink
-              to="/calendario"
+              to="/calendarios"
               className={`rounded-lg px-4 py-3 font-medium transition-colors hover:bg-accent-variant `}
             >
               Calendário
