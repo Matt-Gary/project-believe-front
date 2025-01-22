@@ -8,6 +8,7 @@ import {
 } from '@/components/ui/dialog';
 import { Separator } from '@/components/ui/separator';
 import { AuthContext } from '@/contexts/AuthContext';
+import { useEffect } from 'react';
 import { useContext } from 'react';
 import { toast } from 'sonner';
 export function ModalVoucher({
@@ -17,6 +18,9 @@ export function ModalVoucher({
   descricao,
   comoUsar,
 }) {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   const { authenticated } = useContext(AuthContext);
   function handleClaim() {
     toast.success('Voucher claimed!');
@@ -49,7 +53,7 @@ export function ModalVoucher({
             <div className="flex flex-col gap-2">
               <p className="text-white">{comoUsar}</p>
               <button
-                className="bg-white text-black px-3 py-1 hover:opacity-60 duration-300 rounded-full self-center disabled:cursor-not-allowed"
+                className="bg-white text-black px-3 py-1 hover:opacity-60 duration-300 rounded-full self-center disabled:cursor-not-allowed disabled:hover:opacity-70 disabled:opacity-70"
                 disabled={!authenticated}
                 onClick={handleClaim}
               >
