@@ -18,14 +18,14 @@ export function EventGallery() {
               item.id === parseInt(id) && (
                 <DialogTrigger
                   key={item.id}
-                  className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 justify-items-center cursor-pointer"
+                  className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 justify-items-center cursor-pointer "
                 >
                   {item.images.map((img, index) => (
                     <img
                       key={index}
                       src={img}
                       alt={item.title}
-                      className="rounded-md w-80 h-64 object-cover"
+                      className="rounded-md h-64 object-cover"
                     />
                   ))}
                 </DialogTrigger>
