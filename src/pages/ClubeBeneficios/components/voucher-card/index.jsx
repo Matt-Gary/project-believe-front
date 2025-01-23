@@ -2,8 +2,8 @@ import { ModalVoucher } from '../modal-voucher';
 
 export function VoucherCard({ logo, valor, detalhes, descricao, comoUsar }) {
   return (
-    <div className="w-[300px]">
-      <div className="bg-[#D9D9D9] rounded-t-md p-4 flex items-center justify-center w-[300px] h-[150px]">
+    <div className="w-[280px]">
+      <div className="bg-[#D9D9D9] rounded-t-md p-4 flex items-center justify-center w-[280px] h-[150px]">
         <span className="text-black ">{logo}</span>
       </div>
       <div className="bg-zinc-600 flex justify-between font-bold p-5 rounded-b-md">
