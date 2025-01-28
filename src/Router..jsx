@@ -16,6 +16,7 @@ import { ClubeBeneficios } from './pages/ClubeBeneficios';
 import { Calendarios } from './pages/Calendar';
 import { Gallery } from './pages/Gallery';
 import { EventGallery } from './pages/Gallery/components/event-gallery';
+import { Tutorials } from './pages/Tutorials';
 
 export function Router() {
   const { authenticated } = useContext(AuthContext);
@@ -31,6 +32,7 @@ export function Router() {
         <Route path="calendarios" element={<Calendarios />} />
         <Route path="galeria" element={<Gallery />} />
         <Route path="galeria/:id" element={<EventGallery />} />
+        <Route path="tutoriais" element={<Tutorials />} />
 
         <Route
           path="admin"
