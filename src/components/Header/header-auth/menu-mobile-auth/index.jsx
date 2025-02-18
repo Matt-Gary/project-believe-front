@@ -73,7 +73,10 @@ export function MenuMobileAuth() {
                 Tutoriais
               </NavLink>
 
-              <div className="mb-auto mt-4 flex flex-col items-center gap-3 text-xl">
+              <Link
+                to="/meu-perfil"
+                className="mb-auto mt-4 flex flex-col items-center gap-3 text-xl"
+              >
                 <p className="font-bold">
                   Bem vindo,{' '}
                   <span className="text-accent font-bold">
@@ -92,7 +95,7 @@ export function MenuMobileAuth() {
                 <button className="text-red-600 mt-4">
                   <FaSignOutAlt onClick={handleLogout} />
                 </button>
-              </div>
+              </Link>
             </SheetDescription>
           </SheetHeader>
         </SheetContent>

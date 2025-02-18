@@ -9,27 +9,7 @@ export function AuthContextProvider({ children }) {
   const [authenticated, setAuthenticated] = useState(false);
   const [userData, setUserData] = useState(null);
   const [avatar, setAvatar] = useState(null);
-
-  useEffect(() => {
-    if (authenticated) {
-      getAvatar();
-    }
-  }, [authenticated]);
-
-  async function getAvatar() {
-    try {
-      const response = await api.get('/auth/profilephoto', {
-        responseType: 'blob',
-      });
-      const imageBlob = response.data;
-      const imageObjectURL = URL.createObjectURL(imageBlob);
-      setAvatar(imageObjectURL);
-    } catch (error) {
-      console.error(error);
-    }
-  }
-
-  useEffect(() => {
+  async function verifyToken() {
     const token = Cookies.get('accessToken');
     if (token) {
       try {
@@ -37,6 +17,7 @@ export function AuthContextProvider({ children }) {
         if (decodedToken.exp * 1000 > Date.now()) {
           setAuthenticated(true);
           setUserData(decodedToken);
+          console.log('Decoded token:', decodedToken);
         } else {
           Cookies.remove('accessToken');
         }
@@ -45,11 +26,41 @@ export function AuthContextProvider({ children }) {
         Cookies.remove('accessToken');
       }
     }
+  }
+  useEffect(() => {
+    verifyToken();
   }, []);
+
+  useEffect(() => {
+    if (authenticated) {
+      fetchUserPhoto();
+    }
+  }, [authenticated]);
+
+  async function fetchUserPhoto() {
+    try {
+      const response = await api.get('/auth/profilephoto', {
+        responseType: 'blob',
+      });
+      const imageBlob = response.data;
+      const imageObjectURL = URL.createObjectURL(imageBlob);
+      setAvatar(imageObjectURL);
+    } catch (error) {
+      console.error('Erro ao buscar foto de perfil:', error);
+    }
+  }
 
   return (
     <AuthContext.Provider
-      value={{ authenticated, setAuthenticated, userData, setUserData, avatar }}
+      value={{
+        authenticated,
+        setAuthenticated,
+        userData,
+        setUserData,
+        avatar,
+        setAvatar,
+        verifyToken,
+      }}
     >
       {children}
     </AuthContext.Provider>

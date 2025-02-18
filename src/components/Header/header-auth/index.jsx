@@ -22,32 +22,6 @@ export function HeaderAuth() {
     window.location.reload();
   }
 
-  // const [inputValue, setInputValue] = useState(null);
-  // function handleFileChange(event) {
-  //   setInputValue(event.target.files[0]);
-  // }
-
-  // async function handleFileUpload() {
-  //   if (!inputValue) {
-  //     console.error('No file selected');
-  //     return;
-  //   }
-
-  //   const formData = new FormData();
-  //   formData.append('image', inputValue);
-
-  //   try {
-  //     const response = await api.post('/auth/update-photo', formData, {
-  //       headers: {
-  //         'Content-Type': 'multipart/form-data',
-  //       },
-  //     });
-  //     console.log(response);
-  //   } catch (error) {
-  //     console.error(error.response.data?.error);
-  //   }
-  // }
-
   return (
     <header className="sticky top-0 z-50 hidden items-center justify-center border-b border-b-white border-opacity-20 bg-[#1e1e1e] lg:flex">
       <nav className="wrapper flex items-center justify-between py-3">
@@ -89,7 +63,7 @@ export function HeaderAuth() {
             </NavLink>
           </li>
         </ul>
-        <div className="flex items-center gap-4">
+        <Link to="/meu-perfil" className="flex items-center gap-4">
           <p className=" font-bold">
             Bem vindo,{' '}
             <span className="text-accent font-bold">{userData.username}</span>
@@ -101,14 +75,12 @@ export function HeaderAuth() {
               alt="Avatar"
             />
           ) : (
-            <User className="h-12 w-12 rounded-full border border-zinc-300 p-3 animate-pulse" />
+            <User className="h-12 w-12 rounded-full border border-zinc-300 p-3" />
           )}
           <button className="text-red-600">
             <FaSignOutAlt onClick={handleLogout} />
           </button>
-          {/* <input type="file" onChange={handleFileChange} />
-          <button onClick={handleFileUpload}>Enviar</button> */}
-        </div>
+        </Link>
       </nav>
     </header>
   );

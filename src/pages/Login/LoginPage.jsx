@@ -99,7 +99,7 @@ export function LoginPage() {
             className={errors.password ? 'input-error' : ''}
           />
 
-          <Link to="/esqueci_minha_senha" className="link w-fit">
+          <Link to="/esqueci-minha-senha" className="link w-fit">
             Esqueci minha senha
             <MdArrowForward />
           </Link>

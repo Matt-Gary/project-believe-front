@@ -17,6 +17,7 @@ import { Calendarios } from './pages/Calendar';
 import { Gallery } from './pages/Gallery';
 import { EventGallery } from './pages/Gallery/components/event-gallery';
 import { Tutorials } from './pages/Tutorials';
+import { MyProfile } from './pages/MyProfile';
 
 export function Router() {
   const { authenticated } = useContext(AuthContext);
@@ -49,6 +50,7 @@ export function Router() {
             element={<Navigate to="/login" replace />}
           />
         )}
+        <Route path="meu-perfil" element={<MyProfile />} />
       </Route>
 
       {authenticated ? (
