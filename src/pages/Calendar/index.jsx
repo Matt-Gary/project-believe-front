@@ -11,7 +11,14 @@ export function Calendarios() {
             January 2025
           </h1>
         </div>
-        <img className="object-cover" src={calendario} alt="" />
+        <iframe
+          src="https://calendar.google.com/calendar/embed?src=innovateignite.official%40gmail.com&ctz=America%2FFortaleza"
+          style={{ border: 0 }}
+          width="800"
+          height="600"
+          frameBorder="0"
+          scrolling="no"
+        ></iframe>
       </div>
     </main>
   );
