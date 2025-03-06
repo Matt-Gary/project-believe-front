@@ -1,5 +1,4 @@
 import { Calendar } from 'lucide-react';
-import calendario from '../../assets/calendario.png';
 
 export function Calendarios() {
   return (

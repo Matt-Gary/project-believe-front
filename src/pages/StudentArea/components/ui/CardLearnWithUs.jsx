@@ -6,31 +6,34 @@ import {
   CarouselPrevious,
 } from '@/components/ui/carousel';
 
+import tutorial1 from '@/assets/about-page-image-1.webp';
+import tutorial2 from '@/assets/about-page-image-2.webp';
+
 export function CardLearnWithUs() {
   const carouselItems = [
     {
       title: 'Bandeira Humana',
-      src: 'src/assets/about-page-image-1.webp',
+      src: tutorial1,
     },
     {
       title: 'Tutorial 2',
-      src: 'src/assets/about-page-image-2.webp',
+      src: tutorial2,
     },
     {
       title: 'Tutorial 3',
-      src: 'src/assets/about-page-image-2.webp',
+      src: tutorial1,
     },
     {
       title: 'Tutorial 4',
-      src: 'src/assets/about-page-image-1.webp',
+      src: tutorial2,
     },
     {
       title: 'Tutorial 5',
-      src: 'src/assets/about-page-image-2.webp',
+      src: tutorial1,
     },
     {
       title: 'Tutorial 6',
-      src: 'src/assets/about-page-image-1.webp',
+      src: tutorial2,
     },
   ];
 

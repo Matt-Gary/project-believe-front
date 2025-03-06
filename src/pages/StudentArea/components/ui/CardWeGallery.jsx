@@ -6,25 +6,28 @@ import {
   CarouselPrevious,
 } from '@/components/ui/carousel';
 
+import galeria1 from '@/assets/about-page-image-1.webp';
+import galeria2 from '@/assets/about-page-image-2.webp';
+
 export function CardWeGallery() {
   const carouselItems = [
     {
-      src: 'src/assets/about-page-image-1.webp',
+      src: galeria1,
     },
     {
-      src: 'src/assets/about-page-image-2.webp',
+      src: galeria2,
     },
     {
-      src: 'src/assets/about-page-image-2.webp',
+      src: galeria2,
     },
     {
-      src: 'src/assets/about-page-image-1.webp',
+      src: galeria1,
     },
     {
-      src: 'src/assets/about-page-image-2.webp',
+      src: galeria2,
     },
     {
-      src: 'src/assets/about-page-image-1.webp',
+      src: galeria1,
     },
   ];
 
