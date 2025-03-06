@@ -5,6 +5,7 @@ import { Input } from '../Login/ui/Input';
 import { ExternalLink } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import api from '@/api';
+import { toast } from 'sonner';
 
 export function MyProfile() {
   const { register, handleSubmit, setValue } = useForm();
@@ -48,8 +49,8 @@ export function MyProfile() {
       });
 
       if (response.status === 200) {
-        setAvatar(response.data.profilePhotoUrl); // Atualiza o avatar com a URL do backend
-        return response.data.profilePhotoUrl; // Retorna a nova URL da foto
+        setAvatar(response.data.profilePhotoUrl);
+        return response.data.profilePhotoUrl;
       }
     } catch (error) {
       console.error('Erro ao atualizar foto:', error.response?.data?.error);
@@ -80,8 +81,10 @@ export function MyProfile() {
       }
 
       setUserData(updatedData);
+      toast.success('Dados atualizados com sucesso!');
     } catch (error) {
       console.error('Erro ao atualizar dados do usuário:', error);
+      toast.error('Erro ao atualizar os dados');
     }
   }
 
