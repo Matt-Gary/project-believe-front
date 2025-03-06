@@ -1,5 +1,5 @@
 import { Benefits } from '../Home/components/Benefits';
-import { Products } from '../Home/components/Products';
+
 import { EventsCalendar } from './components/events-calendar';
 import { LearnWithUs } from './components/learn-with-us';
 import { WeGallery } from './components/we-gallery';
@@ -11,7 +11,6 @@ export function StudentAreaPage() {
       <Benefits />
       <LearnWithUs />
       <WeGallery />
-      <Products />
     </main>
   );
 }
