@@ -1,7 +1,7 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { ErrorPage } from './pages/ErrorPage';
 import { HomePage } from './pages/Home/index';
-import { ContactPage } from './pages/Contact/index';
+
 import { AboutPage } from './pages/About/index';
 import { SignUpPage } from './pages/Login/SignUpPage';
 import { LoginPage } from './pages/Login/LoginPage';
@@ -27,21 +27,17 @@ export function Router() {
       <Route path="/" element={<DefaultLayout />}>
         <Route index element={<HomePage />} />
         <Route path="sobre" element={<AboutPage />} />
-        <Route path="contato" element={<ContactPage />} />
-        <Route path="*" element={<ErrorPage />} />
         <Route path="clube-beneficios" element={<ClubeBeneficios />} />
         <Route path="calendarios" element={<Calendarios />} />
         <Route path="galeria" element={<Gallery />} />
         <Route path="galeria/:id" element={<EventGallery />} />
         <Route path="tutoriais" element={<Tutorials />} />
-
         <Route
           path="admin"
           element={
             authenticated ? <AdminPage /> : <Navigate to="/login" replace />
           }
         />
-
         {authenticated ? (
           <Route path="area-do-aluno" element={<StudentAreaPage />} />
         ) : (
@@ -51,6 +47,8 @@ export function Router() {
           />
         )}
         <Route path="meu-perfil" element={<MyProfile />} />
+        {/* Redireciona para a página inicial se a rota não existir */}
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Route>
 
       {authenticated ? (
