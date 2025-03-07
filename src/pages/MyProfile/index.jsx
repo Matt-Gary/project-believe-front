@@ -36,7 +36,6 @@ export function MyProfile() {
 
   async function handleFileUpload() {
     if (!inputValue) {
-      console.log('Foto não alterada');
       return null; // Retorna null se não houver foto selecionada
     }
 
@@ -66,7 +65,6 @@ export function MyProfile() {
       };
 
       const response = await api.put('auth/userUpdateByMatricula', updatedData);
-      console.log('Dados atualizados:', response);
 
       let updatedPhotoUrl = null;
       if (inputValue) {

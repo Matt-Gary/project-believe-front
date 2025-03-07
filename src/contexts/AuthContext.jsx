@@ -17,7 +17,6 @@ export function AuthContextProvider({ children }) {
         if (decodedToken.exp * 1000 > Date.now()) {
           setAuthenticated(true);
           setUserData(decodedToken);
-          console.log('Decoded token:', decodedToken);
         } else {
           Cookies.remove('accessToken');
         }

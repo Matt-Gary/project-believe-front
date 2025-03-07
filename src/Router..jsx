@@ -1,5 +1,4 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
-import { ErrorPage } from './pages/ErrorPage';
 import { HomePage } from './pages/Home/index';
 
 import { AboutPage } from './pages/About/index';
@@ -14,7 +13,7 @@ import { useContext } from 'react';
 import { StudentAreaPage } from './pages/StudentArea';
 import { ClubeBeneficios } from './pages/ClubeBeneficios';
 import { Calendarios } from './pages/Calendar';
-import { Gallery } from './pages/Gallery';
+import { Gallery } from './pages/Gallery/index';
 import { EventGallery } from './pages/Gallery/components/event-gallery';
 import { Tutorials } from './pages/Tutorials';
 import { MyProfile } from './pages/MyProfile';
