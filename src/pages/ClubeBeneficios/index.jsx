@@ -2,6 +2,8 @@ import { ArrowLeft, Filter } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { VoucherCard } from './components/voucher-card';
 import { ModalVoucher } from './components/modal-voucher';
+import api from '../../api';
+import { useEffect, useState } from 'react';
 
 const vouchers = [
   {
@@ -63,6 +65,16 @@ const vouchers = [
 ];
 
 export function ClubeBeneficios() {
+  const [vouchers, setVouchers] = useState([]);
+  async function getVouchers() {
+    const response = await api.get('/benefits');
+    console.log(response.data);
+    setVouchers(response.data);
+  }
+  useEffect(() => {
+    getVouchers();
+  }, []);
+
   return (
     <main className="wrapper py-6 space-y-6 pb-16">
       <Link to={'/'}>
@@ -74,14 +86,14 @@ export function ClubeBeneficios() {
         </h1>
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 justify-items-center">
-        {vouchers.map((voucher, index) => (
-          <ModalVoucher key={index} valor={voucher.valor}>
+        {vouchers.map((voucher) => (
+          <ModalVoucher key={voucher.id} valor={voucher.discount}>
             <VoucherCard
-              logo={voucher.logo}
-              valor={voucher.valor}
-              descricao={voucher.descricao}
-              detalhes={voucher.detalhes}
-              comoUsar={voucher.comoUsar}
+              logo={voucher.companyName}
+              valor={voucher.discount}
+              descricao={voucher.description}
+              detalhes={voucher.companyEmail}
+              comoUsar={voucher.description}
             />
           </ModalVoucher>
         ))}

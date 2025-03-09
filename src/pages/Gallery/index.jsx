@@ -8,7 +8,7 @@ export function Gallery() {
 
   async function getGallery() {
     const response = await api.get('/gallery/events');
-
+    console.log(response.data);
     setGalleryItems(response.data);
     setLoading(false);
   }
@@ -38,9 +38,9 @@ export function Gallery() {
             ))
           : galleryItems.map((item) => (
               <CardGallery
-                key={item.id}
-                id={item.id}
-                image={item.photos[0].photo_url}
+                key={item?.id}
+                id={item?.id}
+                image={item?.photos[0]?.photo_url}
                 title={item.name}
                 date={new Date(item.event_date).toLocaleDateString('pt-BR', {
                   day: '2-digit',
