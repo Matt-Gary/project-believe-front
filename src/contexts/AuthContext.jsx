@@ -9,6 +9,7 @@ export function AuthContextProvider({ children }) {
   const [authenticated, setAuthenticated] = useState(false);
   const [userData, setUserData] = useState(null);
   const [avatar, setAvatar] = useState(null);
+  const [admin, setAdmin] = useState(false);
   async function verifyToken() {
     const token = Cookies.get('accessToken');
     if (token) {
@@ -16,12 +17,15 @@ export function AuthContextProvider({ children }) {
         const decodedToken = jwtDecode(token);
         if (decodedToken.exp * 1000 > Date.now()) {
           setAuthenticated(true);
+          console.log(decodedToken);
+          if (decodedToken?.role === 'ADMIN') {
+            setAdmin(true);
+          }
           setUserData(decodedToken);
         } else {
           Cookies.remove('accessToken');
         }
       } catch (error) {
-        console.error('Token inválido', error);
         Cookies.remove('accessToken');
       }
     }
@@ -29,6 +33,14 @@ export function AuthContextProvider({ children }) {
   useEffect(() => {
     verifyToken();
   }, []);
+
+  useEffect(() => {
+    if (userData?.role === 'ADMIN') {
+      setAdmin(true);
+    } else {
+      setAdmin(false);
+    }
+  }, [userData]);
 
   useEffect(() => {
     if (authenticated) {
@@ -59,6 +71,7 @@ export function AuthContextProvider({ children }) {
         avatar,
         setAvatar,
         verifyToken,
+        admin,
       }}
     >
       {children}

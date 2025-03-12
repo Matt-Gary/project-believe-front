@@ -80,7 +80,7 @@ export function MenuMobileAuth() {
                 <p className="font-bold">
                   Bem vindo,{' '}
                   <span className="text-accent font-bold">
-                    {userData.username}
+                    {userData?.username}
                   </span>
                 </p>
                 {avatar ? (

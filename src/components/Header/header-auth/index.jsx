@@ -66,7 +66,7 @@ export function HeaderAuth() {
         <Link to="/meu-perfil" className="flex items-center gap-4">
           <p className=" font-bold">
             Bem vindo,{' '}
-            <span className="text-accent font-bold">{userData.username}</span>
+            <span className="text-accent font-bold">{userData?.username}</span>
           </p>
           {avatar ? (
             <img

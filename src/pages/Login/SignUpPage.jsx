@@ -2,9 +2,11 @@ import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
 import SignUpImage from '../../assets/signup-page-image.webp';
 import LogoSmall from '../../assets/logo-sm.png';
-import api from '../../api'; // Import the Axios instance
+import api from '../../api';
 import { Input } from './ui/Input';
 import { toast } from 'sonner';
+import ReCAPTCHA from 'react-google-recaptcha';
+import { useState } from 'react';
 
 export function SignUpPage() {
   const navigate = useNavigate();
@@ -15,8 +17,14 @@ export function SignUpPage() {
     formState: { errors },
   } = useForm();
 
+  const [recaptchaToken, setRecaptchaToken] = useState(null);
+
   const onSubmit = async (data) => {
-    // Mapear os dados do formulário para o formato esperado pelo backend
+    if (!recaptchaToken) {
+      toast.error('Por favor, complete o reCAPTCHA');
+      return;
+    }
+
     const payload = {
       username: data.name,
       email: data.email,
@@ -24,13 +32,13 @@ export function SignUpPage() {
       matricula: data.matricula,
       role: 'USER',
       phoneNumber: data.phone,
+      recaptchaToken, // Enviar o token do reCAPTCHA para o backend
     };
 
     const promise = () =>
       new Promise((resolve, reject) => {
         setTimeout(async () => {
           try {
-            // Enviar dados de registro para o backend
             const response = await api.post('/auth/register', payload);
             resolve(response);
           } catch (error) {
@@ -120,6 +128,7 @@ export function SignUpPage() {
               className={errors.email ? 'input-error p-3' : 'p-3'}
             />
           </div>
+
           <div>
             <Input
               id="Senha"
@@ -136,7 +145,7 @@ export function SignUpPage() {
             <Input
               id="Confimar Senha"
               mandatory
-              placeholder="Confime Senha"
+              placeholder="Confirme Senha"
               type="password"
               {...register('confirmPassword', {
                 required: true,
@@ -151,6 +160,13 @@ export function SignUpPage() {
                 {errors.confirmPassword.message}
               </span>
             )}
+          </div>
+
+          <div className="col-span-2 flex justify-center">
+            <ReCAPTCHA
+              sitekey={import.meta.env.VITE_RECAPTCHA_SITE_KEY}
+              onChange={(token) => setRecaptchaToken(token)}
+            />
           </div>
 
           <div className="col-span-2">

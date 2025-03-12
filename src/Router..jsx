@@ -6,7 +6,7 @@ import { SignUpPage } from './pages/Login/SignUpPage';
 import { LoginPage } from './pages/Login/LoginPage';
 import { ForgotPasswordPage } from './pages/Login/ForgotPasswordPage';
 import { PasswordRecoveryPage } from './pages/Login/PasswordRecoveryPage';
-import { AdminPage } from './pages/AdminPage';
+import { AdminPage } from './pages/AdminPainel/AdminPage';
 import { DefaultLayout } from './layouts/DefaultLayout';
 import { AuthContext } from './contexts/AuthContext';
 import { useContext } from 'react';
@@ -19,7 +19,7 @@ import { Tutorials } from './pages/Tutorials';
 import { MyProfile } from './pages/MyProfile';
 
 export function Router() {
-  const { authenticated } = useContext(AuthContext);
+  const { authenticated, admin } = useContext(AuthContext);
 
   return (
     <Routes>
@@ -31,12 +31,7 @@ export function Router() {
         <Route path="galeria" element={<Gallery />} />
         <Route path="galeria/:id" element={<EventGallery />} />
         <Route path="tutoriais" element={<Tutorials />} />
-        <Route
-          path="admin"
-          element={
-            authenticated ? <AdminPage /> : <Navigate to="/login" replace />
-          }
-        />
+        <Route path="admin" element={<AdminPage />} />
         {authenticated ? (
           <Route path="area-do-aluno" element={<StudentAreaPage />} />
         ) : (
@@ -46,9 +41,13 @@ export function Router() {
           />
         )}
         <Route path="meu-perfil" element={<MyProfile />} />
-        {/* Redireciona para a página inicial se a rota não existir */}
         <Route path="*" element={<Navigate to="/" replace />} />
       </Route>
+
+      <Route
+        path="admin"
+        element={admin ? <AdminPage /> : <Navigate to="/" replace />}
+      />
 
       {authenticated ? (
         <>
