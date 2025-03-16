@@ -2,6 +2,8 @@ import { AlertDialog, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 import { Check, RefreshCcw, X } from 'lucide-react';
 import { AlertDeletUser } from './AlertDeletUser';
 import { useState } from 'react';
+import { Dialog, DialogTrigger } from '@/components/ui/dialog';
+import { UpdateUser } from './UpdateUser';
 
 export function CardUser({
   profilePhotoUrl,
@@ -13,6 +15,7 @@ export function CardUser({
   getUsers,
 }) {
   const [open, setOpen] = useState(false);
+  const [update, setUpdate] = useState(false);
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -35,10 +38,19 @@ export function CardUser({
           <Check className="bg-green-800 text-green-300 rounded-full" />
           <span>Pago</span>
         </div>
-        <div className="flex justify-center w-full gap-2 items-center p-2 rounded-lg bg-[#4A4A4A] cursor-pointer hover:opacity-80 duration-300">
-          <RefreshCcw className="bg-green-800 rounded-full p-1" />
-          <span>Atualizar usuário</span>
-        </div>
+        <Dialog open={update} onOpenChange={setUpdate}>
+          <div className="flex justify-center w-full gap-2 items-center p-2 rounded-lg bg-[#4A4A4A] cursor-pointer hover:opacity-80 duration-300">
+            <RefreshCcw className="bg-green-800 rounded-full p-1" />
+            <DialogTrigger>Atualizar usuário</DialogTrigger>
+            <UpdateUser
+              matricula={matricula}
+              typeOfPlan={typeOfPlan}
+              startDate={startDate}
+              onClose={() => setUpdate(false)}
+              getUsers={getUsers}
+            />
+          </div>
+        </Dialog>
         <div className="flex justify-between w-full">
           <span>Tipo plano:</span>
           <span className="first-letter:uppercase font-bold">{typeOfPlan}</span>

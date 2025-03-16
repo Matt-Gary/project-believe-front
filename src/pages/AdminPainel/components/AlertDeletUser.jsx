@@ -17,7 +17,7 @@ export function AlertDeletUser({ matricula, getUsers, onClose }) {
       });
       toast.success('Usuário deletado com sucesso!');
       getUsers();
-      onClose(); // Fecha o modal após exclusão bem-sucedida
+      onClose();
     } catch (error) {
       toast.error('Erro ao deletar usuário');
     }
