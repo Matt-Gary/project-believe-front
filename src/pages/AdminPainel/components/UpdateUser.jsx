@@ -9,6 +9,14 @@ import {
 import { Input } from '@/components/ui/input';
 import { toast } from 'sonner';
 import api from '../../../api';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import { DatePickerDemo } from './DatePickerDemo';
 
 export function UpdateUser({
   matricula,
@@ -21,23 +29,22 @@ export function UpdateUser({
     register,
     handleSubmit,
     formState: { errors },
+    setValue,
+    watch,
   } = useForm({
     defaultValues: {
       typeOfPlan,
-      startDate: new Date(startDate).toLocaleDateString('pt-BR'),
+      startDate: new Date(startDate), // Ajuste se desejar string ou Date
     },
   });
 
   const onSubmit = async (data) => {
     try {
-      const [day, month, year] = data.startDate.split('/');
-
-      const formattedStartDate = `${month}/${day}/${year}`;
-
+      // Converta data conforme necessário
       await api.put('auth/userUpdateByMatricula', {
         matricula,
         typeOfPlan: data.typeOfPlan,
-        startDate: formattedStartDate,
+        startDate: data.startDate,
       });
       onClose?.();
       toast.success('Usuário atualizado com sucesso');
@@ -60,26 +67,27 @@ export function UpdateUser({
             <label className="text-zinc-200 text-lg font-bold">
               Tipo de plano
             </label>
-            <Input
-              {...register('typeOfPlan', {
-                required: 'Este campo é obrigatório',
-              })}
-              className="text-zinc-200"
-            />
-            {errors.typeOfPlan && (
-              <p className="text-red-500 text-sm">
-                {errors.typeOfPlan.message}
-              </p>
-            )}
+            <Select
+              value={watch('typeOfPlan')}
+              onValueChange={(val) => setValue('typeOfPlan', val)}
+            >
+              <SelectTrigger className="bg-zinc-700 text-zinc-200">
+                <SelectValue placeholder="Plano" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="mensal">Mensal</SelectItem>
+                <SelectItem value="trimestral">Trimestral</SelectItem>
+                <SelectItem value="semestral">Semestral</SelectItem>
+                <SelectItem value="anual">Anual</SelectItem>
+              </SelectContent>
+            </Select>
 
             <label className="text-zinc-200 text-lg font-bold">
               Data de início
             </label>
-            <Input
-              {...register('startDate', {
-                required: 'Este campo é obrigatório',
-              })}
-              className="text-zinc-200"
+            <DatePickerDemo
+              value={watch('startDate')}
+              onChange={(date) => setValue('startDate', date)}
             />
             {errors.startDate && (
               <p className="text-red-500 text-sm">{errors.startDate.message}</p>
@@ -87,7 +95,7 @@ export function UpdateUser({
 
             <Button
               type="submit"
-              className="mt-2 self-end bg-green-600 hover:opacity-80 duration-300 hover:bg-green-600 hover:duration-300 text-zinc-200 hover:text-zinc-200"
+              className="mt-2 self-end bg-green-600 hover:opacity-80"
             >
               Atualizar
             </Button>

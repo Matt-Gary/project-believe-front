@@ -1,5 +1,5 @@
 import { AlertDialog, AlertDialogTrigger } from '@/components/ui/alert-dialog';
-import { Check, RefreshCcw, X } from 'lucide-react';
+import { Check, RefreshCcw, User, X } from 'lucide-react';
 import { AlertDeletUser } from './AlertDeletUser';
 import { useState } from 'react';
 import { Dialog, DialogTrigger } from '@/components/ui/dialog';
@@ -29,14 +29,27 @@ export function CardUser({
   return (
     <div className="flex flex-col items-center justify-center p-6 w-[450px] self-start rounded-lg">
       <div className="bg-[#D9D9D9] w-full rounded-t-lg flex justify-center p-2">
-        <img className="rounded-full size-28" src={profilePhotoUrl} alt="" />
+        {(
+          <User className="rounded-full size-28 text-zinc-700 border-2 border-zinc-500 p-2" />
+        ) ?? (
+          <img className="rounded-full size-28" src={profilePhotoUrl} alt="" />
+        )}
       </div>
       <div className="bg-[#3C3C3C] w-full justify-center p-6 rounded-b-lg flex flex-col items-center gap-4">
         <h1 className="text-2xl font-bold">{username}</h1>
         <h2>Matricula: {matricula}</h2>
         <div className="flex justify-center w-full gap-2 items-center p-2 rounded-lg bg-[#4A4A4A]">
-          <Check className="bg-green-800 text-green-300 rounded-full" />
-          <span>Pago</span>
+          {new Date() > new Date(endDate) ? (
+            <>
+              <X className="bg-red-800 text-red-300 rounded-full" />
+              <span>Não Pago</span>
+            </>
+          ) : (
+            <>
+              <Check className="bg-green-800 text-green-300 rounded-full" />
+              <span>Pago</span>
+            </>
+          )}
         </div>
         <Dialog open={update} onOpenChange={setUpdate}>
           <div className="flex justify-center w-full gap-2 items-center p-2 rounded-lg bg-[#4A4A4A] cursor-pointer hover:opacity-80 duration-300">
