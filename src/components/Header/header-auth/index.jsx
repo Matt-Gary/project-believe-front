@@ -62,6 +62,14 @@ export function HeaderAuth() {
               Tutoriais
             </NavLink>
           </li>
+          {userData?.role === 'ADMIN' && (
+            <NavLink
+              to={`/admin`}
+              className="rounded-lg px-4 py-3 font-medium transition-colors hover:bg-accent-variant"
+            >
+              Admin
+            </NavLink>
+          )}
         </ul>
         <Link to="/meu-perfil" className="flex items-center gap-4">
           <p className=" font-bold">
