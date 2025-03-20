@@ -6,13 +6,25 @@ import { ExternalLink } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import api from '@/api';
 import { toast } from 'sonner';
+import {
+  SelectTrigger,
+  Select,
+  SelectValue,
+  SelectContent,
+  SelectItem,
+} from '@/components/ui/select';
 
 export function MyProfile() {
-  const { register, handleSubmit, setValue } = useForm();
+  const { register, handleSubmit, setValue, watch } = useForm();
   const { avatar, setAvatar, userData, setUserData } = useContext(AuthContext);
   const [inputValue, setInputValue] = useState(null);
   const [preview, setPreview] = useState(avatar);
+  const [selectedPlan, setSelectedPlan] = useState(userData?.typeOfPlan);
+  const [isFormChanged, setIsFormChanged] = useState(false);
   const fileInputRef = useRef(null);
+
+  const isExpired =
+    new Date(userData?.endDate).getTime() < new Date().getTime();
 
   useEffect(() => {
     if (userData) {
@@ -23,21 +35,36 @@ export function MyProfile() {
         : userData.phoneNumber;
       setValue('phoneNumber', formattedPhone);
       setValue('matricula', userData.matricula);
+      setSelectedPlan(userData.typeOfPlan);
     }
   }, [userData, setValue]);
+
+  useEffect(() => {
+    // Verifica se há mudanças nos valores do formulário
+    const subscription = watch((values) => {
+      const hasChanges =
+        values.username !== userData.username ||
+        values.email !== userData.email ||
+        values.phoneNumber !== userData.phoneNumber ||
+        selectedPlan !== userData.typeOfPlan ||
+        inputValue !== null;
+
+      setIsFormChanged(hasChanges);
+    });
+
+    return () => subscription.unsubscribe();
+  }, [watch, userData, selectedPlan, inputValue]);
 
   function handleFileChange(event) {
     const file = event.target.files[0];
     if (file) {
       setInputValue(file);
-      setPreview(URL.createObjectURL(file)); // Atualiza a prévia da imagem
+      setPreview(URL.createObjectURL(file));
     }
   }
 
   async function handleFileUpload() {
-    if (!inputValue) {
-      return null; // Retorna null se não houver foto selecionada
-    }
+    if (!inputValue) return null;
 
     const formData = new FormData();
     formData.append('image', inputValue);
@@ -62,6 +89,8 @@ export function MyProfile() {
       const updatedData = {
         ...data,
         matricula: userData?.matricula,
+        typeOfPlan: selectedPlan,
+        endDate: calculateNewEndDate(selectedPlan),
       };
 
       const response = await api.put('auth/userUpdateByMatricula', updatedData);
@@ -80,10 +109,32 @@ export function MyProfile() {
 
       setUserData(updatedData);
       toast.success('Dados atualizados com sucesso!');
+      setIsFormChanged(false);
     } catch (error) {
       console.error('Erro ao atualizar dados do usuário:', error);
       toast.error('Erro ao atualizar os dados');
     }
+  }
+
+  function calculateNewEndDate(plan) {
+    const startDate = new Date();
+    switch (plan) {
+      case 'mensal':
+        startDate.setMonth(startDate.getMonth() + 1);
+        break;
+      case 'trimestral':
+        startDate.setMonth(startDate.getMonth() + 3);
+        break;
+      case 'semestral':
+        startDate.setMonth(startDate.getMonth() + 6);
+        break;
+      case 'anual':
+        startDate.setFullYear(startDate.getFullYear() + 1);
+        break;
+      default:
+        break;
+    }
+    return startDate.toISOString();
   }
 
   return (
@@ -144,6 +195,44 @@ export function MyProfile() {
               <span className="font-bold text-base">Alterar senha</span>
               <ExternalLink size={16} />
             </Link>
+          </div>
+          <div className="w-full">
+            <span className="font-bold text-lg">Tipo de plano</span>
+            <Select
+              disabled={!isExpired}
+              value={selectedPlan}
+              onValueChange={setSelectedPlan}
+            >
+              <SelectTrigger className="w-64 h-14 mt-1 border border-white border-opacity-20 bg-white bg-opacity-5">
+                <SelectValue
+                  className="first-letter:uppercase"
+                  placeholder={selectedPlan}
+                />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="mensal">Mensal</SelectItem>
+                <SelectItem value="trimestral">Trimestral</SelectItem>
+                <SelectItem value="semestral">Semestral</SelectItem>
+                <SelectItem value="anual">Anual</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div>
+            <span>Data de expiração</span>
+            <Input
+              type="text"
+              placeholder={
+                userData?.endDate
+                  ? new Date(userData.endDate).toLocaleDateString('pt-BR', {
+                      day: '2-digit',
+                      month: '2-digit',
+                      year: 'numeric',
+                    })
+                  : ''
+              }
+              disabled
+            />
           </div>
           <div>
             <span className="font-bold text-lg">Matrícula</span>
