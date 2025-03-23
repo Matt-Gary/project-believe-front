@@ -7,6 +7,13 @@ import { Input } from './ui/Input';
 import { toast } from 'sonner';
 import ReCAPTCHA from 'react-google-recaptcha';
 import { useState } from 'react';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 
 export function SignUpPage() {
   const navigate = useNavigate();
@@ -15,6 +22,7 @@ export function SignUpPage() {
     handleSubmit,
     watch,
     formState: { errors },
+    setValue,
   } = useForm();
 
   const [recaptchaToken, setRecaptchaToken] = useState(null);
@@ -32,7 +40,8 @@ export function SignUpPage() {
       matricula: data.matricula,
       role: 'USER',
       phoneNumber: data.phone,
-      recaptchaToken, // Enviar o token do reCAPTCHA para o backend
+      recaptchaToken,
+      plan: data.typeOfPlan, // incluir o plano no payload
     };
 
     const promise = () =>
@@ -160,6 +169,23 @@ export function SignUpPage() {
                 {errors.confirmPassword.message}
               </span>
             )}
+          </div>
+          <div className="col-span-2">
+            <Select
+              onValueChange={(value) => {
+                setValue('typeOfPlan', value);
+              }}
+            >
+              <SelectTrigger className="bg-zinc-700 text-zinc-200 py-6">
+                <SelectValue placeholder="Plano" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="mensal">Mensal</SelectItem>
+                <SelectItem value="trimestral">Trimestral</SelectItem>
+                <SelectItem value="semestral">Semestral</SelectItem>
+                <SelectItem value="anual">Anual</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
 
           <div className="col-span-2 flex justify-center">
