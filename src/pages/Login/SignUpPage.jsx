@@ -41,7 +41,7 @@ export function SignUpPage() {
       role: 'USER',
       phoneNumber: data.phone,
       recaptchaToken,
-      plan: data.typeOfPlan, // incluir o plano no payload
+      typeOfPlan: data.typeOfPlan, // Enviar 'typeOfPlan' para o backend
     };
 
     const promise = () =>
@@ -170,6 +170,7 @@ export function SignUpPage() {
               </span>
             )}
           </div>
+
           <div className="col-span-2">
             <Select
               onValueChange={(value) => {
