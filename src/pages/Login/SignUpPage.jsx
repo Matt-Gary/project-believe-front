@@ -14,6 +14,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { DatePickerDemo } from '../AdminPainel/components/DatePickerDemo';
 
 export function SignUpPage() {
   const navigate = useNavigate();
@@ -42,6 +43,7 @@ export function SignUpPage() {
       phoneNumber: data.phone,
       recaptchaToken,
       typeOfPlan: data.typeOfPlan, // Enviar 'typeOfPlan' para o backend
+      startDate: data.startDate,
     };
 
     const promise = () =>
@@ -187,6 +189,13 @@ export function SignUpPage() {
                 <SelectItem value="anual">Anual</SelectItem>
               </SelectContent>
             </Select>
+          </div>
+
+          <div className="col-span-2">
+            <DatePickerDemo
+              value={watch('startDate')}
+              onChange={(val) => setValue('startDate', val)}
+            />
           </div>
 
           <div className="col-span-2 flex justify-center">

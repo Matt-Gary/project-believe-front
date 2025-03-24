@@ -17,7 +17,7 @@ export function DatePickerDemo({ value, onChange }) {
       <PopoverTrigger asChild>
         <Button
           variant="outline"
-          className="w-full bg-zinc-700 hover:bg-zinc-700 text-zinc-200 hover:text-zinc-200 justify-start text-left font-normal"
+          className="w-full bg-zinc-700 hover:bg-zinc-700 text-zinc-200 hover:text-zinc-200 justify-start text-left font-normal py-6"
         >
           <CalendarIcon className="mr-2 h-4 w-4" />
           {value ? format(value, 'PPP') : <span>Pick a date</span>}
