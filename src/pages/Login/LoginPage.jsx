@@ -1,18 +1,28 @@
 import { useForm } from 'react-hook-form';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import LoginImage from '../../assets/login-page-image.webp';
 import LogoSmall from '../../assets/logo-sm.png';
 import { MdArrowForward } from 'react-icons/md';
-import api from '../../api'; // Import the loginUser function
+import api from '../../api';
 import { Input } from './ui/Input';
 import { toast } from 'sonner';
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { AuthContext } from '@/contexts/AuthContext';
 import Cookies from 'js-cookie';
 import { jwtDecode } from 'jwt-decode';
+import {
+  InputOTP,
+  InputOTPGroup,
+  InputOTPSeparator,
+  InputOTPSlot,
+} from '@/components/ui/input-otp';
 
 export function LoginPage() {
   const { setAuthenticated, setUserData } = useContext(AuthContext);
+  const [otpValue, setOtpValue] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
+
   const {
     register,
     handleSubmit,
@@ -20,43 +30,82 @@ export function LoginPage() {
   } = useForm();
 
   const onSubmitLogin = async (data) => {
+    setIsLoading(true);
+
     try {
-      const payload = { email: data.user, password: data.password };
-      const response = await api.post('/auth/login', payload);
+      // Verificar se o código OTP foi preenchido completamente
+      if (otpValue.length !== 6) {
+        toast.error('O código de verificação deve conter 6 dígitos');
+        setIsLoading(false);
+        return;
+      }
 
-      if (response.data.token) {
-        const decodedToken = jwtDecode(response.data.token);
-        setUserData(decodedToken);
-        setAuthenticated(true);
+      // Criar payload com email, senha e código OTP
+      const payload = {
+        email: data.user,
+        password: data.password,
+        code: otpValue,
+      };
 
-        const promise = () =>
-          new Promise((resolve) =>
-            setTimeout(() => resolve({ name: 'Sonner' }), 1000),
-          );
-
-        toast.promise(promise, {
-          loading: 'Carregando...',
-          success: () => 'Login efetuado com sucesso!',
+      // Verificar o código OTP
+      try {
+        await api.post('/auth/verify-code', {
+          email: data.user,
+          code: otpValue,
         });
 
-        Cookies.set('accessToken', response.data.token, {
-          expires: 7,
-          secure: true,
-          sameSite: 'Strict',
+        // Se chegou aqui, a verificação foi bem-sucedida
+        console.log('Código OTP verificado com sucesso');
+      } catch (verifyError) {
+        console.error('Erro na verificação do código:', verifyError);
+        toast.error(
+          verifyError.response?.data?.message ||
+            'Código de verificação inválido',
+        );
+        setIsLoading(false);
+        return;
+      }
+
+      // Proceder com o login
+      try {
+        const loginResponse = await api.post('/auth/login', {
+          email: data.user,
+          password: data.password,
         });
-      } else {
-        throw new Error('Token não encontrado na resposta');
+
+        if (loginResponse.data.token) {
+          const decodedToken = jwtDecode(loginResponse.data.token);
+          setUserData(decodedToken);
+          setAuthenticated(true);
+
+          toast.success('Login efetuado com sucesso!');
+
+          Cookies.set('accessToken', loginResponse.data.token, {
+            expires: 7,
+            secure: true,
+            sameSite: 'Strict',
+          });
+        } else {
+          throw new Error('Token não encontrado na resposta');
+        }
+      } catch (loginError) {
+        console.error('Erro no login:', loginError);
+        toast.error(
+          loginError.response?.data?.message || 'Usuário ou senha inválidos',
+        );
       }
     } catch (error) {
-      const promise = () =>
-        new Promise((_, reject) => setTimeout(() => reject(error), 1000));
-
-      toast.promise(promise, {
-        loading: 'Carregando...',
-        error: (err) =>
-          err.response?.data?.error || 'Usuário ou senha inválidos',
-      });
+      console.error('Erro geral:', error);
+      toast.error(
+        error.message || 'Ocorreu um erro durante o processo de login',
+      );
+    } finally {
+      setIsLoading(false);
     }
+  };
+
+  const handleOtpChange = (value) => {
+    setOtpValue(value);
   };
 
   return (
@@ -88,6 +137,7 @@ export function LoginPage() {
             {...register('user', { required: true })}
             aria-invalid={errors.user ? 'true' : 'false'}
             className={errors.user ? 'input-error' : ''}
+            disabled={isLoading}
           />
 
           <Input
@@ -97,14 +147,39 @@ export function LoginPage() {
             {...register('password', { required: true })}
             aria-invalid={errors.password ? 'true' : 'false'}
             className={errors.password ? 'input-error' : ''}
+            disabled={isLoading}
           />
+
+          <div>
+            <label className="mb-2 block text-sm font-medium">
+              Código de verificação
+            </label>
+            <InputOTP
+              maxLength={6}
+              value={otpValue}
+              onChange={handleOtpChange}
+              disabled={isLoading}
+            >
+              <InputOTPGroup>
+                <InputOTPSlot index={0} />
+                <InputOTPSlot index={1} />
+                <InputOTPSlot index={2} />
+              </InputOTPGroup>
+              <InputOTPSeparator />
+              <InputOTPGroup>
+                <InputOTPSlot index={3} />
+                <InputOTPSlot index={4} />
+                <InputOTPSlot index={5} />
+              </InputOTPGroup>
+            </InputOTP>
+          </div>
 
           <Link to="/esqueci-minha-senha" className="link w-fit">
             Esqueci minha senha
             <MdArrowForward />
           </Link>
-          <button type="submit" className="button w-full">
-            Entrar
+          <button type="submit" className="button w-full" disabled={isLoading}>
+            {isLoading ? 'Processando...' : 'Entrar'}
           </button>
           <div className="mb-4">Não possui cadastro?</div>
           <Link to="/cadastro" className="button-ghost w-full">
