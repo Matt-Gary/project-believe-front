@@ -3,7 +3,9 @@ import { Link } from 'react-router-dom';
 import { VoucherCard } from './components/voucher-card';
 import { ModalVoucher } from './components/modal-voucher';
 import api from '../../api';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
+import { Button } from '@/components/ui/button';
+import { AuthContext } from '@/contexts/AuthContext';
 
 const vouchers = [
   {
@@ -65,6 +67,7 @@ const vouchers = [
 ];
 
 export function ClubeBeneficios() {
+  const { userData } = useContext(AuthContext);
   const [vouchers, setVouchers] = useState([]);
   async function getVouchers() {
     const response = await api.get('/benefits');
@@ -84,6 +87,11 @@ export function ClubeBeneficios() {
         <h1 className="sm:text-4xl text-2xl font-bold text-center sm:text-start">
           Believe club - CLUBE DE BENEFÍCIOS
         </h1>
+        {userData?.role === 'ADMIN' && (
+          <Button>
+            <Link to="/editar-beneficios">Editar Conteúdo</Link>
+          </Button>
+        )}
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 justify-items-center">
         {vouchers.map((voucher) => (
