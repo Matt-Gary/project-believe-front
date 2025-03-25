@@ -21,83 +21,90 @@ export function LoginPage() {
   const { setAuthenticated, setUserData } = useContext(AuthContext);
   const [otpValue, setOtpValue] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [loginStep, setLoginStep] = useState('login'); // 'login' ou 'verification'
+  const [temporaryToken, setTemporaryToken] = useState('');
   const navigate = useNavigate();
 
   const {
     register,
     handleSubmit,
     formState: { errors },
+    getValues,
   } = useForm();
 
+  // Primeiro passo - fazer login e obter token
   const onSubmitLogin = async (data) => {
     setIsLoading(true);
 
     try {
-      // Verificar se o código OTP foi preenchido completamente
-      if (otpValue.length !== 6) {
-        toast.error('O código de verificação deve conter 6 dígitos');
-        setIsLoading(false);
-        return;
-      }
-
-      // Criar payload com email, senha e código OTP
-      const payload = {
+      // Realizar login primeiro para obter o token
+      const loginResponse = await api.post('/auth/login', {
         email: data.user,
         password: data.password,
-        code: otpValue,
-      };
+      });
 
-      // Verificar o código OTP
-      try {
-        await api.post('/auth/verify-code', {
-          email: data.user,
-          code: otpValue,
-        });
+      if (loginResponse.data.token) {
+        // Armazenar o token temporariamente (não definir autenticado ainda)
+        setTemporaryToken(loginResponse.data.token);
 
-        // Se chegou aqui, a verificação foi bem-sucedida
-        console.log('Código OTP verificado com sucesso');
-      } catch (verifyError) {
-        console.error('Erro na verificação do código:', verifyError);
-        toast.error(
-          verifyError.response?.data?.message ||
-            'Código de verificação inválido',
+        // Configurar o token para próximas requisições
+        api.defaults.headers.common['Authorization'] =
+          `Bearer ${loginResponse.data.token}`;
+
+        // Avançar para o passo de verificação
+        setLoginStep('verification');
+        toast.success(
+          'Credenciais verificadas. Por favor, insira o código de verificação.',
         );
-        setIsLoading(false);
-        return;
-      }
-
-      // Proceder com o login
-      try {
-        const loginResponse = await api.post('/auth/login', {
-          email: data.user,
-          password: data.password,
-        });
-
-        if (loginResponse.data.token) {
-          const decodedToken = jwtDecode(loginResponse.data.token);
-          setUserData(decodedToken);
-          setAuthenticated(true);
-
-          toast.success('Login efetuado com sucesso!');
-
-          Cookies.set('accessToken', loginResponse.data.token, {
-            expires: 7,
-            secure: true,
-            sameSite: 'Strict',
-          });
-        } else {
-          throw new Error('Token não encontrado na resposta');
-        }
-      } catch (loginError) {
-        console.error('Erro no login:', loginError);
-        toast.error(
-          loginError.response?.data?.message || 'Usuário ou senha inválidos',
-        );
+      } else {
+        throw new Error('Token não encontrado na resposta');
       }
     } catch (error) {
-      console.error('Erro geral:', error);
+      console.error('Erro no login:', error);
       toast.error(
-        error.message || 'Ocorreu um erro durante o processo de login',
+        error.response?.data?.error ||
+          error.response?.data?.message ||
+          'Usuário ou senha inválidos',
+      );
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // Segundo passo - verificar o código
+  const onVerifyCode = async () => {
+    if (otpValue.length !== 6) {
+      toast.error('O código de verificação deve conter 6 dígitos');
+      return;
+    }
+
+    setIsLoading(true);
+
+    try {
+      // Enviar o código para verificação com o token já configurado no cabeçalho
+      await api.post('/auth/verify-code', {
+        code: otpValue,
+      });
+
+      // Se chegou aqui, a verificação foi bem-sucedida
+      const decodedToken = jwtDecode(temporaryToken);
+      setUserData(decodedToken);
+      setAuthenticated(true);
+
+      // Salvar o token de acesso como cookie
+      Cookies.set('accessToken', temporaryToken, {
+        expires: 7,
+        secure: true,
+        sameSite: 'Strict',
+      });
+
+      toast.success('Login efetuado com sucesso!');
+    } catch (error) {
+      console.error('Erro na verificação:', error);
+      toast.error(
+        error.response?.data?.error ||
+          error.response?.data?.message ||
+          'Código de verificação inválido',
       );
     } finally {
       setIsLoading(false);
@@ -119,73 +126,109 @@ export function LoginPage() {
           />
         </div>
 
-        <form
-          onSubmit={handleSubmit(onSubmitLogin)}
-          className="flex flex-col space-y-4 p-5"
-        >
-          <div className="flex flex-col items-center justify-start gap-6 sm:flex-row">
-            <Link to="/">
-              <img src={LogoSmall} alt="" />
+        {loginStep === 'login' ? (
+          <form
+            onSubmit={handleSubmit(onSubmitLogin)}
+            className="flex flex-col space-y-4 p-5"
+          >
+            <div className="flex flex-col items-center justify-start gap-6 sm:flex-row">
+              <Link to="/">
+                <img src={LogoSmall} alt="" />
+              </Link>
+              <h1 className="text-3xl font-bold">Entrar</h1>
+            </div>
+
+            <Input
+              id="Usuário"
+              placeholder="E-mail"
+              type="text"
+              {...register('user', { required: true })}
+              aria-invalid={errors.user ? 'true' : 'false'}
+              className={errors.user ? 'input-error' : ''}
+              disabled={isLoading}
+            />
+
+            <Input
+              id="Senha"
+              placeholder="Senha"
+              type="password"
+              {...register('password', { required: true })}
+              aria-invalid={errors.password ? 'true' : 'false'}
+              className={errors.password ? 'input-error' : ''}
+              disabled={isLoading}
+            />
+
+            <Link to="/esqueci-minha-senha" className="link w-fit">
+              Esqueci minha senha
+              <MdArrowForward />
             </Link>
-            <h1 className="text-3xl font-bold">Entrar</h1>
-          </div>
-
-          <Input
-            id="Usuário"
-            placeholder="E-mail"
-            type="text"
-            {...register('user', { required: true })}
-            aria-invalid={errors.user ? 'true' : 'false'}
-            className={errors.user ? 'input-error' : ''}
-            disabled={isLoading}
-          />
-
-          <Input
-            id="Senha"
-            placeholder="Senha"
-            type="password"
-            {...register('password', { required: true })}
-            aria-invalid={errors.password ? 'true' : 'false'}
-            className={errors.password ? 'input-error' : ''}
-            disabled={isLoading}
-          />
-
-          <div>
-            <label className="mb-2 block text-sm font-medium">
-              Código de verificação
-            </label>
-            <InputOTP
-              maxLength={6}
-              value={otpValue}
-              onChange={handleOtpChange}
+            <button
+              type="submit"
+              className="button w-full"
               disabled={isLoading}
             >
-              <InputOTPGroup>
-                <InputOTPSlot index={0} />
-                <InputOTPSlot index={1} />
-                <InputOTPSlot index={2} />
-              </InputOTPGroup>
-              <InputOTPSeparator />
-              <InputOTPGroup>
-                <InputOTPSlot index={3} />
-                <InputOTPSlot index={4} />
-                <InputOTPSlot index={5} />
-              </InputOTPGroup>
-            </InputOTP>
-          </div>
+              {isLoading ? 'Processando...' : 'Continuar'}
+            </button>
+            <div className="mb-4">Não possui cadastro?</div>
+            <Link to="/cadastro" className="button-ghost w-full">
+              Cadastre-se
+            </Link>
+          </form>
+        ) : (
+          <div className="flex flex-col space-y-4 p-5">
+            <div className="flex flex-col items-center justify-start gap-6 sm:flex-row">
+              <Link to="/">
+                <img src={LogoSmall} alt="" />
+              </Link>
+              <h1 className="text-3xl font-bold">Verificação</h1>
+            </div>
 
-          <Link to="/esqueci-minha-senha" className="link w-fit">
-            Esqueci minha senha
-            <MdArrowForward />
-          </Link>
-          <button type="submit" className="button w-full" disabled={isLoading}>
-            {isLoading ? 'Processando...' : 'Entrar'}
-          </button>
-          <div className="mb-4">Não possui cadastro?</div>
-          <Link to="/cadastro" className="button-ghost w-full">
-            Cadastre-se
-          </Link>
-        </form>
+            <p className="text-center">
+              Por favor, insira o código de verificação de 6 dígitos
+            </p>
+
+            <div className="my-4">
+              <InputOTP
+                maxLength={6}
+                value={otpValue}
+                onChange={handleOtpChange}
+                disabled={isLoading}
+              >
+                <InputOTPGroup>
+                  <InputOTPSlot index={0} />
+                  <InputOTPSlot index={1} />
+                  <InputOTPSlot index={2} />
+                </InputOTPGroup>
+                <InputOTPSeparator />
+                <InputOTPGroup>
+                  <InputOTPSlot index={3} />
+                  <InputOTPSlot index={4} />
+                  <InputOTPSlot index={5} />
+                </InputOTPGroup>
+              </InputOTP>
+            </div>
+
+            <button
+              onClick={onVerifyCode}
+              className="button w-full"
+              disabled={isLoading || otpValue.length !== 6}
+            >
+              {isLoading ? 'Verificando...' : 'Verificar código'}
+            </button>
+
+            <button
+              onClick={() => {
+                setLoginStep('login');
+                setOtpValue('');
+                api.defaults.headers.common['Authorization'] = '';
+              }}
+              className="button-ghost w-full"
+              disabled={isLoading}
+            >
+              Voltar
+            </button>
+          </div>
+        )}
       </div>
     </main>
   );
