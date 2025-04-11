@@ -69,11 +69,23 @@ const vouchers = [
 export function ClubeBeneficios() {
   const { userData } = useContext(AuthContext);
   const [vouchers, setVouchers] = useState([]);
+
+  // Constrói a URL completa do S3
+  const getImageUrl = (path) => {
+    if (!path) return null;
+    return `https://believe-images.s3.us-east-1.amazonaws.com/${path}`;
+  };
+
   async function getVouchers() {
-    const response = await api.get('/benefits');
-    console.log(response.data);
-    setVouchers(response.data);
+    try {
+      const response = await api.get('/benefits');
+      console.log(response.data);
+      setVouchers(response.data);
+    } catch (error) {
+      console.error('Erro ao buscar benefícios:', error);
+    }
   }
+
   useEffect(() => {
     getVouchers();
   }, []);
@@ -95,9 +107,21 @@ export function ClubeBeneficios() {
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 justify-items-center">
         {vouchers.map((voucher) => (
-          <ModalVoucher key={voucher.id} valor={voucher.discount}>
+          <ModalVoucher
+            key={voucher.id}
+            benefitId={voucher.id}
+            valor={voucher.discount}
+            detalhes={voucher.companyEmail}
+            descricao={voucher.description}
+            comoUsar={voucher.description}
+          >
             <VoucherCard
-              logo={voucher.companyName}
+              benefitId={voucher.id}
+              logo={
+                voucher.companyLogo
+                  ? getImageUrl(voucher.companyLogo)
+                  : voucher.companyName
+              }
               valor={voucher.discount}
               descricao={voucher.description}
               detalhes={voucher.companyEmail}

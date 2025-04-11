@@ -19,6 +19,8 @@ import { Tutorials } from './pages/Tutorials';
 import { MyProfile } from './pages/MyProfile';
 import { EditarBeneficios } from './pages/ClubeBeneficios/EditarBeneficios';
 import EditarCalendar from './pages/Calendar/EditarCalendar';
+import { AdminRoute } from './components/AdminRoute';
+
 export function Router() {
   const { authenticated, admin } = useContext(AuthContext);
 
@@ -32,7 +34,18 @@ export function Router() {
         <Route path="galeria" element={<Gallery />} />
         <Route path="galeria/:id" element={<EventGallery />} />
         <Route path="tutoriais" element={<Tutorials />} />
-        <Route path="admin" element={<AdminPage />} />
+
+        {/* Rota protegida para admin */}
+        <Route
+          path="admin"
+          element={
+            <AdminRoute>
+              <AdminPage />
+            </AdminRoute>
+          }
+        />
+
+        {/* Rota para área do aluno - requer autenticação */}
         {authenticated ? (
           <Route path="area-do-aluno" element={<StudentAreaPage />} />
         ) : (
@@ -41,15 +54,27 @@ export function Router() {
             element={<Navigate to="/login" replace />}
           />
         )}
-        <Route path="meu-perfil" element={<MyProfile />} />
-        <Route path="/editar-beneficios" element={<EditarBeneficios />} />
-        <Route path="/editar-calendario" element={<EditarCalendar />} />
-      </Route>
 
-      <Route
-        path="admin"
-        element={admin ? <AdminPage /> : <Navigate to="/" replace />}
-      />
+        <Route path="meu-perfil" element={<MyProfile />} />
+
+        {/* Rotas protegidas para admins */}
+        <Route
+          path="editar-beneficios"
+          element={
+            <AdminRoute>
+              <EditarBeneficios />
+            </AdminRoute>
+          }
+        />
+        <Route
+          path="editar-calendario"
+          element={
+            <AdminRoute>
+              <EditarCalendar />
+            </AdminRoute>
+          }
+        />
+      </Route>
 
       {authenticated ? (
         <>

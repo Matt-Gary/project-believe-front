@@ -1,6 +1,5 @@
 import { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '@/contexts/AuthContext';
-import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 import { calendarService } from './services/calendarService';
 import EventsGrid from './components/EventsGrid';
@@ -55,13 +54,6 @@ export default function EditarCalendar() {
     event_photo: '',
     file: null,
   });
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    if (userData && userData.role !== 'ADMIN') {
-      navigate('/');
-    }
-  }, [userData, navigate]);
 
   async function getCalendar() {
     try {
