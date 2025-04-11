@@ -18,7 +18,7 @@ import { EventGallery } from './pages/Gallery/components/event-gallery';
 import { Tutorials } from './pages/Tutorials';
 import { MyProfile } from './pages/MyProfile';
 import { EditarBeneficios } from './pages/ClubeBeneficios/EditarBeneficios';
-
+import EditarCalendar from './pages/Calendar/EditarCalendar';
 export function Router() {
   const { authenticated, admin } = useContext(AuthContext);
 
@@ -43,6 +43,7 @@ export function Router() {
         )}
         <Route path="meu-perfil" element={<MyProfile />} />
         <Route path="/editar-beneficios" element={<EditarBeneficios />} />
+        <Route path="/editar-calendario" element={<EditarCalendar />} />
       </Route>
 
       <Route

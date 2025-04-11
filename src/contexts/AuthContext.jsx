@@ -17,7 +17,7 @@ export function AuthContextProvider({ children }) {
         const decodedToken = jwtDecode(token);
         if (decodedToken.exp * 1000 > Date.now()) {
           setAuthenticated(true);
-          console.log(decodedToken);
+
           if (decodedToken?.role === 'ADMIN') {
             setAdmin(true);
           }
