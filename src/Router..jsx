@@ -19,6 +19,7 @@ import { Tutorials } from './pages/Tutorials';
 import { MyProfile } from './pages/MyProfile';
 import { EditarBeneficios } from './pages/ClubeBeneficios/EditarBeneficios';
 import EditarCalendar from './pages/Calendar/EditarCalendar';
+import { EditarGaleria } from './pages/Gallery/EditarGaleria';
 import { AdminRoute } from './components/AdminRoute';
 
 export function Router() {
@@ -71,6 +72,14 @@ export function Router() {
           element={
             <AdminRoute>
               <EditarCalendar />
+            </AdminRoute>
+          }
+        />
+        <Route
+          path="editar-galeria"
+          element={
+            <AdminRoute>
+              <EditarGaleria />
             </AdminRoute>
           }
         />

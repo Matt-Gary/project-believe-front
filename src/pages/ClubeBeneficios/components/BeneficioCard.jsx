@@ -1,25 +1,52 @@
-import { Edit, Percent } from 'lucide-react';
+import { Edit, Percent, Store } from 'lucide-react';
 
 export default function BeneficioCard({ beneficio, onClick }) {
-  // Constrói a URL completa do S3
-  const getImageUrl = (path) => {
-    if (!path) return null;
-    return `https://believe-images.s3.us-east-1.amazonaws.com/${path}`;
+  // Verificar se já temos a URL completa da imagem
+  const imageUrl =
+    beneficio.fullImageUrl ||
+    (beneficio.companyLogo
+      ? `https://believe-images.s3.us-east-1.amazonaws.com/${beneficio.companyLogo}`
+      : null);
+
+  // Reportar erro quando a imagem falha ao carregar
+  const handleImageError = (e) => {
+    console.error('Erro ao carregar imagem:', imageUrl);
+    e.target.style.display = 'none';
+    e.target.nextSibling.style.display = 'flex';
   };
 
   return (
     <div
-      className="w-[300px] h-[250px] rounded-md shadow-md relative cursor-pointer group"
+      className="w-[300px] h-[250px] rounded-md shadow-md relative cursor-pointer group overflow-hidden"
       onClick={() => onClick(beneficio)}
     >
-      {beneficio.companyLogo ? (
-        <img
-          src={getImageUrl(beneficio.companyLogo)}
-          alt={beneficio.companyName}
-          className="w-full h-[250px] object-cover rounded-md"
-        />
+      {imageUrl ? (
+        <>
+          <img
+            src={imageUrl}
+            alt={beneficio.companyName}
+            className="w-full h-[250px] object-cover rounded-md transition-transform duration-300 group-hover:scale-110"
+            onError={handleImageError}
+          />
+          {/* Fallback quando a imagem falhar (inicialmente oculto) */}
+          <div
+            className="w-full h-[250px] bg-neutral-800 rounded-md flex-col items-center justify-center p-4 hidden"
+            style={{ position: 'absolute', top: 0, left: 0 }}
+          >
+            <span className="text-2xl font-bold text-center text-white">
+              {beneficio.companyName}
+            </span>
+            <div className="flex items-center mt-2">
+              <Percent className="text-green-500 mr-2" />
+              <span className="text-green-500 font-bold">
+                {beneficio.discount}% de desconto
+              </span>
+            </div>
+          </div>
+        </>
       ) : (
         <div className="w-full h-[250px] bg-neutral-800 rounded-md flex flex-col items-center justify-center p-4">
+          <Store className="h-12 w-12 text-green-500 mb-3" />
           <span className="text-2xl font-bold text-center text-white">
             {beneficio.companyName}
           </span>

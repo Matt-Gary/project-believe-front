@@ -25,6 +25,17 @@ export function EditarBeneficios() {
   // Modal de confirmação de exclusão
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
+  // Função para construir a URL completa da imagem no S3
+  const getImageUrl = (path) => {
+    if (!path) return null;
+    // Verificar se já é uma URL completa
+    if (path.startsWith('http://') || path.startsWith('https://')) {
+      return path;
+    }
+    // Construir URL do S3
+    return `https://believe-images.s3.us-east-1.amazonaws.com/${path}`;
+  };
+
   useEffect(() => {
     fetchBeneficios();
   }, []);
@@ -44,16 +55,24 @@ export function EditarBeneficios() {
     }
   }, [beneficios, filter]);
 
+  // Buscar benefícios da API
   const fetchBeneficios = async () => {
-    setIsLoading(true);
     try {
+      setIsLoading(true);
       const data = await beneficiosService.getBeneficios();
-      setBeneficios(data);
-      setFilteredBeneficios(data);
-      console.log(beneficios);
+
+      // Adicionar URLs de imagem completas
+      const beneficiosWithFullImageUrls = data.map((beneficio) => ({
+        ...beneficio,
+        fullImageUrl: beneficio.companyLogo
+          ? getImageUrl(beneficio.companyLogo)
+          : null,
+      }));
+
+      setBeneficios(beneficiosWithFullImageUrls);
     } catch (error) {
-      toast.error('Erro ao carregar benefícios');
-      console.error(error);
+      console.error('Erro ao buscar benefícios:', error);
+      toast.error('Não foi possível carregar os benefícios.');
     } finally {
       setIsLoading(false);
     }

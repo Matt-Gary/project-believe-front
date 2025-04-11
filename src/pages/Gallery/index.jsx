@@ -1,8 +1,12 @@
 import { CardGallery } from './components/card-gallery';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import api from '../../api';
+import { Button } from '@/components/ui/button';
+import { Link } from 'react-router-dom';
+import { AuthContext } from '@/contexts/AuthContext';
 
 export function Gallery() {
+  const { userData } = useContext(AuthContext);
   const [galleryItems, setGalleryItems] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -20,10 +24,15 @@ export function Gallery() {
 
   return (
     <main className="wrapper py-16">
-      <div className="flex">
+      <div className="flex justify-between">
         <h1 className="sm:text-4xl text-2xl font-bold text-center sm:text-start">
           Nossa Galeria de Fotos
         </h1>
+        {userData?.role === 'ADMIN' && (
+          <Button>
+            <Link to="/editar-galeria">Editar Conteúdo</Link>
+          </Button>
+        )}
       </div>
 
       <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 justify-items-center">
