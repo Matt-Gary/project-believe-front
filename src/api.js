@@ -13,12 +13,6 @@ const api = axios.create({
 api.interceptors.request.use(
   (request) => {
     // Log da requisição
-    console.log('API Request:', {
-      method: request.method,
-      url: request.url,
-      headers: request.headers,
-      data: request.data,
-    });
 
     return request;
   },
@@ -32,14 +26,7 @@ api.interceptors.request.use(
 api.interceptors.response.use(
   (response) => {
     // Log da resposta
-    console.log('API Response:', {
-      status: response.status,
-      data: response.data,
-      config: {
-        url: response.config.url,
-        method: response.config.method,
-      },
-    });
+
     return response;
   },
   (error) => {

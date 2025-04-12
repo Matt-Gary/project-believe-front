@@ -1,4 +1,4 @@
-import { Play } from 'lucide-react';
+import { Play, Edit2 } from 'lucide-react';
 import {
   Carousel,
   CarouselContent,
@@ -6,12 +6,39 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from '@/components/ui/carousel';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+  DialogClose,
+} from '@/components/ui/dialog';
+import { Button } from '@/components/ui/button';
+import api from '@/api';
 
 // Imagens de fallback
 import tutorial1 from '@/assets/about-page-image-1.webp';
 import tutorial2 from '@/assets/about-page-image-2.webp';
 
-export function CardLearnWithUs({ tutorials = [], loading = false }) {
+export function CardLearnWithUs({
+  tutorials = [],
+  loading = false,
+  onTutorialUpdate,
+}) {
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [selectedTutorial, setSelectedTutorial] = useState(null);
+
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    formState: { errors },
+  } = useForm();
+
   // Função para extrair ID do YouTube da URL
   function getYoutubeId(url) {
     if (!url) return '';
@@ -28,87 +55,216 @@ export function CardLearnWithUs({ tutorials = [], loading = false }) {
     return `${minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
   };
 
+  // Função para obter classe de cor baseada no nível de dificuldade
+  function getDifficultyColor(level) {
+    switch (level) {
+      case 'Iniciante':
+        return 'bg-green-900/30 text-green-400';
+      case 'Intermediário':
+        return 'bg-yellow-900/30 text-yellow-400';
+      case 'Avançado':
+        return 'bg-red-900/30 text-red-400';
+      default:
+        return 'bg-blue-900/30 text-blue-400';
+    }
+  }
+
+  const handleEdit = (tutorial, e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setSelectedTutorial(tutorial);
+    setValue('difficultyLevel', tutorial.difficultyLevel || 'Iniciante');
+    setDialogOpen(true);
+  };
+
+  const onSubmit = async (data) => {
+    if (!selectedTutorial) return;
+
+    try {
+      // Obter o ID do tutorial
+      const id = selectedTutorial.id || selectedTutorial._id;
+
+      if (!id) {
+        toast.error('ID do tutorial não encontrado');
+        return;
+      }
+
+      // Obter token de autenticação
+      const accessToken =
+        localStorage.getItem('accessToken') ||
+        document.cookie.replace(
+          /(?:(?:^|.*;\s*)accessToken\s*\=\s*([^;]*).*$)|^.*$/,
+          '$1',
+        );
+
+      // Criar payload
+      const updatePayload = {
+        id: id,
+        title: selectedTutorial.title,
+        url: selectedTutorial.url,
+        description: selectedTutorial.description || '',
+        difficultyLevel: data.difficultyLevel,
+      };
+
+      // Fazer requisição para atualizar
+      const response = await api.put('/tutorial/updateById', updatePayload, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+
+      toast.success('Nível de dificuldade atualizado com sucesso!');
+      setDialogOpen(false);
+
+      // Chamar callback para atualizar estado dos tutoriais (se fornecido)
+      if (onTutorialUpdate && typeof onTutorialUpdate === 'function') {
+        onTutorialUpdate({
+          ...selectedTutorial,
+          difficultyLevel: data.difficultyLevel,
+        });
+      }
+    } catch (error) {
+      toast.error('Erro ao atualizar nível de dificuldade');
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="w-full flex justify-center py-10">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+      </div>
+    );
+  }
+
   return (
-    <Carousel
-      opts={{
-        align: 'start',
-      }}
-      className="w-full max-w-[1000px] mx-auto rounded-md py-8"
-    >
-      <CarouselContent>
-        {loading
-          ? // Placeholders de carregamento
-            Array.from({ length: 3 }).map((_, index) => (
-              <CarouselItem
-                key={`loading-${index}`}
-                className="md:basis-1/3 lg:basis-1/3 xl:basis-1/3"
-              >
-                <div className="p-1">
-                  <div className="bg-zinc-800 rounded-lg h-[280px] animate-pulse flex items-center justify-center">
-                    <div className="w-10 h-10 rounded-full border-4 border-t-transparent border-blue-500 animate-spin"></div>
+    <>
+      <Carousel className="w-full py-4">
+        <CarouselContent>
+          {tutorials.map((tutorial, index) => (
+            <CarouselItem
+              key={tutorial.id || index}
+              className="md:basis-1/2 lg:basis-1/3"
+            >
+              <div className="bg-zinc-800 block h-full rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02] group relative">
+                <a
+                  href={tutorial.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block"
+                >
+                  <div className="relative overflow-hidden">
+                    {/* Thumbnail */}
+                    <img
+                      src={
+                        tutorial.thumbnail ||
+                        `https://img.youtube.com/vi/${getYoutubeId(tutorial.url)}/hqdefault.jpg`
+                      }
+                      alt={tutorial.title}
+                      className="w-full h-52 object-cover object-center transition-transform duration-500 group-hover:scale-105"
+                    />
+
+                    {/* Overlay escuro com gradiente */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-70"></div>
+
+                    {/* Ícone de play centralizado */}
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <div className="bg-blue-500/80 rounded-full p-3 transform scale-90 group-hover:scale-110 transition-transform duration-300 group-hover:bg-blue-600/90">
+                        <Play className="h-8 w-8 text-white" fill="white" />
+                      </div>
+                    </div>
+
+                    {/* Duração do vídeo */}
+                    <div className="absolute bottom-2 right-2 bg-black/70 px-2 py-1 rounded text-xs font-medium text-white">
+                      {randomDuration()}
+                    </div>
+
+                    {/* Badge de dificuldade no canto superior direito */}
+                    <div className="absolute top-2 right-2">
+                      <div
+                        className={`px-2 py-1 rounded-full text-xs font-medium ${getDifficultyColor(tutorial.difficultyLevel || 'Iniciante')}`}
+                      >
+                        {tutorial.difficultyLevel || 'Iniciante'}
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </CarouselItem>
-            ))
-          : tutorials.map((item, index) => (
-              <CarouselItem
-                key={item.id || `tutorial-${index}`}
-                className="md:basis-1/3 lg:basis-1/3 xl:basis-1/3"
-              >
-                <div className="p-2">
-                  <a
-                    href={item.url}
-                    className="block overflow-hidden bg-zinc-800 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 group"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <div className="relative overflow-hidden">
-                      {/* Thumbnail com overlay */}
-                      <img
-                        src={
-                          item.thumbnail ||
-                          `https://img.youtube.com/vi/${getYoutubeId(item.url)}/hqdefault.jpg`
-                        }
-                        alt={`Thumbnail: ${item.title}`}
-                        className="w-full h-[160px] object-cover transition-transform duration-500 group-hover:scale-110"
-                        loading="lazy"
-                      />
 
-                      {/* Overlay escuro com gradiente */}
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-70"></div>
+                  {/* Barra colorida */}
+                  <div className="w-full h-1 bg-gradient-to-r from-blue-500 to-blue-400"></div>
 
-                      {/* Ícone de play centralizado */}
-                      <div className="absolute inset-0 flex items-center justify-center">
-                        <div className="bg-blue-500/80 rounded-full p-2 transform scale-90 group-hover:scale-110 transition-transform duration-300 group-hover:bg-blue-600/90">
-                          <Play className="h-6 w-6 text-white" fill="white" />
-                        </div>
-                      </div>
+                  {/* Conteúdo do card */}
+                  <div className="p-4">
+                    <h3 className="font-bold text-lg text-white line-clamp-2 group-hover:text-blue-400 transition-colors">
+                      {tutorial.title}
+                    </h3>
+                    <p className="text-zinc-400 text-sm mt-2 line-clamp-2">
+                      {tutorial.description}
+                    </p>
+                  </div>
+                </a>
+                {/* Botão de edição */}
+                <button
+                  onClick={(e) => handleEdit(tutorial, e)}
+                  className="absolute top-2 left-2 bg-blue-500/80 hover:bg-blue-600 text-white rounded-full p-1.5 transition-all duration-300"
+                >
+                  <Edit2 className="h-4 w-4" />
+                </button>
+              </div>
+            </CarouselItem>
+          ))}
+        </CarouselContent>
+        <div className="hidden md:flex">
+          <CarouselPrevious className="left-0 -translate-x-4" />
+          <CarouselNext className="right-0 translate-x-4" />
+        </div>
+      </Carousel>
 
-                      {/* Duração do vídeo */}
-                      <div className="absolute bottom-2 right-2 bg-black/70 px-2 py-1 rounded text-xs font-medium text-white">
-                        {randomDuration()}
-                      </div>
-                    </div>
+      {/* Dialog para editar nível de dificuldade */}
+      <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+        <DialogContent className="sm:max-w-[450px]">
+          <DialogHeader>
+            <DialogTitle>Editar Nível de Dificuldade</DialogTitle>
+          </DialogHeader>
 
-                    {/* Barra colorida */}
-                    <div className="w-full h-1 bg-gradient-to-r from-blue-500 to-cyan-400"></div>
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+            <div className="space-y-2">
+              <label htmlFor="difficultyLevel" className="text-sm font-medium">
+                Nível de Dificuldade
+              </label>
+              <div className="border-2 border-blue-500 rounded-md p-0.5">
+                <select
+                  id="difficultyLevel"
+                  className="w-full rounded-sm border border-zinc-700 bg-zinc-800 px-3 py-2 text-sm text-white focus:border-blue-500 focus:ring-2 focus:ring-blue-500"
+                  {...register('difficultyLevel', { required: true })}
+                >
+                  <option value="Iniciante">Iniciante</option>
+                  <option value="Intermediário">Intermediário</option>
+                  <option value="Avançado">Avançado</option>
+                </select>
+              </div>
+              {errors.difficultyLevel && (
+                <p className="text-xs text-red-500">
+                  Selecione um nível de dificuldade
+                </p>
+              )}
+            </div>
 
-                    {/* Conteúdo do card */}
-                    <div className="p-3">
-                      <h3 className="font-bold text-white line-clamp-2 group-hover:text-blue-400 transition-colors text-sm">
-                        {item.title}
-                      </h3>
-                      <p className="text-zinc-400 text-xs mt-1 line-clamp-1">
-                        {item.description}
-                      </p>
-                    </div>
-                  </a>
-                </div>
-              </CarouselItem>
-            ))}
-      </CarouselContent>
-      <CarouselPrevious className="bg-white text-zinc-900 hover:bg-zinc-100" />
-      <CarouselNext className="bg-white text-zinc-900 hover:bg-zinc-100" />
-    </Carousel>
+            <DialogFooter>
+              <DialogClose asChild>
+                <Button
+                  type="button"
+                  variant="outline"
+                  className="bg-zinc-700 hover:bg-zinc-600 text-white border-zinc-600"
+                >
+                  Cancelar
+                </Button>
+              </DialogClose>
+              <Button type="submit" className="bg-blue-600 hover:bg-blue-700">
+                Salvar
+              </Button>
+            </DialogFooter>
+          </form>
+        </DialogContent>
+      </Dialog>
+    </>
   );
 }

@@ -47,29 +47,105 @@ export function EditarTutoriais() {
       : '';
   }
 
+  // Função para obter classe de cor baseada no nível de dificuldade
+  function getDifficultyColor(level) {
+    switch (level) {
+      case 'Iniciante':
+        return 'bg-green-900/30 text-green-400';
+      case 'Intermediário':
+        return 'bg-yellow-900/30 text-yellow-400';
+      case 'Avançado':
+        return 'bg-red-900/30 text-red-400';
+      default:
+        return 'bg-blue-900/30 text-blue-400';
+    }
+  }
+
   async function getTutorials() {
     setLoading(true);
     try {
-      const response = await api.get('/tutorial/getAllTutorials');
-      console.log('Tutoriais carregados:', response.data);
+      // Adicionar token de autenticação no cabeçalho
+      const accessToken =
+        localStorage.getItem('accessToken') ||
+        document.cookie.replace(
+          /(?:(?:^|.*;\s*)accessToken\s*\=\s*([^;]*).*$)|^.*$/,
+          '$1',
+        );
 
-      // Verificar formato dos dados retornados
+      const response = await api.get('/tutorial/getAllTutorials', {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+
+      // Função para normalizar o nível de dificuldade
+      const normalizeDifficulty = (tutorial) => {
+        if (!tutorial) return 'Iniciante';
+
+        // Verificar diferentes campos possíveis para o nível de dificuldade
+        let difficulty;
+
+        if (
+          typeof tutorial.difficultyLevel === 'string' &&
+          tutorial.difficultyLevel.trim() !== ''
+        ) {
+          difficulty = tutorial.difficultyLevel;
+        } else if (
+          typeof tutorial.difficulty_level === 'string' &&
+          tutorial.difficulty_level.trim() !== ''
+        ) {
+          difficulty = tutorial.difficulty_level;
+        } else if (
+          typeof tutorial.difficulty === 'string' &&
+          tutorial.difficulty.trim() !== ''
+        ) {
+          difficulty = tutorial.difficulty;
+        } else if (
+          typeof tutorial.level === 'string' &&
+          tutorial.level.trim() !== ''
+        ) {
+          difficulty = tutorial.level;
+        } else {
+          difficulty = 'Iniciante';
+        }
+
+        // Verificar se é um valor válido
+        const validLevels = ['Iniciante', 'Intermediário', 'Avançado'];
+        return validLevels.includes(difficulty) ? difficulty : 'Iniciante';
+      };
+
       if (Array.isArray(response.data)) {
-        setTutorials(response.data);
+        const tutorialsWithValidDifficulty = response.data.map((tutorial) => ({
+          ...tutorial,
+          difficultyLevel: normalizeDifficulty(tutorial),
+        }));
+        setTutorials(tutorialsWithValidDifficulty);
       } else if (response.data && Array.isArray(response.data.tutorials)) {
-        setTutorials(response.data.tutorials);
+        const tutorialsWithValidDifficulty = response.data.tutorials.map(
+          (tutorial) => ({
+            ...tutorial,
+            difficultyLevel: normalizeDifficulty(tutorial),
+          }),
+        );
+        setTutorials(tutorialsWithValidDifficulty);
       } else if (response.data && typeof response.data === 'object') {
         const tutorialsArray = Object.values(response.data);
         if (
           tutorialsArray.length > 0 &&
           tutorialsArray.every((item) => typeof item === 'object')
         ) {
-          setTutorials(tutorialsArray);
+          const tutorialsWithValidDifficulty = tutorialsArray.map(
+            (tutorial) => ({
+              ...tutorial,
+              difficultyLevel: normalizeDifficulty(tutorial),
+            }),
+          );
+          setTutorials(tutorialsWithValidDifficulty);
         }
       }
     } catch (error) {
       console.error('Erro ao buscar tutoriais:', error);
-      toast.error('Erro ao carregar os tutoriais');
+      toast.error('Erro ao carregar os tutoriais. Verifique sua autenticação.');
     } finally {
       setLoading(false);
     }
@@ -99,6 +175,19 @@ export function EditarTutoriais() {
     }
   };
 
+  // Função específica para lidar com a alteração do nível de dificuldade
+  const handleDifficultyChange = (e) => {
+    const value = String(e.target.value);
+
+    setEditedTutorial((prev) => {
+      const updated = {
+        ...prev,
+        difficultyLevel: value,
+      };
+      return updated;
+    });
+  };
+
   // Abrir o dialog para criar novo tutorial
   const handleAddNew = () => {
     setIsEditing(false);
@@ -115,15 +204,24 @@ export function EditarTutoriais() {
 
   // Abrir o dialog para editar tutorial existente
   const handleEdit = (tutorial) => {
+    if (!tutorial) return;
+
+    // Garantir que difficultyLevel seja uma string válida
+    const validDifficultyLevel = tutorial.difficultyLevel || 'Iniciante';
+    console.log('Tutorial original:', tutorial);
+    console.log('DifficultyLevel original:', tutorial.difficultyLevel);
+    console.log('DifficultyLevel normalizado:', validDifficultyLevel);
+
     setIsEditing(true);
     setSelectedTutorial(tutorial);
     setEditedTutorial({
-      title: tutorial.title,
+      title: tutorial.title || '',
       description: tutorial.description || '',
-      url: tutorial.url,
-      thumbnail: tutorial.thumbnail || generateThumbnail(tutorial.url),
-      difficultyLevel: tutorial.difficultyLevel || 'Iniciante',
+      url: tutorial.url || '',
+      thumbnail: tutorial.thumbnail || generateThumbnail(tutorial.url || ''),
+      difficultyLevel: validDifficultyLevel,
     });
+
     setDialogOpen(true);
   };
 
@@ -136,6 +234,8 @@ export function EditarTutoriais() {
   // Salvar tutorial (criar ou atualizar)
   const handleSave = async () => {
     try {
+      console.log('Estado atual do tutorial editado:', editedTutorial);
+
       // Validar dados antes de enviar
       if (!editedTutorial.title || !editedTutorial.url) {
         toast.error('Título e URL são obrigatórios');
@@ -153,11 +253,29 @@ export function EditarTutoriais() {
         editedTutorial.thumbnail = generateThumbnail(editedTutorial.url);
       }
 
+      // Garantir que difficultyLevel seja uma string válida
+      const difficultyLevel = editedTutorial.difficultyLevel || 'Iniciante';
+      console.log('Nível de dificuldade a ser salvo:', difficultyLevel);
+
       const tutorialToSave = {
         title: editedTutorial.title,
         description: editedTutorial.description || '',
         url: editedTutorial.url,
-        difficultyLevel: editedTutorial.difficultyLevel,
+        difficultyLevel: difficultyLevel,
+      };
+
+      // Adicionar token de autenticação no cabeçalho
+      const accessToken =
+        localStorage.getItem('accessToken') ||
+        document.cookie.replace(
+          /(?:(?:^|.*;\s*)accessToken\s*\=\s*([^;]*).*$)|^.*$/,
+          '$1',
+        );
+
+      const config = {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
       };
 
       // Mostrar toast de carregamento
@@ -167,25 +285,109 @@ export function EditarTutoriais() {
 
       if (isEditing && selectedTutorial) {
         // Atualizar tutorial existente
-        // Garantir que o ID é uma string para evitar o erro "id.trim is not a function"
-        const id = String(selectedTutorial.id || selectedTutorial._id);
+        // Verificar os possíveis formatos de ID
+        let id;
+        if (typeof selectedTutorial.id === 'string') {
+          id = selectedTutorial.id;
+        } else if (typeof selectedTutorial._id === 'string') {
+          id = selectedTutorial._id;
+        } else if (selectedTutorial.id) {
+          id = String(selectedTutorial.id);
+        } else if (selectedTutorial._id) {
+          id = String(selectedTutorial._id);
+        } else {
+          toast.error('ID do tutorial não encontrado');
+          return;
+        }
 
-        await api.put('/tutorial/updateById', {
-          id,
-          ...tutorialToSave,
-        });
-        toast.dismiss(loadingToast);
-        toast.success('Tutorial atualizado com sucesso!');
+        console.log('ID do tutorial:', id);
+        console.log('Tipo do ID:', typeof id);
+
+        // Garantir que o difficultyLevel é uma string válida
+        let validDifficulty = String(difficultyLevel || 'Iniciante');
+
+        // Verificar se o valor é válido
+        const validLevels = ['Iniciante', 'Intermediário', 'Avançado'];
+        if (!validLevels.includes(validDifficulty)) {
+          validDifficulty = 'Iniciante';
+        }
+
+        console.log('Dificuldade final a ser enviada:', validDifficulty);
+
+        // Criar objeto exatamente como o backend espera
+        const updatePayload = {
+          id: id,
+          title: tutorialToSave.title,
+          url: tutorialToSave.url,
+          description: tutorialToSave.description || '',
+          difficultyLevel: validDifficulty,
+        };
+
+        try {
+          // Adicionar log temporário para depuração
+          console.log('Enviando para API:', JSON.stringify(updatePayload));
+
+          const response = await api.put(
+            '/tutorial/updateById',
+            updatePayload,
+            config,
+          );
+
+          console.log('Resposta da API:', response.data);
+
+          toast.dismiss(loadingToast);
+          toast.success('Tutorial atualizado com sucesso!');
+
+          // Atualizar estado local para refletir a mudança imediatamente
+          setTutorials((prevTutorials) =>
+            prevTutorials.map((t) => {
+              if ((t.id && t.id === id) || (t._id && t._id === id)) {
+                return {
+                  ...t,
+                  title: updatePayload.title,
+                  description: updatePayload.description,
+                  url: updatePayload.url,
+                  difficultyLevel: updatePayload.difficultyLevel,
+                };
+              }
+              return t;
+            }),
+          );
+
+          // Fechar o dialog e recarregar a lista
+          setDialogOpen(false);
+          getTutorials();
+        } catch (error) {
+          console.error('Erro ao atualizar tutorial:', error);
+          console.error('Detalhes do erro:', error.response?.data);
+          toast.dismiss(loadingToast);
+          toast.error(
+            `Erro ao atualizar: ${error.response?.data?.error || error.message}`,
+          );
+        }
       } else {
         // Criar novo tutorial
-        await api.post('/tutorial/create', tutorialToSave);
-        toast.dismiss(loadingToast);
-        toast.success('Tutorial criado com sucesso!');
-      }
+        try {
+          const response = await api.post(
+            '/tutorial/create',
+            tutorialToSave,
+            config,
+          );
 
-      // Fechar o dialog e recarregar a lista
-      setDialogOpen(false);
-      getTutorials();
+          toast.dismiss(loadingToast);
+          toast.success('Tutorial criado com sucesso!');
+
+          // Fechar o dialog e recarregar a lista
+          setDialogOpen(false);
+          getTutorials();
+        } catch (error) {
+          console.error('Erro ao criar tutorial:', error);
+          toast.dismiss(loadingToast);
+          toast.error(
+            `Erro ao criar: ${error.response?.data?.error || error.message}`,
+          );
+        }
+      }
     } catch (error) {
       console.error('Erro ao salvar tutorial:', error);
       toast.error(
@@ -208,7 +410,18 @@ export function EditarTutoriais() {
       // Garantir que o ID é uma string
       const id = String(selectedTutorial.id || selectedTutorial._id);
 
+      // Adicionar token de autenticação no cabeçalho
+      const accessToken =
+        localStorage.getItem('accessToken') ||
+        document.cookie.replace(
+          /(?:(?:^|.*;\s*)accessToken\s*\=\s*([^;]*).*$)|^.*$/,
+          '$1',
+        );
+
       await api.delete('/tutorial/deleteById', {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
         data: { id },
       });
 
@@ -264,6 +477,15 @@ export function EditarTutoriais() {
                     className="w-full h-48 object-cover"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+
+                  {/* Badge de dificuldade no canto superior direito */}
+                  <div className="absolute top-2 right-2">
+                    <div
+                      className={`px-2 py-1 rounded-full text-xs font-medium ${getDifficultyColor(tutorial.difficultyLevel || 'Iniciante')}`}
+                    >
+                      {tutorial.difficultyLevel || 'Iniciante'}
+                    </div>
+                  </div>
                 </div>
 
                 <div className="p-4">
@@ -313,14 +535,14 @@ export function EditarTutoriais() {
 
       {/* Dialog para adicionar/editar tutorial */}
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-        <DialogContent className="sm:max-w-[500px]">
+        <DialogContent className="sm:max-w-[450px] max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle>
               {isEditing ? 'Editar Tutorial' : 'Adicionar Novo Tutorial'}
             </DialogTitle>
           </DialogHeader>
 
-          <div className="space-y-4 py-4">
+          <div className="space-y-3 py-3">
             <div className="space-y-2">
               <Label htmlFor="title">Título</Label>
               <Input
@@ -340,7 +562,7 @@ export function EditarTutoriais() {
                 placeholder="Breve descrição do tutorial"
                 value={editedTutorial.description}
                 onChange={handleInputChange}
-                rows={3}
+                rows={2}
               />
             </div>
 
@@ -359,28 +581,58 @@ export function EditarTutoriais() {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="difficultyLevel">Nível de Dificuldade</Label>
-              <select
-                id="difficultyLevel"
-                name="difficultyLevel"
-                className="w-full rounded-md border border-zinc-700 bg-zinc-800 px-3 py-2 text-sm text-white"
-                value={editedTutorial.difficultyLevel}
-                onChange={handleInputChange}
+              <Label
+                htmlFor="difficultyLevel"
+                className="text-white font-medium"
               >
-                <option value="Iniciante">Iniciante</option>
-                <option value="Intermediário">Intermediário</option>
-                <option value="Avançado">Avançado</option>
-              </select>
+                Nível de Dificuldade <span className="text-blue-400">*</span>
+              </Label>
+              <div className="border-2 border-blue-500 rounded-md p-0.5">
+                <select
+                  id="difficultyLevel"
+                  name="difficultyLevel"
+                  className="w-full rounded-sm border border-zinc-700 bg-zinc-800 px-3 py-2 text-sm text-white focus:border-blue-500 focus:ring-2 focus:ring-blue-500"
+                  value={editedTutorial.difficultyLevel || 'Iniciante'}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    console.log('Selecionado:', value);
+                    setEditedTutorial({
+                      ...editedTutorial,
+                      difficultyLevel: value,
+                    });
+                  }}
+                >
+                  <option value="Iniciante">Iniciante</option>
+                  <option value="Intermediário">Intermediário</option>
+                  <option value="Avançado">Avançado</option>
+                </select>
+              </div>
+              <p className="text-xs text-blue-400 mt-1 font-medium">
+                Dificuldade selecionada:{' '}
+                <span className="font-bold">
+                  {editedTutorial.difficultyLevel || 'Iniciante'}
+                </span>
+              </p>
             </div>
 
             {editedTutorial.thumbnail && (
-              <div className="mt-4">
-                <p className="text-sm font-medium mb-2">Thumbnail Preview:</p>
-                <img
-                  src={editedTutorial.thumbnail}
-                  alt="Thumbnail preview"
-                  className="max-h-36 rounded-md"
-                />
+              <div className="mt-3">
+                <p className="text-sm font-medium mb-1">Thumbnail Preview:</p>
+                <div className="relative">
+                  <img
+                    src={editedTutorial.thumbnail}
+                    alt="Thumbnail preview"
+                    className="max-h-32 rounded-md"
+                  />
+                  {/* Badge de dificuldade no preview */}
+                  <div className="absolute top-2 right-2">
+                    <div
+                      className={`px-2 py-1 rounded-full text-xs font-medium ${getDifficultyColor(editedTutorial.difficultyLevel)}`}
+                    >
+                      {editedTutorial.difficultyLevel}
+                    </div>
+                  </div>
+                </div>
               </div>
             )}
           </div>

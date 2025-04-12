@@ -32,7 +32,6 @@ export function Benefits() {
       try {
         setLoading(true);
         const response = await api.get('/benefits');
-        console.log('Benefícios carregados da API:', response.data);
 
         // Se quisermos limitar a quantidade exibida na home
         const limitedBeneficios = response.data.slice(0, 4);
@@ -54,7 +53,6 @@ export function Benefits() {
     if (beneficio.companyLogo) {
       // Obter a URL completa da imagem
       const imageUrl = getImageUrl(beneficio.companyLogo);
-      console.log('Imagem URL:', imageUrl);
 
       // Se tiver logo, usar a URL completa
       return (

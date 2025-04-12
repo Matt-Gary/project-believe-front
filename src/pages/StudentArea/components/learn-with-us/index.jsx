@@ -3,6 +3,7 @@ import { CardLearnWithUs } from '../ui/CardLearnWithUs';
 import { PlayCircle } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import api from '@/api';
+import { toast } from 'sonner';
 
 export function LearnWithUs() {
   const [tutorials, setTutorials] = useState([]);
@@ -16,6 +17,7 @@ export function LearnWithUs() {
       description: 'Treino de Abdômen',
       url: 'https://www.youtube.com/watch?v=Lkb_0g4ThXE',
       thumbnail: 'https://img.youtube.com/vi/Lkb_0g4ThXE/hqdefault.jpg',
+      difficultyLevel: 'Iniciante',
     },
     {
       id: 2,
@@ -23,6 +25,7 @@ export function LearnWithUs() {
       description: 'Treino de Peitoral',
       url: 'https://www.youtube.com/watch?v=xlcyVMInKPA',
       thumbnail: 'https://img.youtube.com/vi/xlcyVMInKPA/hqdefault.jpg',
+      difficultyLevel: 'Intermediário',
     },
     {
       id: 3,
@@ -30,6 +33,7 @@ export function LearnWithUs() {
       description: 'Treino de Tríceps',
       url: 'https://www.youtube.com/watch?v=GsTz9HVZsBo',
       thumbnail: 'https://img.youtube.com/vi/GsTz9HVZsBo/hqdefault.jpg',
+      difficultyLevel: 'Avançado',
     },
     {
       id: 4,
@@ -37,15 +41,44 @@ export function LearnWithUs() {
       description: 'Treino Full Body',
       url: 'https://www.youtube.com/watch?v=D6EMtjo71dA',
       thumbnail: 'https://img.youtube.com/vi/D6EMtjo71dA/hqdefault.jpg',
+      difficultyLevel: 'Avançado',
     },
   ];
+
+  // Handler para atualizar o tutorial modificado na lista de tutoriais
+  const handleTutorialUpdate = (updatedTutorial) => {
+    if (!updatedTutorial || !updatedTutorial.id) {
+      toast.error('Erro ao atualizar tutorial na lista');
+      return;
+    }
+
+    setTutorials((currentTutorials) =>
+      currentTutorials.map((tutorial) => {
+        // Verificar se é o tutorial que foi atualizado (usando id ou _id)
+        if (
+          (tutorial.id && tutorial.id === updatedTutorial.id) ||
+          (tutorial._id && tutorial._id === updatedTutorial.id) ||
+          (updatedTutorial._id && tutorial._id === updatedTutorial._id) ||
+          (updatedTutorial._id && tutorial.id === updatedTutorial._id)
+        ) {
+          // Retornar o tutorial atualizado
+          return {
+            ...tutorial,
+            difficultyLevel: updatedTutorial.difficultyLevel,
+          };
+        }
+        return tutorial;
+      }),
+    );
+
+    toast.success('Lista de tutoriais atualizada!');
+  };
 
   useEffect(() => {
     async function fetchTutorials() {
       setLoading(true);
       try {
         const response = await api.get('/tutorial/getAllTutorials');
-        console.log('Tutoriais carregados na LearnWithUs:', response.data);
 
         // Verificar formato dos dados
         if (Array.isArray(response.data)) {
@@ -60,15 +93,12 @@ export function LearnWithUs() {
           ) {
             setTutorials(tutorialsArray.slice(0, 5));
           } else {
-            console.warn('Formato inesperado, usando fallback');
             setTutorials(fallbackItems);
           }
         } else {
-          console.warn('Formato inesperado, usando fallback');
           setTutorials(fallbackItems);
         }
       } catch (error) {
-        console.error('Erro ao buscar tutoriais:', error);
         setTutorials(fallbackItems);
       } finally {
         setLoading(false);
@@ -94,7 +124,11 @@ export function LearnWithUs() {
         calistenia para aprimorar seu treino e performance.
       </p>
 
-      <CardLearnWithUs tutorials={tutorials} loading={loading} />
+      <CardLearnWithUs
+        tutorials={tutorials}
+        loading={loading}
+        onTutorialUpdate={handleTutorialUpdate}
+      />
 
       <Link
         to="/tutoriais"

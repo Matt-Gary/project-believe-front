@@ -32,11 +32,6 @@ export function CardBenefits({ logo, title, description }) {
       <p className="text-neutral-300 line-clamp-3 text-sm flex-grow">
         {descriptionText || 'Entre em contato para mais informações'}
       </p>
-      <div className="mt-3 flex justify-end">
-        <span className="text-xs text-blue-400 hover:text-blue-300 cursor-pointer">
-          Ver detalhes →
-        </span>
-      </div>
     </div>
   );
 }

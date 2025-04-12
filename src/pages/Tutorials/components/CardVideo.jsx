@@ -1,6 +1,13 @@
 import { Play } from 'lucide-react';
 
-export function CardVideo({ url, title, description, thumbnail, duration }) {
+export function CardVideo({
+  url,
+  title,
+  description,
+  thumbnail,
+  duration,
+  difficultyLevel,
+}) {
   // Extrair ID do YouTube da URL para usar com a API posteriormente
   function getYoutubeId(url) {
     if (!url) return '';
@@ -17,7 +24,22 @@ export function CardVideo({ url, title, description, thumbnail, duration }) {
     return `${minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
   };
 
+  // Função para obter classe de cor baseada no nível de dificuldade
+  function getDifficultyColor(level) {
+    switch (level) {
+      case 'Iniciante':
+        return 'bg-green-900/30 text-green-400';
+      case 'Intermediário':
+        return 'bg-yellow-900/30 text-yellow-400';
+      case 'Avançado':
+        return 'bg-red-900/30 text-red-400';
+      default:
+        return 'bg-blue-900/30 text-blue-400';
+    }
+  }
+
   const videoDuration = duration || randomDuration();
+  const level = difficultyLevel || 'Iniciante';
 
   return (
     <a
@@ -48,6 +70,15 @@ export function CardVideo({ url, title, description, thumbnail, duration }) {
         {/* Duração do vídeo */}
         <div className="absolute bottom-2 right-2 bg-black/70 px-2 py-1 rounded text-xs font-medium text-white">
           {videoDuration}
+        </div>
+
+        {/* Badge de dificuldade no canto superior direito */}
+        <div className="absolute top-2 right-2">
+          <div
+            className={`px-2 py-1 rounded-full text-xs font-medium ${getDifficultyColor(level)}`}
+          >
+            {level}
+          </div>
         </div>
       </div>
 

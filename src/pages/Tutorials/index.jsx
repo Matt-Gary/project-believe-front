@@ -24,6 +24,7 @@ export function Tutorials() {
       description: 'Treino de Abdômen da forma Correta',
       url: 'https://www.youtube.com/watch?v=Lkb_0g4ThXE',
       thumbnail: 'https://img.youtube.com/vi/Lkb_0g4ThXE/hqdefault.jpg',
+      difficultyLevel: 'Iniciante',
     },
     {
       id: 2,
@@ -31,6 +32,7 @@ export function Tutorials() {
       description: 'Treino de Peitoral Sem Equipamentos',
       url: 'https://www.youtube.com/watch?v=xlcyVMInKPA',
       thumbnail: 'https://img.youtube.com/vi/xlcyVMInKPA/hqdefault.jpg',
+      difficultyLevel: 'Iniciante',
     },
     {
       id: 3,
@@ -39,6 +41,7 @@ export function Tutorials() {
       description: 'Treino de Tríceps Avançado',
       url: 'https://www.youtube.com/watch?v=GsTz9HVZsBo',
       thumbnail: 'https://img.youtube.com/vi/GsTz9HVZsBo/hqdefault.jpg',
+      difficultyLevel: 'Avançado',
     },
     {
       id: 4,
@@ -46,6 +49,7 @@ export function Tutorials() {
       description: 'Treino Full Body Super Avançado',
       url: 'https://www.youtube.com/watch?v=D6EMtjo71dA',
       thumbnail: 'https://img.youtube.com/vi/D6EMtjo71dA/hqdefault.jpg',
+      difficultyLevel: 'Avançado',
     },
   ];
 
@@ -99,14 +103,14 @@ export function Tutorials() {
     <main className="wrapper py-12">
       <div className="flex items-center mb-4">
         <div className="flex justify-between items-center w-full">
-          <div>
+          <div className="flex items-center">
             <PlayCircle className="h-8 w-8 text-blue-500 mr-3" />
             <h1 className="sm:text-4xl text-3xl font-bold">
               Tutoriais de Calistenia
             </h1>
           </div>
           {userData?.role === 'ADMIN' && (
-            <Button>
+            <Button className="bg-blue-600 hover:bg-blue-700 text-white">
               <Link to="/editar-tutoriais">Editar Conteúdo</Link>
             </Button>
           )}
@@ -145,6 +149,7 @@ export function Tutorials() {
                     `https://img.youtube.com/vi/${getYoutubeId(tutorial.url)}/hqdefault.jpg`
                   }
                   description={tutorial.description}
+                  difficultyLevel={tutorial.difficultyLevel || 'Iniciante'}
                 />
               ))
             ) : (
