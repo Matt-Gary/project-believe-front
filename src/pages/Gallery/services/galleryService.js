@@ -56,7 +56,6 @@ export const galleryService = {
   async getEventPhotos(id) {
     try {
       const response = await api.get(`/gallery/events/${id}/photos`);
-      console.log('Resposta ao buscar fotos:', response.data);
 
       // Verificar se a resposta tem a estrutura esperada
       if (response.data && response.data.photos) {
@@ -83,8 +82,6 @@ export const galleryService = {
   // Criar um novo evento
   async createEvent(eventData) {
     try {
-      console.log('galleryService.createEvent - Dados recebidos:', eventData);
-
       // Formatando a data para o formato esperado pela API (YYYY-MM-DD)
       const formattedDate = ensureDateFormat(eventData.date);
 
@@ -96,11 +93,9 @@ export const galleryService = {
         event_date: formattedDate,
       };
 
-      console.log('Payload a ser enviado para a API:', payload);
-
       // Enviar dados para criar o evento
       const response = await api.post('/gallery/events', payload);
-      console.log('Resposta da API ao criar evento:', response.data);
+      'Resposta da API ao criar evento:', response.data;
 
       // Se temos um arquivo e o evento foi criado com sucesso, enviar a foto em uma segunda requisição
       if (
@@ -111,7 +106,6 @@ export const galleryService = {
         response.data.event[0].id
       ) {
         const eventId = response.data.event[0].id;
-        console.log(`Evento criado com ID ${eventId}, enviando foto...`);
 
         // Criar FormData para o upload da foto
         const formData = new FormData();
@@ -126,8 +120,6 @@ export const galleryService = {
               withCredentials: true,
             },
           );
-
-          console.log('Foto adicionada ao evento:', photoResponse.data);
 
           // Retornar os dados completos
           return {
@@ -152,8 +144,6 @@ export const galleryService = {
   // Atualizar um evento existente
   async updateEvent(id, eventData) {
     try {
-      console.log('updateEvent - Dados recebidos:', { id, ...eventData });
-
       // Formatar a data corretamente
       const formattedDate = ensureDateFormat(eventData.date);
 
@@ -165,15 +155,13 @@ export const galleryService = {
         event_date: formattedDate,
       };
 
-      console.log('Payload para atualização:', payload);
+      'Payload para atualização:', payload;
 
       // Primeiro atualizamos as informações básicas do evento
       const response = await api.post('/gallery/events', payload);
-      console.log('Resposta da atualização:', response.data);
 
       // Se temos um arquivo, fazemos o upload em uma requisição separada
       if (eventData.file) {
-        console.log(`Atualizando evento ${id} com nova foto`);
         const formData = new FormData();
         formData.append('photos', eventData.file);
 
@@ -185,11 +173,6 @@ export const galleryService = {
             {
               withCredentials: true,
             },
-          );
-
-          console.log(
-            'Foto adicionada ao evento atualizado:',
-            photoResponse.data,
           );
 
           // Retornar os dados completos
@@ -229,15 +212,11 @@ export const galleryService = {
   // Adicionar fotos a um evento
   async addPhotosToEvent(eventId, files) {
     try {
-      console.log(`Adicionando ${files.length} fotos ao evento ${eventId}`);
       const formData = new FormData();
 
       // Adicionar cada arquivo ao formData
       for (let i = 0; i < files.length; i++) {
         formData.append('photos', files[i]);
-        console.log(
-          `Foto ${i + 1}: ${files[i].name} (${files[i].type}, ${files[i].size} bytes)`,
-        );
       }
 
       // Usando axios diretamente para o upload de múltiplos arquivos
@@ -250,7 +229,6 @@ export const galleryService = {
         },
       );
 
-      console.log('Resposta do upload de fotos:', response.data);
       return response.data;
     } catch (error) {
       console.error(`Erro ao adicionar fotos ao evento ${eventId}:`, error);
@@ -276,15 +254,10 @@ export const galleryService = {
       const newVisibility =
         currentVisibility === 'PUBLIC' ? 'PRIVATE' : 'PUBLIC';
 
-      console.log(
-        `Alterando visibilidade da foto ${photoId} para ${newVisibility}`,
-      );
-
       const response = await api.put(`/gallery/photos/${photoId}/visibility`, {
         visibility: newVisibility,
       });
 
-      console.log('Resposta da alteração de visibilidade:', response.data);
       return {
         ...response.data,
         newVisibility,

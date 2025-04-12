@@ -44,7 +44,6 @@ export const calendarService = {
       const formData = new FormData();
       const formattedDate = ensureDateFormat(eventData.date);
 
-      console.log('Data a ser enviada:', formattedDate);
       formData.append('date', formattedDate);
       formData.append('event_name', eventData.title);
       formData.append('description', eventData.description || '');
@@ -81,7 +80,6 @@ export const calendarService = {
       const formData = new FormData();
       const formattedDate = ensureDateFormat(eventData.date);
 
-      console.log('Data a ser enviada na criação:', formattedDate);
       formData.append('date', formattedDate);
       formData.append('event_name', eventData.title);
       formData.append('description', eventData.description || '');
