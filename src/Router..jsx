@@ -21,6 +21,7 @@ import { EditarBeneficios } from './pages/ClubeBeneficios/EditarBeneficios';
 import EditarCalendar from './pages/Calendar/EditarCalendar';
 import { EditarGaleria } from './pages/Gallery/EditarGaleria';
 import { AdminRoute } from './components/AdminRoute';
+import { EditarTutoriais } from './pages/Tutorials/EditarTutoriais';
 
 export function Router() {
   const { authenticated, admin } = useContext(AuthContext);
@@ -80,6 +81,14 @@ export function Router() {
           element={
             <AdminRoute>
               <EditarGaleria />
+            </AdminRoute>
+          }
+        />
+        <Route
+          path="editar-tutoriais"
+          element={
+            <AdminRoute>
+              <EditarTutoriais />
             </AdminRoute>
           }
         />
