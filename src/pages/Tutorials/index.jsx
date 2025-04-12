@@ -58,7 +58,6 @@ export function Tutorials() {
     setError(null);
     try {
       const response = await api.get('/tutorial/getAllTutorials');
-      console.log('Resposta da API:', response.data);
 
       // Verificar o formato da resposta e garantir que tutorials seja um array
       if (Array.isArray(response.data)) {
@@ -76,18 +75,15 @@ export function Tutorials() {
           setTutorials(tutorialsArray);
         } else {
           // Se não conseguir extrair valores válidos, use os vídeos locais
-          console.warn('Formato de resposta inesperado, usando vídeos locais');
           setTutorials(fallbackVideos);
           setError('Formato de dados inválido');
         }
       } else {
         // Se nada funcionar, use os vídeos locais
-        console.warn('Formato de resposta inesperado, usando vídeos locais');
         setTutorials(fallbackVideos);
         setError('Formato de dados inválido');
       }
     } catch (error) {
-      console.error('Erro ao buscar tutoriais:', error);
       setTutorials(fallbackVideos);
       setError('Erro ao carregar tutoriais');
     } finally {

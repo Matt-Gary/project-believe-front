@@ -26,7 +26,7 @@ export function EditarTutoriais() {
     description: '',
     url: '',
     thumbnail: '',
-    difficultyLevel: 'Iniciante',
+    difficultyLevel: 'BEGINNER',
   });
   const [isEditing, setIsEditing] = useState(false);
 
@@ -50,14 +50,64 @@ export function EditarTutoriais() {
   // Função para obter classe de cor baseada no nível de dificuldade
   function getDifficultyColor(level) {
     switch (level) {
-      case 'Iniciante':
-        return 'bg-green-900/30 text-green-400';
-      case 'Intermediário':
-        return 'bg-yellow-900/30 text-yellow-400';
-      case 'Avançado':
-        return 'bg-red-900/30 text-red-400';
+      case 'BEGINNER':
+        return 'bg-emerald-900/30 text-emerald-400 border border-emerald-500/50';
+      case 'INTERMEDIATE':
+        return 'bg-amber-900/30 text-amber-400 border border-amber-500/50';
+      case 'ADVANCED':
+        return 'bg-rose-900/30 text-rose-400 border border-rose-500/50';
       default:
-        return 'bg-blue-900/30 text-blue-400';
+        return 'bg-emerald-900/30 text-emerald-400 border border-emerald-500/50';
+    }
+  }
+
+  // Função para normalizar o nível de dificuldade
+  const normalizeDifficulty = (tutorial) => {
+    if (!tutorial) return 'BEGINNER';
+
+    // Verificar diferentes campos possíveis para o nível de dificuldade
+    let difficulty;
+
+    if (
+      typeof tutorial.difficultyLevel === 'string' &&
+      tutorial.difficultyLevel.trim() !== ''
+    ) {
+      difficulty = tutorial.difficultyLevel;
+    } else if (
+      typeof tutorial.difficulty_level === 'string' &&
+      tutorial.difficulty_level.trim() !== ''
+    ) {
+      difficulty = tutorial.difficulty_level;
+    } else if (
+      typeof tutorial.difficulty === 'string' &&
+      tutorial.difficulty.trim() !== ''
+    ) {
+      difficulty = tutorial.difficulty;
+    } else if (
+      typeof tutorial.level === 'string' &&
+      tutorial.level.trim() !== ''
+    ) {
+      difficulty = tutorial.level;
+    } else {
+      difficulty = 'BEGINNER';
+    }
+
+    // Verificar se é um valor válido
+    const validLevels = ['BEGINNER', 'INTERMEDIATE', 'ADVANCED'];
+    return validLevels.includes(difficulty) ? difficulty : 'BEGINNER';
+  };
+
+  // Função para traduzir o nível de dificuldade para português
+  function translateDifficulty(level) {
+    switch (level) {
+      case 'BEGINNER':
+        return 'Iniciante';
+      case 'INTERMEDIATE':
+        return 'Intermediário';
+      case 'ADVANCED':
+        return 'Avançado';
+      default:
+        return 'Iniciante';
     }
   }
 
@@ -77,42 +127,6 @@ export function EditarTutoriais() {
           Authorization: `Bearer ${accessToken}`,
         },
       });
-
-      // Função para normalizar o nível de dificuldade
-      const normalizeDifficulty = (tutorial) => {
-        if (!tutorial) return 'Iniciante';
-
-        // Verificar diferentes campos possíveis para o nível de dificuldade
-        let difficulty;
-
-        if (
-          typeof tutorial.difficultyLevel === 'string' &&
-          tutorial.difficultyLevel.trim() !== ''
-        ) {
-          difficulty = tutorial.difficultyLevel;
-        } else if (
-          typeof tutorial.difficulty_level === 'string' &&
-          tutorial.difficulty_level.trim() !== ''
-        ) {
-          difficulty = tutorial.difficulty_level;
-        } else if (
-          typeof tutorial.difficulty === 'string' &&
-          tutorial.difficulty.trim() !== ''
-        ) {
-          difficulty = tutorial.difficulty;
-        } else if (
-          typeof tutorial.level === 'string' &&
-          tutorial.level.trim() !== ''
-        ) {
-          difficulty = tutorial.level;
-        } else {
-          difficulty = 'Iniciante';
-        }
-
-        // Verificar se é um valor válido
-        const validLevels = ['Iniciante', 'Intermediário', 'Avançado'];
-        return validLevels.includes(difficulty) ? difficulty : 'Iniciante';
-      };
 
       if (Array.isArray(response.data)) {
         const tutorialsWithValidDifficulty = response.data.map((tutorial) => ({
@@ -144,7 +158,6 @@ export function EditarTutoriais() {
         }
       }
     } catch (error) {
-      console.error('Erro ao buscar tutoriais:', error);
       toast.error('Erro ao carregar os tutoriais. Verifique sua autenticação.');
     } finally {
       setLoading(false);
@@ -177,15 +190,11 @@ export function EditarTutoriais() {
 
   // Função específica para lidar com a alteração do nível de dificuldade
   const handleDifficultyChange = (e) => {
-    const value = String(e.target.value);
-
-    setEditedTutorial((prev) => {
-      const updated = {
-        ...prev,
-        difficultyLevel: value,
-      };
-      return updated;
-    });
+    const value = e.target.value;
+    setEditedTutorial((prev) => ({
+      ...prev,
+      difficultyLevel: value,
+    }));
   };
 
   // Abrir o dialog para criar novo tutorial
@@ -197,7 +206,7 @@ export function EditarTutoriais() {
       description: '',
       url: '',
       thumbnail: '',
-      difficultyLevel: 'Iniciante',
+      difficultyLevel: 'BEGINNER',
     });
     setDialogOpen(true);
   };
@@ -207,10 +216,7 @@ export function EditarTutoriais() {
     if (!tutorial) return;
 
     // Garantir que difficultyLevel seja uma string válida
-    const validDifficultyLevel = tutorial.difficultyLevel || 'Iniciante';
-    console.log('Tutorial original:', tutorial);
-    console.log('DifficultyLevel original:', tutorial.difficultyLevel);
-    console.log('DifficultyLevel normalizado:', validDifficultyLevel);
+    const validDifficultyLevel = tutorial.difficultyLevel || 'BEGINNER';
 
     setIsEditing(true);
     setSelectedTutorial(tutorial);
@@ -234,8 +240,6 @@ export function EditarTutoriais() {
   // Salvar tutorial (criar ou atualizar)
   const handleSave = async () => {
     try {
-      console.log('Estado atual do tutorial editado:', editedTutorial);
-
       // Validar dados antes de enviar
       if (!editedTutorial.title || !editedTutorial.url) {
         toast.error('Título e URL são obrigatórios');
@@ -254,8 +258,7 @@ export function EditarTutoriais() {
       }
 
       // Garantir que difficultyLevel seja uma string válida
-      const difficultyLevel = editedTutorial.difficultyLevel || 'Iniciante';
-      console.log('Nível de dificuldade a ser salvo:', difficultyLevel);
+      const difficultyLevel = editedTutorial.difficultyLevel || 'BEGINNER';
 
       const tutorialToSave = {
         title: editedTutorial.title,
@@ -300,19 +303,14 @@ export function EditarTutoriais() {
           return;
         }
 
-        console.log('ID do tutorial:', id);
-        console.log('Tipo do ID:', typeof id);
-
         // Garantir que o difficultyLevel é uma string válida
-        let validDifficulty = String(difficultyLevel || 'Iniciante');
+        let validDifficulty = String(difficultyLevel || 'BEGINNER');
 
         // Verificar se o valor é válido
-        const validLevels = ['Iniciante', 'Intermediário', 'Avançado'];
+        const validLevels = ['BEGINNER', 'INTERMEDIATE', 'ADVANCED'];
         if (!validLevels.includes(validDifficulty)) {
-          validDifficulty = 'Iniciante';
+          validDifficulty = 'BEGINNER';
         }
-
-        console.log('Dificuldade final a ser enviada:', validDifficulty);
 
         // Criar objeto exatamente como o backend espera
         const updatePayload = {
@@ -324,16 +322,11 @@ export function EditarTutoriais() {
         };
 
         try {
-          // Adicionar log temporário para depuração
-          console.log('Enviando para API:', JSON.stringify(updatePayload));
-
           const response = await api.put(
             '/tutorial/updateById',
             updatePayload,
             config,
           );
-
-          console.log('Resposta da API:', response.data);
 
           toast.dismiss(loadingToast);
           toast.success('Tutorial atualizado com sucesso!');
@@ -358,8 +351,6 @@ export function EditarTutoriais() {
           setDialogOpen(false);
           getTutorials();
         } catch (error) {
-          console.error('Erro ao atualizar tutorial:', error);
-          console.error('Detalhes do erro:', error.response?.data);
           toast.dismiss(loadingToast);
           toast.error(
             `Erro ao atualizar: ${error.response?.data?.error || error.message}`,
@@ -381,7 +372,6 @@ export function EditarTutoriais() {
           setDialogOpen(false);
           getTutorials();
         } catch (error) {
-          console.error('Erro ao criar tutorial:', error);
           toast.dismiss(loadingToast);
           toast.error(
             `Erro ao criar: ${error.response?.data?.error || error.message}`,
@@ -389,7 +379,6 @@ export function EditarTutoriais() {
         }
       }
     } catch (error) {
-      console.error('Erro ao salvar tutorial:', error);
       toast.error(
         `Erro ao ${isEditing ? 'atualizar' : 'criar'} tutorial: ${
           error.response?.data?.message ||
@@ -432,7 +421,6 @@ export function EditarTutoriais() {
       setDeleteConfirmOpen(false);
       getTutorials();
     } catch (error) {
-      console.error('Erro ao excluir tutorial:', error);
       toast.error(
         `Erro ao excluir tutorial: ${
           error.response?.data?.message || error.message
@@ -445,22 +433,22 @@ export function EditarTutoriais() {
     <main className="wrapper py-12">
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center">
-          <PlayCircle className="h-8 w-8 text-blue-500 mr-3" />
+          <PlayCircle className="h-8 w-8 text-emerald-500 mr-3" />
           <h1 className="text-3xl font-bold">Gerenciar Tutoriais</h1>
         </div>
         <Button
           onClick={handleAddNew}
-          className="bg-green-600 hover:bg-green-700 text-white"
+          className="bg-emerald-600 hover:bg-emerald-700 text-white"
         >
           <Plus className="mr-2 h-4 w-4" /> Adicionar Tutorial
         </Button>
       </div>
 
-      <div className="w-full h-0.5 bg-gradient-to-r from-blue-500 to-transparent mb-8"></div>
+      <div className="w-full h-0.5 bg-gradient-to-r from-emerald-500 to-transparent mb-8"></div>
 
       {loading ? (
         <div className="flex justify-center items-center mt-16">
-          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-emerald-500"></div>
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -481,9 +469,11 @@ export function EditarTutoriais() {
                   {/* Badge de dificuldade no canto superior direito */}
                   <div className="absolute top-2 right-2">
                     <div
-                      className={`px-2 py-1 rounded-full text-xs font-medium ${getDifficultyColor(tutorial.difficultyLevel || 'Iniciante')}`}
+                      className={`px-2 py-1 rounded-full text-xs font-medium ${getDifficultyColor(tutorial.difficultyLevel || 'BEGINNER')}`}
                     >
-                      {tutorial.difficultyLevel || 'Iniciante'}
+                      {translateDifficulty(
+                        tutorial.difficultyLevel || 'BEGINNER',
+                      )}
                     </div>
                   </div>
                 </div>
@@ -500,7 +490,7 @@ export function EditarTutoriais() {
                     <Button
                       variant="outline"
                       size="sm"
-                      className="bg-blue-600 hover:bg-blue-700 text-white hover:text-zinc-100 border-blue-600"
+                      className="bg-emerald-600 hover:bg-emerald-700 text-white hover:text-zinc-100 border-emerald-600"
                       onClick={() => handleEdit(tutorial)}
                     >
                       <Pencil className="hover:text-zinc-100 text-zinc-100 mr-2 h-4 w-4" />{' '}
@@ -510,7 +500,7 @@ export function EditarTutoriais() {
                     <Button
                       variant="destructive"
                       size="sm"
-                      className="bg-red-600 hover:bg-red-700 text-white"
+                      className="bg-rose-600 hover:bg-rose-700 text-white"
                       onClick={() => handleDeleteClick(tutorial)}
                     >
                       <Trash2 className="mr-2 h-4 w-4" /> Excluir
@@ -524,7 +514,7 @@ export function EditarTutoriais() {
               <p className="text-zinc-400 mb-4">Nenhum tutorial encontrado.</p>
               <Button
                 onClick={handleAddNew}
-                className="bg-green-600 hover:bg-green-700 text-white"
+                className="bg-emerald-600 hover:bg-emerald-700 text-white"
               >
                 <Plus className="mr-2 h-4 w-4" /> Adicionar o primeiro tutorial
               </Button>
@@ -585,32 +575,47 @@ export function EditarTutoriais() {
                 htmlFor="difficultyLevel"
                 className="text-white font-medium"
               >
-                Nível de Dificuldade <span className="text-blue-400">*</span>
+                Nível de Dificuldade <span className="text-emerald-400">*</span>
               </Label>
-              <div className="border-2 border-blue-500 rounded-md p-0.5">
+              <div
+                className={`border-2 rounded-md p-0.5 ${
+                  editedTutorial.difficultyLevel === 'BEGINNER'
+                    ? 'border-emerald-500'
+                    : editedTutorial.difficultyLevel === 'INTERMEDIATE'
+                      ? 'border-amber-500'
+                      : editedTutorial.difficultyLevel === 'ADVANCED'
+                        ? 'border-rose-500'
+                        : 'border-emerald-500'
+                }`}
+              >
                 <select
                   id="difficultyLevel"
                   name="difficultyLevel"
-                  className="w-full rounded-sm border border-zinc-700 bg-zinc-800 px-3 py-2 text-sm text-white focus:border-blue-500 focus:ring-2 focus:ring-blue-500"
-                  value={editedTutorial.difficultyLevel || 'Iniciante'}
-                  onChange={(e) => {
-                    const value = e.target.value;
-                    console.log('Selecionado:', value);
-                    setEditedTutorial({
-                      ...editedTutorial,
-                      difficultyLevel: value,
-                    });
-                  }}
+                  className="w-full rounded-sm border border-zinc-700 bg-zinc-800 px-3 py-2 text-sm text-white focus:ring-2 focus:ring-opacity-50"
+                  value={editedTutorial.difficultyLevel || 'BEGINNER'}
+                  onChange={handleDifficultyChange}
                 >
-                  <option value="Iniciante">Iniciante</option>
-                  <option value="Intermediário">Intermediário</option>
-                  <option value="Avançado">Avançado</option>
+                  <option value="BEGINNER">Iniciante</option>
+                  <option value="INTERMEDIATE">Intermediário</option>
+                  <option value="ADVANCED">Avançado</option>
                 </select>
               </div>
-              <p className="text-xs text-blue-400 mt-1 font-medium">
+              <p
+                className={`text-xs mt-1 font-medium ${
+                  editedTutorial.difficultyLevel === 'BEGINNER'
+                    ? 'text-emerald-400'
+                    : editedTutorial.difficultyLevel === 'INTERMEDIATE'
+                      ? 'text-amber-400'
+                      : editedTutorial.difficultyLevel === 'ADVANCED'
+                        ? 'text-rose-400'
+                        : 'text-emerald-400'
+                }`}
+              >
                 Dificuldade selecionada:{' '}
                 <span className="font-bold">
-                  {editedTutorial.difficultyLevel || 'Iniciante'}
+                  {translateDifficulty(
+                    editedTutorial.difficultyLevel || 'BEGINNER',
+                  )}
                 </span>
               </p>
             </div>
@@ -629,7 +634,7 @@ export function EditarTutoriais() {
                     <div
                       className={`px-2 py-1 rounded-full text-xs font-medium ${getDifficultyColor(editedTutorial.difficultyLevel)}`}
                     >
-                      {editedTutorial.difficultyLevel}
+                      {translateDifficulty(editedTutorial.difficultyLevel)}
                     </div>
                   </div>
                 </div>
@@ -650,7 +655,7 @@ export function EditarTutoriais() {
             <Button
               type="button"
               onClick={handleSave}
-              className="bg-blue-600 hover:bg-blue-700 text-white"
+              className="bg-emerald-600 hover:bg-emerald-700 text-white"
             >
               {isEditing ? 'Atualizar' : 'Adicionar'}
             </Button>
@@ -687,7 +692,7 @@ export function EditarTutoriais() {
               type="button"
               variant="destructive"
               onClick={handleDelete}
-              className="bg-red-600 hover:bg-red-700 text-white"
+              className="bg-rose-600 hover:bg-rose-700 text-white"
             >
               Excluir
             </Button>

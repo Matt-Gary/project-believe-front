@@ -246,7 +246,7 @@ export default function EditarCalendar() {
         date: apiDate, // Usa a data formatada para a API
       };
 
-      console.log('Criando evento com data:', apiDate);
+      'Criando evento com data:', apiDate;
       await calendarService.createEvent(eventToSave);
 
       // Mostrar toast de sucesso

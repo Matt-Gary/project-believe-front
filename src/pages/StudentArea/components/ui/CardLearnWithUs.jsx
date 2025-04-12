@@ -55,17 +55,31 @@ export function CardLearnWithUs({
     return `${minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
   };
 
+  // Função para traduzir o nível de dificuldade para português
+  function translateDifficulty(level) {
+    switch (level) {
+      case 'BEGINNER':
+        return 'Iniciante';
+      case 'INTERMEDIATE':
+        return 'Intermediário';
+      case 'ADVANCED':
+        return 'Avançado';
+      default:
+        return 'Iniciante';
+    }
+  }
+
   // Função para obter classe de cor baseada no nível de dificuldade
   function getDifficultyColor(level) {
     switch (level) {
-      case 'Iniciante':
-        return 'bg-green-900/30 text-green-400';
-      case 'Intermediário':
-        return 'bg-yellow-900/30 text-yellow-400';
-      case 'Avançado':
-        return 'bg-red-900/30 text-red-400';
+      case 'BEGINNER':
+        return 'bg-emerald-900/30 text-emerald-400 border border-emerald-500/50';
+      case 'INTERMEDIATE':
+        return 'bg-amber-900/30 text-amber-400 border border-amber-500/50';
+      case 'ADVANCED':
+        return 'bg-rose-900/30 text-rose-400 border border-rose-500/50';
       default:
-        return 'bg-blue-900/30 text-blue-400';
+        return 'bg-emerald-900/30 text-emerald-400 border border-emerald-500/50';
     }
   }
 
@@ -73,7 +87,7 @@ export function CardLearnWithUs({
     e.preventDefault();
     e.stopPropagation();
     setSelectedTutorial(tutorial);
-    setValue('difficultyLevel', tutorial.difficultyLevel || 'Iniciante');
+    setValue('difficultyLevel', tutorial.difficultyLevel || 'BEGINNER');
     setDialogOpen(true);
   };
 
@@ -131,7 +145,7 @@ export function CardLearnWithUs({
   if (loading) {
     return (
       <div className="w-full flex justify-center py-10">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-emerald-500"></div>
       </div>
     );
   }
@@ -168,7 +182,7 @@ export function CardLearnWithUs({
 
                     {/* Ícone de play centralizado */}
                     <div className="absolute inset-0 flex items-center justify-center">
-                      <div className="bg-blue-500/80 rounded-full p-3 transform scale-90 group-hover:scale-110 transition-transform duration-300 group-hover:bg-blue-600/90">
+                      <div className="bg-emerald-500/80 rounded-full p-3 transform scale-90 group-hover:scale-110 transition-transform duration-300 group-hover:bg-emerald-600/90">
                         <Play className="h-8 w-8 text-white" fill="white" />
                       </div>
                     </div>
@@ -181,19 +195,21 @@ export function CardLearnWithUs({
                     {/* Badge de dificuldade no canto superior direito */}
                     <div className="absolute top-2 right-2">
                       <div
-                        className={`px-2 py-1 rounded-full text-xs font-medium ${getDifficultyColor(tutorial.difficultyLevel || 'Iniciante')}`}
+                        className={`px-2 py-1 rounded-full text-xs font-medium ${getDifficultyColor(tutorial.difficultyLevel || 'BEGINNER')}`}
                       >
-                        {tutorial.difficultyLevel || 'Iniciante'}
+                        {translateDifficulty(
+                          tutorial.difficultyLevel || 'BEGINNER',
+                        )}
                       </div>
                     </div>
                   </div>
 
                   {/* Barra colorida */}
-                  <div className="w-full h-1 bg-gradient-to-r from-blue-500 to-blue-400"></div>
+                  <div className="w-full h-1 bg-gradient-to-r from-emerald-500 to-emerald-400"></div>
 
                   {/* Conteúdo do card */}
                   <div className="p-4">
-                    <h3 className="font-bold text-lg text-white line-clamp-2 group-hover:text-blue-400 transition-colors">
+                    <h3 className="font-bold text-lg text-white line-clamp-2 group-hover:text-emerald-400 transition-colors">
                       {tutorial.title}
                     </h3>
                     <p className="text-zinc-400 text-sm mt-2 line-clamp-2">
@@ -204,7 +220,7 @@ export function CardLearnWithUs({
                 {/* Botão de edição */}
                 <button
                   onClick={(e) => handleEdit(tutorial, e)}
-                  className="absolute top-2 left-2 bg-blue-500/80 hover:bg-blue-600 text-white rounded-full p-1.5 transition-all duration-300"
+                  className="absolute top-2 left-2 bg-emerald-500/80 hover:bg-emerald-600 text-white rounded-full p-1.5 transition-all duration-300"
                 >
                   <Edit2 className="h-4 w-4" />
                 </button>
@@ -230,19 +246,29 @@ export function CardLearnWithUs({
               <label htmlFor="difficultyLevel" className="text-sm font-medium">
                 Nível de Dificuldade
               </label>
-              <div className="border-2 border-blue-500 rounded-md p-0.5">
+              <div
+                className={`border-2 rounded-md p-0.5 ${
+                  register('difficultyLevel').value === 'BEGINNER'
+                    ? 'border-emerald-500'
+                    : register('difficultyLevel').value === 'INTERMEDIATE'
+                      ? 'border-amber-500'
+                      : register('difficultyLevel').value === 'ADVANCED'
+                        ? 'border-rose-500'
+                        : 'border-emerald-500'
+                }`}
+              >
                 <select
                   id="difficultyLevel"
-                  className="w-full rounded-sm border border-zinc-700 bg-zinc-800 px-3 py-2 text-sm text-white focus:border-blue-500 focus:ring-2 focus:ring-blue-500"
+                  className="w-full rounded-sm border border-zinc-700 bg-zinc-800 px-3 py-2 text-sm text-white focus:ring-2 focus:ring-opacity-50"
                   {...register('difficultyLevel', { required: true })}
                 >
-                  <option value="Iniciante">Iniciante</option>
-                  <option value="Intermediário">Intermediário</option>
-                  <option value="Avançado">Avançado</option>
+                  <option value="BEGINNER">Iniciante</option>
+                  <option value="INTERMEDIATE">Intermediário</option>
+                  <option value="ADVANCED">Avançado</option>
                 </select>
               </div>
               {errors.difficultyLevel && (
-                <p className="text-xs text-red-500">
+                <p className="text-xs text-rose-500">
                   Selecione um nível de dificuldade
                 </p>
               )}
@@ -258,7 +284,10 @@ export function CardLearnWithUs({
                   Cancelar
                 </Button>
               </DialogClose>
-              <Button type="submit" className="bg-blue-600 hover:bg-blue-700">
+              <Button
+                type="submit"
+                className="bg-emerald-600 hover:bg-emerald-700"
+              >
                 Salvar
               </Button>
             </DialogFooter>

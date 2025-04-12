@@ -62,7 +62,6 @@ export default function EventEditModal({
       const apiDate = formatDateForAPI(formattedValue);
 
       if (apiDate) {
-        console.log('Data convertida para API:', apiDate);
         setEditedEvent((prev) => ({
           ...prev,
           displayDate: formattedValue,
@@ -75,8 +74,6 @@ export default function EventEditModal({
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      console.log('Arquivo selecionado:', file.name, file.type, file.size);
-
       // Verificação de tipo de arquivo mais abrangente
       const acceptedImageTypes = [
         'image/jpeg',
@@ -107,8 +104,6 @@ export default function EventEditModal({
       // Criar uma prévia da imagem
       const previewUrl = URL.createObjectURL(file);
 
-      console.log('Prévia criada:', previewUrl);
-
       setEditedEvent({
         ...editedEvent,
         file,
@@ -116,9 +111,6 @@ export default function EventEditModal({
       });
 
       // Verificar se o estado foi atualizado
-      setTimeout(() => {
-        console.log('Estado atualizado com arquivo:', editedEvent.file?.name);
-      }, 0);
     }
   };
 

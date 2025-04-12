@@ -24,22 +24,36 @@ export function CardVideo({
     return `${minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
   };
 
+  // Função para traduzir o nível de dificuldade para português
+  function translateDifficulty(level) {
+    switch (level) {
+      case 'BEGINNER':
+        return 'Iniciante';
+      case 'INTERMEDIATE':
+        return 'Intermediário';
+      case 'ADVANCED':
+        return 'Avançado';
+      default:
+        return 'Iniciante';
+    }
+  }
+
   // Função para obter classe de cor baseada no nível de dificuldade
   function getDifficultyColor(level) {
     switch (level) {
-      case 'Iniciante':
-        return 'bg-green-900/30 text-green-400';
-      case 'Intermediário':
-        return 'bg-yellow-900/30 text-yellow-400';
-      case 'Avançado':
-        return 'bg-red-900/30 text-red-400';
+      case 'BEGINNER':
+        return 'bg-emerald-900/30 text-emerald-400 border border-emerald-500/50';
+      case 'INTERMEDIATE':
+        return 'bg-amber-900/30 text-amber-400 border border-amber-500/50';
+      case 'ADVANCED':
+        return 'bg-rose-900/30 text-rose-400 border border-rose-500/50';
       default:
-        return 'bg-blue-900/30 text-blue-400';
+        return 'bg-emerald-900/30 text-emerald-400 border border-emerald-500/50';
     }
   }
 
   const videoDuration = duration || randomDuration();
-  const level = difficultyLevel || 'Iniciante';
+  const level = difficultyLevel || 'BEGINNER';
 
   return (
     <a
@@ -62,7 +76,7 @@ export function CardVideo({
 
         {/* Ícone de play centralizado */}
         <div className="absolute inset-0 flex items-center justify-center">
-          <div className="bg-blue-500/80 rounded-full p-3 transform scale-90 group-hover:scale-110 transition-transform duration-300 group-hover:bg-blue-600/90">
+          <div className="bg-emerald-500/80 rounded-full p-3 transform scale-90 group-hover:scale-110 transition-transform duration-300 group-hover:bg-emerald-600/90">
             <Play className="h-8 w-8 text-white" fill="white" />
           </div>
         </div>
@@ -77,24 +91,24 @@ export function CardVideo({
           <div
             className={`px-2 py-1 rounded-full text-xs font-medium ${getDifficultyColor(level)}`}
           >
-            {level}
+            {translateDifficulty(level)}
           </div>
         </div>
       </div>
 
       {/* Barra colorida */}
-      <div className="w-full h-1 bg-gradient-to-r from-blue-500 to-cyan-400"></div>
+      <div className="w-full h-1 bg-gradient-to-r from-emerald-500 to-emerald-400"></div>
 
       {/* Conteúdo do card */}
       <div className="p-4">
-        <h1 className="font-bold text-lg text-white line-clamp-2 group-hover:text-blue-400 transition-colors">
+        <h1 className="font-bold text-lg text-white line-clamp-2 group-hover:text-emerald-400 transition-colors">
           {title}
         </h1>
         <p className="text-zinc-400 text-sm mt-2 line-clamp-2">{description}</p>
 
         {/* Badge de Calistenia */}
         <div className="mt-3 flex items-center">
-          <div className="bg-blue-900/30 text-blue-400 text-xs px-2 py-1 rounded-full">
+          <div className="bg-emerald-900/30 text-emerald-400 text-xs px-2 py-1 rounded-full">
             Calistenia
           </div>
           <div className="text-xs text-zinc-500 ml-auto">

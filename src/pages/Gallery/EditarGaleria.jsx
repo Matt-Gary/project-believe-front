@@ -89,7 +89,6 @@ export function EditarGaleria() {
 
       setEventos(eventosOrdenados);
       setFilteredEventos(eventosOrdenados);
-      console.log(eventos);
     } catch (error) {
       console.error('Erro ao carregar eventos:', error);
       toast.error('Não foi possível carregar os eventos');
@@ -135,12 +134,12 @@ export function EditarGaleria() {
       });
 
       // Buscar fotos do evento
-      console.log(`Buscando fotos para o evento ID: ${event.id}`);
+
       const photos = await galleryService.getEventPhotos(event.id);
 
       // Verificar se temos fotos
       if (photos && Array.isArray(photos)) {
-        console.log(`Encontradas ${photos.length} fotos para o evento`);
+        `Encontradas ${photos.length} fotos para o evento`;
         setSelectedPhotos(photos);
       } else {
         console.log('Nenhuma foto encontrada para o evento');

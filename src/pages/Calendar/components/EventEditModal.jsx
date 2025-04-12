@@ -99,7 +99,6 @@ export default function EventEditModal({
       const apiDate = formatDateForAPI(formattedValue);
 
       if (apiDate) {
-        console.log('Data convertida para API:', apiDate);
         setEditedEvent((prev) => ({
           ...prev,
           displayDate: formattedValue,

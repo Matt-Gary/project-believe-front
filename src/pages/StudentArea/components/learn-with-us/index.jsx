@@ -17,7 +17,7 @@ export function LearnWithUs() {
       description: 'Treino de Abdômen',
       url: 'https://www.youtube.com/watch?v=Lkb_0g4ThXE',
       thumbnail: 'https://img.youtube.com/vi/Lkb_0g4ThXE/hqdefault.jpg',
-      difficultyLevel: 'Iniciante',
+      difficultyLevel: 'BEGINNER',
     },
     {
       id: 2,
@@ -25,7 +25,7 @@ export function LearnWithUs() {
       description: 'Treino de Peitoral',
       url: 'https://www.youtube.com/watch?v=xlcyVMInKPA',
       thumbnail: 'https://img.youtube.com/vi/xlcyVMInKPA/hqdefault.jpg',
-      difficultyLevel: 'Intermediário',
+      difficultyLevel: 'INTERMEDIATE',
     },
     {
       id: 3,
@@ -33,7 +33,7 @@ export function LearnWithUs() {
       description: 'Treino de Tríceps',
       url: 'https://www.youtube.com/watch?v=GsTz9HVZsBo',
       thumbnail: 'https://img.youtube.com/vi/GsTz9HVZsBo/hqdefault.jpg',
-      difficultyLevel: 'Avançado',
+      difficultyLevel: 'ADVANCED',
     },
     {
       id: 4,
@@ -41,7 +41,7 @@ export function LearnWithUs() {
       description: 'Treino Full Body',
       url: 'https://www.youtube.com/watch?v=D6EMtjo71dA',
       thumbnail: 'https://img.youtube.com/vi/D6EMtjo71dA/hqdefault.jpg',
-      difficultyLevel: 'Avançado',
+      difficultyLevel: 'ADVANCED',
     },
   ];
 
@@ -111,13 +111,13 @@ export function LearnWithUs() {
   return (
     <div className="wrapper mx-auto py-16 flex flex-col">
       <div className="flex items-center mb-4">
-        <PlayCircle className="h-8 w-8 text-blue-500 mr-3" />
+        <PlayCircle className="h-8 w-8 text-emerald-500 mr-3" />
         <h2 className="font-bold text-3xl md:text-4xl">
           Aprenda conosco - Tutoriais
         </h2>
       </div>
 
-      <div className="w-full h-0.5 bg-gradient-to-r from-blue-500 to-transparent mb-6"></div>
+      <div className="w-full h-0.5 bg-gradient-to-r from-emerald-500 to-transparent mb-6"></div>
 
       <p className="text-zinc-400 text-lg mb-8 max-w-3xl">
         Confira nossos tutoriais exclusivos e aprenda técnicas avançadas de
@@ -132,7 +132,7 @@ export function LearnWithUs() {
 
       <Link
         to="/tutoriais"
-        className="button self-center mt-8 inline-flex items-center px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors"
+        className="button self-center mt-8 inline-flex items-center px-6 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-medium rounded-lg transition-colors"
       >
         <PlayCircle className="mr-2 h-5 w-5" />
         Ver todos os tutoriais
