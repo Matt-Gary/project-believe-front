@@ -13,11 +13,6 @@ export function CardWeGallery({ photos = [] }) {
   // Filtrar para mostrar apenas fotos públicas
   const publicPhotos = photos.filter((photo) => photo.visibility === 'PUBLIC');
 
-  // Log para depuração
-  console.log(
-    `Exibindo ${publicPhotos.length} fotos públicas de ${photos.length} fotos totais`,
-  );
-
   // Se não receber fotos públicas, usar imagens padrão
   const carouselItems =
     publicPhotos.length > 0

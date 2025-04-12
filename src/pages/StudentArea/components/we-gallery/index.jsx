@@ -16,7 +16,6 @@ export function WeGallery() {
       setLoading(true);
       const response = await api.get('/gallery/events');
 
-      console.log('Dados recebidos da API:', response.data);
       setGalleryEvents(response.data);
     } catch (error) {
       console.error('Erro ao buscar eventos da galeria:', error);
@@ -44,7 +43,7 @@ export function WeGallery() {
         })) || [],
   );
 
-  console.log(`Total de ${allPhotos.length} fotos públicas encontradas`);
+  `Total de ${allPhotos.length} fotos públicas encontradas`;
 
   return (
     <div className="wrapper mx-auto pt-16 flex flex-col">

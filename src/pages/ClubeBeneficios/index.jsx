@@ -87,7 +87,6 @@ export function ClubeBeneficios() {
     setLoading(true);
     try {
       const response = await api.get('/benefits');
-      console.log('Benefícios recebidos da API:', response.data);
 
       // Adicionar URLs completas às imagens
       const vouchersWithFullUrls = response.data.map((voucher) => ({

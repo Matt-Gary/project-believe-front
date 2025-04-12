@@ -12,7 +12,7 @@ export function Gallery() {
 
   async function getGallery() {
     const response = await api.get('/gallery/events');
-    console.log(response.data);
+
     setGalleryItems(response.data);
     setLoading(false);
   }

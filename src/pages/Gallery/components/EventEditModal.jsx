@@ -147,8 +147,6 @@ export default function EventEditModal({
       return;
     }
 
-    console.log('Dados validados. Salvando evento com:', editedEvent);
-
     if (onSave) onSave();
   };
 

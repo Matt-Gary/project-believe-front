@@ -142,7 +142,6 @@ export function EditarGaleria() {
         `Encontradas ${photos.length} fotos para o evento`;
         setSelectedPhotos(photos);
       } else {
-        console.log('Nenhuma foto encontrada para o evento');
         setSelectedPhotos([]);
       }
 
@@ -163,8 +162,6 @@ export function EditarGaleria() {
   // Função para salvar as alterações em um evento
   const handleSaveEvent = async () => {
     try {
-      console.log('Iniciando atualização do evento:', editedEvent);
-
       // Validar dados antes de enviar
       if (!editedEvent.title || !editedEvent.displayDate) {
         toast.error('Título e data são obrigatórios');
@@ -191,8 +188,6 @@ export function EditarGaleria() {
         file: editedEvent.file,
       };
 
-      console.log('Enviando atualização para:', selectedEvent.id, eventToSave);
-
       // Mostrar toast de carregamento
       const loadingToast = toast.loading('Atualizando evento...');
 
@@ -202,7 +197,6 @@ export function EditarGaleria() {
           selectedEvent.id,
           eventToSave,
         );
-        console.log('Resposta da atualização:', result);
 
         // Verificar resultado
         if (result) {
@@ -274,7 +268,6 @@ export function EditarGaleria() {
 
   // Função para adicionar um novo evento
   const handleAddEvent = () => {
-    console.log('Abrindo modal para adicionar evento');
     const today = new Date();
     const isoDate = today.toISOString().split('T')[0]; // YYYY-MM-DD
 
@@ -291,15 +284,12 @@ export function EditarGaleria() {
     // Garantir que o modal seja aberto
     setTimeout(() => {
       setDialogOpen(true);
-      console.log('Estado do diálogo definido como:', true);
     }, 0);
   };
 
   // Função para criar um novo evento
   const handleCreateEvent = async () => {
     try {
-      console.log('Iniciando criação de evento com:', editedEvent);
-
       // Validar dados antes de enviar
       if (!editedEvent.title) {
         toast.error('Título é obrigatório');
@@ -326,20 +316,12 @@ export function EditarGaleria() {
         file: editedEvent.file, // Será enviado como 'photos' em uma requisição separada
       };
 
-      console.log('Enviando dados para API:', {
-        title: eventToSave.title,
-        description: eventToSave.description,
-        date: eventToSave.date,
-        fileIncluded: eventToSave.file ? 'Sim' : 'Não',
-      });
-
       // Mostrar toast de carregamento
       const loadingToast = toast.loading('Criando evento...');
 
       try {
         // Primeiro passo: criar o evento
         const result = await galleryService.createEvent(eventToSave);
-        console.log('Resposta da API:', result);
 
         // Verificar o resultado
         if (result && result.event) {

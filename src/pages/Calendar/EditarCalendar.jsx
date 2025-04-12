@@ -153,7 +153,6 @@ export default function EditarCalendar() {
         date: apiDate, // Usa a data formatada para a API
       };
 
-      console.log('Enviando dados com data:', apiDate);
       await calendarService.updateEvent(selectedEvent.id, eventToSave);
 
       // Mostrar toast de sucesso
