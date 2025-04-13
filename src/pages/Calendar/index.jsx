@@ -16,7 +16,41 @@ export function Calendarios() {
     try {
       setLoading(true);
       const response = await api.get('/calendar');
-      setEventos(response.data);
+
+      // Obtém a data atual sem a parte de horas
+      const hoje = new Date();
+      hoje.setHours(0, 0, 0, 0);
+
+      // Ordenar eventos: primeiro os futuros (mais próximos primeiro), depois os passados (mais recentes primeiro)
+      const eventosOrdenados = response.data.sort((a, b) => {
+        const dataA = new Date(a.date);
+        const dataB = new Date(b.date);
+
+        // Converter para datas sem horas para comparação justa
+        dataA.setHours(0, 0, 0, 0);
+        dataB.setHours(0, 0, 0, 0);
+
+        // Verifica se os eventos são futuros ou passados
+        const aNoFuturo = dataA >= hoje;
+        const bNoFuturo = dataB >= hoje;
+
+        // Primeiro critério: eventos futuros antes de eventos passados
+        if (aNoFuturo && !bNoFuturo) return -1;
+        if (!aNoFuturo && bNoFuturo) return 1;
+
+        // Segundo critério:
+        // - Para eventos futuros: do mais próximo ao mais distante
+        // - Para eventos passados: do mais recente ao mais antigo
+        if (aNoFuturo && bNoFuturo) {
+          // Ambos no futuro, o mais próximo vem primeiro
+          return dataA - dataB;
+        } else {
+          // Ambos no passado, o mais recente vem primeiro
+          return dataB - dataA;
+        }
+      });
+
+      setEventos(eventosOrdenados);
     } catch (error) {
       console.error('Erro ao carregar eventos:', error);
     } finally {
@@ -65,6 +99,7 @@ export function Calendarios() {
                   data={eventoPrincipal.date}
                   titulo={eventoPrincipal.title}
                   descricao={eventoPrincipal.description}
+                  horario={eventoPrincipal.time}
                 />
               )}
             </div>
