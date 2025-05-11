@@ -114,7 +114,7 @@ export const galleryService = {
         try {
           // Upload da foto para o evento recém-criado usando a rota específica para fotos
           const photoResponse = await axios.post(
-            `https://www.api.believecalistenia.com.br/gallery/events/${eventId}/photos`,
+            `https://www.apii.believecalistenia.com.br/gallery/events/${eventId}/photos`,
             formData,
             {
               withCredentials: true,
@@ -168,7 +168,7 @@ export const galleryService = {
         try {
           // Upload da foto para o evento utilizando a rota específica para fotos
           const photoResponse = await axios.post(
-            `https://www.api.believecalistenia.com.br/gallery/events/${id}/photos`,
+            `https://www.apii.believecalistenia.com.br/gallery/events/${id}/photos`,
             formData,
             {
               withCredentials: true,
@@ -221,7 +221,7 @@ export const galleryService = {
 
       // Usando axios diretamente para o upload de múltiplos arquivos
       const response = await axios.post(
-        `https://www.api.believecalistenia.com.br/gallery/events/${eventId}/photos`,
+        `https://www.apii.believecalistenia.com.br/gallery/events/${eventId}/photos`,
         formData,
         {
           withCredentials: true,
