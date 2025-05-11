@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // Create an instance of axios
 const api = axios.create({
-  baseURL: 'https://www.api.believecalistenia.com.br', // URL do backend
+  baseURL: 'https://www.apii.believecalistenia.com.br', // URL do backend
   withCredentials: true, // Garante que cookies sejam enviados com as requisições
   headers: {
     'Content-Type': 'application/json',
